@@ -7,18 +7,17 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PointF
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.mediapipe.examples.poselandmarker.activities.MainActivity
+import com.google.mediapipe.examples.poselandmarker.utils.AngleUtils
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarker
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarkerResult
-//import org.checkerframework.checker.units.qual.Angle
-import kotlin.math.*
 
 class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
@@ -174,21 +173,13 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
                 pointPaint
             )
 
-            // Calculate angle at the elbow
-            val angle = calculateAngle(shoulderPoint, elbowPoint, wristPoint)
+            // Calculate angle at the elbow using AngleUtils
+            val angle = AngleUtils.calculateAngle(shoulderPoint, elbowPoint, wristPoint)
             angleCount = angle.toInt()
             angleTextView?.text = "Angle: $angleCount"
 
             // Check if it's a valid rep
             trackRep(angle)
-
-            // Display angle
-//            canvas.drawText(
-//                "${angle.toInt()}°",
-//                elbowPoint.x,
-//                elbowPoint.y - 10,
-//                textPaint
-//            )
         }
     }
 
@@ -205,94 +196,51 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
             currentRepMaxAngle = angle
         }
 
-        // Detect rep completion: when the elbow is extended after flexing
-        if (angle < 30 && isFlexing) {
-            // Rep completed, store the max angle for the rep
+        // Detect flexing and extension
+        if (angle < 90 && !isFlexing) {
+            isFlexing = true // Flexing phase started
+        } else if (angle > 160 && isFlexing) {
+            isFlexing = false // Flexing phase ended, rep is complete
+
+            // Store max ROM for this rep
             repMaxAngles.add(currentRepMaxAngle)
 
-            // Reset for the next rep
+            // Increment rep count
             repCount++
-            currentRepMaxAngle = 0f
-            isFlexing = false
-
-            // Update the rep count TextView
             repCountTextView?.text = "Reps: $repCount"
 
+            // Reset the max angle for the next rep
+            currentRepMaxAngle = 0f
 
-            // Store data in Firebase if 3 reps are done
-            if (repCount == maxReps) {
-                storeMaxAnglesInFirebase(repMaxAngles)
-            }
-        } else if (angle > 150) {
-            isFlexing = true // The elbow is flexing
+            // Store data in Firebase
+            val repData = hashMapOf(
+                "rep" to repCount,
+                "max_angle" to repMaxAngles[repCount - 1]
+            )
+            database.child("elbow_exercise").child("rep_$repCount").setValue(repData)
         }
-    }
-
-    // Function to store max angles in Firebase after 3 reps
-    private fun storeMaxAnglesInFirebase(maxAngles: List<Float>) {
-        val angleData: Map<String, Any> = mapOf(
-            "rep1_max_angle" to (maxAngles.getOrNull(0) ?: 0f),
-            "rep2_max_angle" to (maxAngles.getOrNull(1) ?: 0f),
-            "rep3_max_angle" to (maxAngles.getOrNull(2) ?: 0f)
-        )
-
-        database.child("pose_data").push().setValue(angleData)
-            .addOnSuccessListener {
-                Log.d("FirebaseDataStore", "Data stored successfully: $angleData")
-            }
-            .addOnFailureListener { exception ->
-                Log.e("FirebaseDataStore", "Failed to store data", exception)
-            }
-    }
-
-
-    private fun calculateAngle(p1: PointF, p2: PointF, p3: PointF): Float {
-        val vector1 = PointF(p1.x - p2.x, p1.y - p2.y) // Vector from p1 to p2
-        val vector2 = PointF(p2.x - p3.x, p2.y - p3.y) // Vector from p2 to p3
-
-        // Dot product of the two vectors
-        val dotProduct = vector1.x * vector2.x + vector1.y * vector2.y
-        // Magnitudes of the vectors
-        val magnitude1 = sqrt((vector1.x * vector1.x + vector1.y * vector1.y).toDouble())
-        val magnitude2 = sqrt((vector2.x * vector2.x + vector2.y * vector2.y).toDouble())
-
-        // Calculate the angle in radians between the two vectors
-        val angleRadians = acos(dotProduct / (magnitude1 * magnitude2))
-        // Convert radians to degrees
-        var angleDegrees = Math.toDegrees(angleRadians).toFloat()
-
-        // Constrain the angle between 0 and 180 degrees
-        if (angleDegrees < 180) {
-            angleDegrees = 180 - angleDegrees
-        }
-
-        return angleDegrees + 1
     }
 
     fun setResults(
-        poseLandmarkerResults: PoseLandmarkerResult,
+        poseLandmarkerResult: PoseLandmarkerResult,
         imageHeight: Int,
         imageWidth: Int,
-        runningMode: RunningMode = RunningMode.IMAGE
+        runningMode: RunningMode
     ) {
-        results = poseLandmarkerResults
-
+        this.results = poseLandmarkerResult
         this.imageHeight = imageHeight
         this.imageWidth = imageWidth
-
-        scaleFactor = when (runningMode) {
-            RunningMode.IMAGE,
-            RunningMode.VIDEO -> {
-                min(width * 1f / imageWidth, height * 1f / imageHeight)
-            }
-            RunningMode.LIVE_STREAM -> {
-                max(width * 1f / imageWidth, height * 1f / imageHeight)
-            }
-        }
+        scaleFactor = AngleUtils.calculateScaleFactor(
+            imageWidth,
+            imageHeight,
+            this.width,
+            this.height,
+            runningMode
+        )
         invalidate()
     }
 
     companion object {
-        private const val LANDMARK_STROKE_WIDTH = 10f
+        private const val LANDMARK_STROKE_WIDTH = 8f
     }
 }

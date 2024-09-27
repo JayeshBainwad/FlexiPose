@@ -1,10 +1,13 @@
-package com.google.mediapipe.examples.poselandmarker
+package com.google.mediapipe.examples.poselandmarker.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.database.FirebaseDatabase
+import com.google.mediapipe.examples.poselandmarker.MainViewModel
+import com.google.mediapipe.examples.poselandmarker.R
 //import com.google.firebase.database.FirebaseDatabase
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityMainBinding
 
@@ -18,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(activityMainBinding.root)
 
         // Initialize Firebase
-//        val database = FirebaseDatabase.getInstance()
+        val database = FirebaseDatabase.getInstance()
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
@@ -30,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        super.onBackPressed()
         finish()
     }
 }

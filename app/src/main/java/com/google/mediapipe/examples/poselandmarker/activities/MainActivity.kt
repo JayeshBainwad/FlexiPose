@@ -3,8 +3,11 @@ package com.google.mediapipe.examples.poselandmarker.activities
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -15,11 +18,14 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.mediapipe.examples.poselandmarker.MainViewModel
 import com.google.mediapipe.examples.poselandmarker.R
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityMainBinding
+import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
+import com.google.mediapipe.examples.poselandmarker.model.User
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var binding: ActivityMainBinding? = null
@@ -50,7 +56,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         // Set up the toolbar and navigation drawer
         setupActionBar()
-        binding?.navDrawerView?.setNavigationItemSelectedListener(this)
+        binding?.navHeaderMain?.setNavigationItemSelectedListener(this)
+
+        // Get the current logged in user details.
+        FirestoreClass().loadUserDetails(this@MainActivity)
     }
 
     private fun setupActionBar() {
@@ -74,10 +83,44 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
+    /**
+     * A function to get the current user details from firebase.
+     */
+    fun updateNavigationUserDetails(user: User) {
+        // The instance of the header view of the navigation view.
+        val headerView = binding?.navHeaderMain?.getHeaderView(0)
+
+        // The instance of the user image of the navigation view.
+        val navUserImage = headerView?.findViewById<ImageView>(R.id.iv_user_image)
+
+        // Load the user image in the ImageView.
+        if (navUserImage != null) {
+            Glide
+                .with(this@MainActivity)
+                .load(user.image) // URL of the image
+                .centerCrop() // Scale type of the image.
+                .placeholder(R.drawable.ic_user_place_holder) // A default place holder
+                .into(navUserImage)
+        } // the view in which the image will be loaded.
+
+        // The instance of the user name TextView of the navigation view.
+        val navUsername = headerView?.findViewById<TextView>(R.id.tv_username)
+        // Set the user name
+        navUsername?.text = user.name
+        Log.d("UserName:","$navUsername")
+    }
+
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.nav_my_profile -> {
                 Toast.makeText(this@MainActivity, "My Profile", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MyProfileActivity::class.java)
+
+
+
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                finish()
             }
             R.id.nav_sign_out -> {
                 // Sign out the user from Firebase

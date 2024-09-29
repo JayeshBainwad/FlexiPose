@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- Declare features -->
-    <uses-feature android:name="android.hardware.camera" />
-
-    <!-- Declare permissions -->
+    <uses-feature android:name="android.hardware.camera" /> <!-- Declare permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -18,12 +14,14 @@
         android:taskAffinity=""
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-
+        <activity
+            android:name=".activities.MyProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.SplashActivity"
-            android:theme="@style/AppTheme.NoActionBar1"
-            android:screenOrientation="portrait"
             android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar1"
             tools:ignore="DiscouragedApi,LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +29,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.SignInActivity"
             android:exported="true"
@@ -45,17 +42,15 @@
         <activity
             android:name=".activities.SignUpActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar2">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar2"></activity>
         <activity
             android:name=".activities.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar2"
-            android:configChanges="keyboardHidden|orientation|screenSize">
-        <meta-data
-            android:name="android.notch_support"
-            android:value="true" />
-
+            android:theme="@style/AppTheme.NoActionBar2">
+            <meta-data
+                android:name="android.notch_support"
+                android:value="true" />
         </activity>
     </application>
 

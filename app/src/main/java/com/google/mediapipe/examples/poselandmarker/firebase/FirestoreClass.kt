@@ -1,13 +1,16 @@
 package com.google.mediapipe.examples.poselandmarker.firebase
 
+import android.app.Activity
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.mediapipe.examples.poselandmarker.activities.MainActivity
+import com.google.mediapipe.examples.poselandmarker.activities.MyProfileActivity
 import com.google.mediapipe.examples.poselandmarker.activities.SignInActivity
 import com.google.mediapipe.examples.poselandmarker.activities.SignUpActivity
 import com.google.mediapipe.examples.poselandmarker.utils.Constants
-import com.projemanag.model.User
+import com.google.mediapipe.examples.poselandmarker.model.User
 
 /**
  * A custom class where we will add the operation performed for the firestore database.
@@ -44,7 +47,7 @@ class FirestoreClass {
     /**
      * A function to SignIn using firebase and get the user details from Firestore Database.
      */
-    fun signInUser(activity: SignInActivity) {
+    fun loadUserDetails(activity: Activity) {
 
         // Here we pass the collection name from which we wants the data.
         mFireStore.collection(Constants.USERS)
@@ -58,11 +61,32 @@ class FirestoreClass {
 
                     // Here we have received the document snapshot which is converted into the User Data model object.
                     val loggedInUser = document.toObject(User::class.java)!!
+                    Log.d("UserDetails: ","$loggedInUser",)
 
                     // Here call a function of base activity for transferring the result to it.
-                    activity.signInSuccess(loggedInUser)
+                    when (activity) {
+                        is SignInActivity -> {
+                            activity.signInSuccess(loggedInUser)
+                        }
+                        is MainActivity -> {
+                            activity.updateNavigationUserDetails(loggedInUser)
+                        }
+                        is MyProfileActivity -> {
+                            activity.setUserDataInUI(loggedInUser)
+                        }
+                    }
                 }
                 .addOnFailureListener { e ->
+
+                    when (activity) {
+                        is SignInActivity -> {
+                            activity.hideProgressDialog()
+                        }
+                        is MainActivity -> {
+                            activity.hideProgressDialog()
+                        }
+                    }
+
                     Log.e(
                             activity.javaClass.simpleName,
                             "Error while getting loggedIn user details",

@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.mediapipe.examples.poselandmarker.R
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivitySignUpBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
-import com.projemanag.model.User
+import com.google.mediapipe.examples.poselandmarker.model.User
 
 class SignUpActivity : BaseActivity() {
 

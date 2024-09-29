@@ -1,4 +1,4 @@
-package com.projemanag.model
+package com.google.mediapipe.examples.poselandmarker.model
 
 import android.os.Parcel
 import android.os.Parcelable

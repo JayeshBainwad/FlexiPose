@@ -55,15 +55,15 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
         database = FirebaseDatabase.getInstance().reference
 
         // Get the rep count TextView and restart button from the parent activity
-        if (context is MainActivity) {
-            angleTextView = context.findViewById(R.id.right_elbow_angle)
-            repCountTextView = context.findViewById(R.id.rep_count)
-            restartButton = context.findViewById(R.id.restart_button)
-
-            restartButton?.setOnClickListener {
-                restartExercise() // Reset the exercise when the restart button is clicked
-            }
-        }
+//        if (context is MainActivity) {
+//            angleTextView = context.findViewById(R.id.tv_right_elbow_angle)
+//            repCountTextView = context.findViewById(R.id.tv_rep_count)
+//            restartButton = context.findViewById(R.id.restart_button)
+//
+//            restartButton?.setOnClickListener {
+//                restartExercise() // Reset the exercise when the restart button is clicked
+//            }
+//        }
     }
 
     // Function to set UI elements from the parent Activity or Fragment

@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 class MainViewModel : ViewModel() {
 
     private var _model = PoseLandmarkerHelper.MODEL_POSE_LANDMARKER_FULL
-    private var _delegate: Int = PoseLandmarkerHelper.DELEGATE_CPU
+//    private var _delegate: Int = PoseLandmarkerHelper.DELEGATE_CPU
     private var _minPoseDetectionConfidence: Float =
         PoseLandmarkerHelper.DEFAULT_POSE_DETECTION_CONFIDENCE
     private var _minPoseTrackingConfidence: Float = PoseLandmarkerHelper
@@ -16,7 +16,7 @@ class MainViewModel : ViewModel() {
     private var _minPosePresenceConfidence: Float = PoseLandmarkerHelper
         .DEFAULT_POSE_PRESENCE_CONFIDENCE
 
-    val currentDelegate: Int get() = _delegate
+//    val currentDelegate: Int get() = _delegate
     val currentModel: Int get() = _model
     val currentMinPoseDetectionConfidence: Float
         get() =
@@ -28,9 +28,9 @@ class MainViewModel : ViewModel() {
         get() =
             _minPosePresenceConfidence
 
-    fun setDelegate(delegate: Int) {
-        _delegate = delegate
-    }
+//    fun setDelegate(delegate: Int) {
+//        _delegate = delegate
+//    }
 
     fun setMinPoseDetectionConfidence(confidence: Float) {
         _minPoseDetectionConfidence = confidence
@@ -42,9 +42,5 @@ class MainViewModel : ViewModel() {
 
     fun setMinPosePresenceConfidence(confidence: Float) {
         _minPosePresenceConfidence = confidence
-    }
-
-    fun setModel(model: Int) {
-        _model = model
     }
 }

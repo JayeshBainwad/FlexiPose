@@ -41,7 +41,7 @@ class PermissionsFragment : Fragment() {
                     "Permission request granted",
                     Toast.LENGTH_LONG
                 ).show()
-                navigateToCamera()
+                navigateToHome()
             } else {
                 Toast.makeText(
                     context,
@@ -58,7 +58,7 @@ class PermissionsFragment : Fragment() {
                 requireContext(),
                 Manifest.permission.CAMERA
             ) -> {
-                navigateToCamera()
+                navigateToHome()
             }
             else -> {
                 requestPermissionLauncher.launch(
@@ -68,13 +68,13 @@ class PermissionsFragment : Fragment() {
         }
     }
 
-    private fun navigateToCamera() {
+    private fun navigateToHome() {
         lifecycleScope.launchWhenStarted {
             Navigation.findNavController(
                 requireActivity(),
                 R.id.fragment_container
             ).navigate(
-                R.id.action_permissions_to_camera
+                R.id.action_permissions_fragment_to_fragmentContentMain
             )
         }
     }

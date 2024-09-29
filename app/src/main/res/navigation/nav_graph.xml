@@ -30,6 +30,9 @@
             app:destination="@id/camera_fragment"
             app:popUpTo="@id/permissions_fragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_permissions_fragment_to_fragmentContentMain"
+            app:destination="@id/fragmentContentMain" />
 
     </fragment>
 
@@ -49,14 +52,14 @@
         android:id="@+id/gallery_fragment"
         android:name="com.google.mediapipe.examples.poselandmarker.fragment.GalleryFragment"
         android:label="GalleryFragment" />
-    <activity
-        android:id="@+id/signInActivity"
-        android:name="com.google.mediapipe.examples.poselandmarker.activities.SignInActivity"
-        android:label="activity_sign_in"
-        tools:layout="@layout/activity_sign_in" />
-    <activity
-        android:id="@+id/signUpActivity"
-        android:name="com.google.mediapipe.examples.poselandmarker.activities.SignUpActivity"
-        android:label="activity_sign_up"
-        tools:layout="@layout/activity_sign_up" />
+    <fragment
+        android:id="@+id/fragmentContentMain"
+        android:name="com.google.mediapipe.examples.poselandmarker.fragment.FragmentContentMain"
+        android:label="FragmentContentMain" >
+        <action
+            android:id="@+id/action_fragmentContentMain_to_permissions_fragment"
+            app:destination="@id/permissions_fragment" />
+    </fragment>
+
+
 </navigation>

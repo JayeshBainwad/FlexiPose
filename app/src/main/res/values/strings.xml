@@ -76,5 +76,16 @@
     <string name="tv_already_signed_in">Already signed in?</string>
     <string name="tv_create_account">Create account</string>
     <string name="btn_restart_exercise">Restart</string>
+    <string name="menu_home">Home</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--TODO (Step 9: All the string values are added here.)-->
+    <!--START-->
+    <string name="nav_my_profile">My Profile</string>
+    <string name="nav_sign_out">Sign Out</string>
+    <string name="nav_my_progress">My Progress</string>
+    <string name="drawer_username">Username</string>
+    <!--END-->
 
 </resources>

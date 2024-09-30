@@ -113,27 +113,25 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.nav_my_profile -> {
-                Toast.makeText(this@MainActivity, "My Profile", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, MyProfileActivity::class.java)
+//                Toast.makeText(this@MainActivity, "My Profile", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@MainActivity, MyProfileActivity::class.java)
 
-
-
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
-                finish()
+//                finish()
             }
             R.id.nav_sign_out -> {
                 // Sign out the user from Firebase
                 FirebaseAuth.getInstance().signOut()
 
                 // Send the user to the sign-in screen
-                val intent = Intent(this, SignInActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                val intent = Intent(this@MainActivity, SignInActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
-                finish()
+                this.finish()
             }
         }
-        binding?.drawerLayout?.closeDrawer(GravityCompat.START)
+//        binding?.drawerLayout?.closeDrawer(GravityCompat.START)
         return true
     }
 
@@ -146,5 +144,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             // A double back press function is added in Base Activity.
             doubleBackToExit()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 }

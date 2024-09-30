@@ -209,13 +209,13 @@ class GalleryFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
 //    }
 
     // Update the values displayed in the bottom sheet. Reset detector.
-    private fun updateControlsUi() {
-        if (fragmentGalleryBinding.videoView.isPlaying) {
-            fragmentGalleryBinding.videoView.stopPlayback()
-        }
-        fragmentGalleryBinding.videoView.visibility = View.GONE
-        fragmentGalleryBinding.imageResult.visibility = View.GONE
-        fragmentGalleryBinding.overlay.clear()
+//    private fun updateControlsUi() {
+//        if (fragmentGalleryBinding.videoView.isPlaying) {
+//            fragmentGalleryBinding.videoView.stopPlayback()
+//        }
+//        fragmentGalleryBinding.videoView.visibility = View.GONE
+//        fragmentGalleryBinding.imageResult.visibility = View.GONE
+//        fragmentGalleryBinding.overlay.clear()
 //        fragmentGalleryBinding.bottomSheetLayout.detectionThresholdValue.text =
 //            String.format(
 //                Locale.US, "%.2f", viewModel.currentMinPoseDetectionConfidence
@@ -229,9 +229,9 @@ class GalleryFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
 //                Locale.US, "%.2f", viewModel.currentMinPosePresenceConfidence
 //            )
 
-        fragmentGalleryBinding.overlay.clear()
-        fragmentGalleryBinding.tvPlaceholder.visibility = View.VISIBLE
-    }
+//        fragmentGalleryBinding.overlay.clear()
+//        fragmentGalleryBinding.tvPlaceholder.visibility = View.VISIBLE
+//    }
 
     // Load and display the image.
     private fun runDetectionOnImage(uri: Uri) {

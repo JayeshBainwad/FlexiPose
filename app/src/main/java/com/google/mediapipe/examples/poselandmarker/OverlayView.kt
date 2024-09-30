@@ -13,7 +13,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.mediapipe.examples.poselandmarker.activities.MainActivity
 import com.google.mediapipe.examples.poselandmarker.utils.AngleUtils
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarker
@@ -185,7 +184,7 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
 
     // Function to track reps based on the elbow angle
     @SuppressLint("SetTextI18n")
-    private fun trackRep(angle: Float) {
+    private fun trackRep(angle: Double) {
         if (repCount >= maxReps) {
             restartButton?.visibility = View.VISIBLE // Show restart button after completing 3 reps
             return // Stop after 3 reps
@@ -193,7 +192,7 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
 
         // Update the max angle in the current rep
         if (angle > currentRepMaxAngle) {
-            currentRepMaxAngle = angle
+            currentRepMaxAngle = angle.toFloat()
         }
 
         // Detect flexing and extension

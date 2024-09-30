@@ -73,4 +73,9 @@ class SplashActivity : AppCompatActivity() {
             finish() // Call this when your activity is done and should be closed.
         }, 2500) // Here we pass the delay time in milliSeconds after which the splash activity will disappear.
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
 }

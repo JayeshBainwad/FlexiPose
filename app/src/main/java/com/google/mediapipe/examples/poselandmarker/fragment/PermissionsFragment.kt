@@ -1,70 +1,66 @@
-/*
- * Copyright 2023 The TensorFlow Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.google.mediapipe.examples.poselandmarker.fragment
 
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.google.mediapipe.examples.poselandmarker.R
 
-private val PERMISSIONS_REQUIRED = arrayOf(Manifest.permission.CAMERA)
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+private val PERMISSIONS_REQUIRED = arrayOf(
+    Manifest.permission.CAMERA,
+    Manifest.permission.READ_MEDIA_IMAGES,
+    Manifest.permission.INTERNET,
+    Manifest.permission.ACCESS_NETWORK_STATE
+)
 
 class PermissionsFragment : Fragment() {
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
+    // Register for the result of the permission request. This handles multiple permissions.
+    private val requestMultiplePermissionsLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            var allPermissionsGranted = true
+            for (isGranted in permissions.values) {
+                if (!isGranted) {
+                    allPermissionsGranted = false
+                    break
+                }
+            }
+
+            if (allPermissionsGranted) {
                 Toast.makeText(
                     context,
-                    "Permission request granted",
+                    "All permissions granted",
                     Toast.LENGTH_LONG
                 ).show()
                 navigateToHome()
             } else {
                 Toast.makeText(
                     context,
-                    "Permission request denied",
+                    "One or more permissions denied",
                     Toast.LENGTH_LONG
                 ).show()
             }
         }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        when (PackageManager.PERMISSION_GRANTED) {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.CAMERA
-            ) -> {
-                navigateToHome()
-            }
-            else -> {
-                requestPermissionLauncher.launch(
-                    Manifest.permission.CAMERA
-                )
-            }
+
+        // Check if all permissions are already granted.
+        if (hasPermissions(requireContext())) {
+            navigateToHome()
+        } else {
+            // Request permissions if they are not already granted.
+            requestMultiplePermissionsLauncher.launch(PERMISSIONS_REQUIRED)
         }
     }
 
@@ -82,6 +78,7 @@ class PermissionsFragment : Fragment() {
     companion object {
 
         /** Convenience method used to check if all permissions required by this app are granted */
+        @RequiresApi(Build.VERSION_CODES.TIRAMISU)
         fun hasPermissions(context: Context) = PERMISSIONS_REQUIRED.all {
             ContextCompat.checkSelfPermission(
                 context,

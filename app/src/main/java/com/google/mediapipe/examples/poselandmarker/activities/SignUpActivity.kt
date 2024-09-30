@@ -166,6 +166,11 @@ class SignUpActivity : BaseActivity() {
         finish()
     }
 
+//    override fun onBackPressed() {
+//        super.onBackPressed()
+//        doubleBackToExit()
+//    }
+
     override fun onDestroy() {
         super.onDestroy()
         binding = null

@@ -39,8 +39,6 @@ class SignInActivity : BaseActivity() {
 
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        // This is used to align the xml view to this class
-        setContentView(binding?.root)
 
         // This is used to hide the status bar and make the splash screen as a full screen activity.
 //        window.setFlags(
@@ -48,7 +46,7 @@ class SignInActivity : BaseActivity() {
 //            WindowManager.LayoutParams.FLAG_FULLSCREEN
 //        )
 
-//        setupActionBar()
+        setupActionBar()
 
 
 //        if (!autoLoggedIn) {
@@ -166,6 +164,11 @@ class SignInActivity : BaseActivity() {
         startActivity(Intent(this@SignInActivity, MainActivity::class.java))
         this.finish()
     }
+
+//    override fun onBackPressed() {
+//        super.onBackPressed()
+//        doubleBackToExit()
+//    }
 
     override fun onDestroy() {
         super.onDestroy()

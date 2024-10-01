@@ -7,12 +7,17 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PointF
 import android.util.AttributeSet
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.mediapipe.examples.poselandmarker.activities.CameraActivity
+import com.google.mediapipe.examples.poselandmarker.activities.MainActivity
+import com.google.mediapipe.examples.poselandmarker.databinding.ActivityCameraBinding
 import com.google.mediapipe.examples.poselandmarker.utils.AngleUtils
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarker
@@ -42,6 +47,8 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
     private var repMaxAngles = mutableListOf<Float>()
     private var angleCount = 0
 
+    private var binding: ActivityCameraBinding? = null
+
     // UI elements
     private var angleTextView: TextView? = null
     private var repCountTextView: TextView? = null
@@ -50,14 +57,19 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
     init {
         initPaints()
 
+
+
         // Initialize Firebase
         database = FirebaseDatabase.getInstance().reference
 
         // Get the rep count TextView and restart button from the parent activity
-//        if (context is MainActivity) {
-//            angleTextView = context.findViewById(R.id.tv_right_elbow_angle)
+//        if (context is CameraActivity) {
+//
+//            binding = ActivityCameraBinding.inflate(lay)
+//
+//            angleTextView = context.findViewById(R.id.tv_angle)
 //            repCountTextView = context.findViewById(R.id.tv_rep_count)
-//            restartButton = context.findViewById(R.id.restart_button)
+//            restartButton = context.findViewById(R.id.btn_restart)
 //
 //            restartButton?.setOnClickListener {
 //                restartExercise() // Reset the exercise when the restart button is clicked
@@ -65,25 +77,32 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
 //        }
     }
 
-    // Function to set UI elements from the parent Activity or Fragment
-    fun setUiElements(repCountTextView: TextView, restartButton: Button) {
-        this.repCountTextView = repCountTextView
-        this.restartButton = restartButton
-
-        restartButton.setOnClickListener {
-            restartExercise()
-        }
+    // Set binding from CameraActivity
+    fun setBinding(binding: ActivityCameraBinding) {
+        this.binding = binding
+        binding.btnRestart.setOnClickListener { restartExercise() }
     }
+
+    // Function to set UI elements from the parent Activity or Fragment
+//    fun setUiElements(repCountTextView: TextView, angleTextView: TextView, restartButton: Button) {
+//        this.repCountTextView = repCountTextView
+//        this.restartButton = restartButton
+//        this.angleTextView = angleTextView
+//
+//        restartButton.setOnClickListener {
+//            restartExercise()
+//        }
+//    }
 
     // Function to reset the exercise for another round of 3 reps
     @SuppressLint("SetTextI18n")
     private fun restartExercise() {
         repCount = 0
         repMaxAngles.clear()
-        restartButton?.visibility = View.GONE
+        binding?.btnRestart?.visibility = View.GONE
         isFlexing = false
         currentRepMaxAngle = 0f
-        repCountTextView?.text = "Reps: 0"
+        binding?.tvRepCount?.text = "Reps: 0"
     }
 
     fun clear() {
@@ -175,7 +194,11 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
             // Calculate angle at the elbow using AngleUtils
             val angle = AngleUtils.calculateAngle(shoulderPoint, elbowPoint, wristPoint)
             angleCount = angle.toInt()
-            angleTextView?.text = "Angle: $angleCount"
+            Log.d("Elbow angle: ","$angleCount")
+            // Ensure UI updates happen on the main thread
+            post {
+                binding?.tvAngle?.text = "Angle: $angleCount"
+            }
 
             // Check if it's a valid rep
             trackRep(angle)
@@ -186,7 +209,7 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
     @SuppressLint("SetTextI18n")
     private fun trackRep(angle: Double) {
         if (repCount >= maxReps) {
-            restartButton?.visibility = View.VISIBLE // Show restart button after completing 3 reps
+            binding?.btnRestart?.visibility = View.VISIBLE // Show restart button after completing 3 reps
             return // Stop after 3 reps
         }
 
@@ -206,7 +229,10 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
 
             // Increment rep count
             repCount++
-            repCountTextView?.text = "Reps: $repCount"
+
+            post {
+                binding?.tvRepCount?.text = "Reps: $repCount"
+            }
 
             // Reset the max angle for the next rep
             currentRepMaxAngle = 0f

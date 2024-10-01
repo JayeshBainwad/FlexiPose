@@ -94,6 +94,9 @@
     <string name="my_profile">My Profile</string>
     <string name="reps_count">Reps: 0</string>
     <string name="angle_count">Angle: 0°</string>
+    <string name="tv_elbow_exercise">Elbow Exercise</string>
+    <string name="tv_knee_exercise">Knee Exercise</string>
+    <string name="tv_shoulder_exercise">Shoulder Exercise</string>
     <!--END-->
 
 </resources>

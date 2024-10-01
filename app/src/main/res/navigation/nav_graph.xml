@@ -25,33 +25,49 @@
         android:name="com.google.mediapipe.examples.poselandmarker.fragment.PermissionsFragment"
         android:label="PermissionsFragment">
 
-        <action
-            android:id="@+id/action_permissions_to_camera"
-            app:destination="@id/camera_fragment"
-            app:popUpTo="@id/permissions_fragment"
-            app:popUpToInclusive="true" />
+<!--        <action-->
+<!--            android:id="@+id/action_permissions_to_camera"-->
+<!--            app:destination="@id/camera_fragment"-->
+<!--            app:popUpTo="@id/permissions_fragment"-->
+<!--            app:popUpToInclusive="true" />-->
         <action
             android:id="@+id/action_permissions_fragment_to_fragmentContentMain"
             app:destination="@id/fragmentContentMain" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/camera_fragment"
-        android:name="com.google.mediapipe.examples.poselandmarker.fragment.CameraFragment"
-        android:label="CameraFragment">
-
         <action
-            android:id="@+id/action_camera_to_permissions"
-            app:destination="@id/permissions_fragment"
-            app:popUpTo="@id/camera_fragment"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_permissions_fragment_to_exerciseCameraActivity"
+            app:destination="@id/exerciseCameraActivity" />
+
     </fragment>
+
+<!--    <fragment-->
+<!--        android:id="@+id/camera_fragment"-->
+<!--        android:name="com.google.mediapipe.examples.poselandmarker.fragment.CameraFragment"-->
+<!--        android:label="CameraFragment">-->
+
+<!--        <action-->
+<!--            android:id="@+id/action_camera_to_permissions"-->
+<!--            app:destination="@id/permissions_fragment"-->
+<!--            app:popUpTo="@id/camera_fragment"-->
+<!--            app:popUpToInclusive="true" />-->
+<!--        <action-->
+<!--            android:id="@+id/action_camera_fragment_to_fragmentContentMain"-->
+<!--            app:destination="@id/fragmentContentMain" />-->
+<!--    </fragment>-->
 
     <fragment
         android:id="@+id/gallery_fragment"
         android:name="com.google.mediapipe.examples.poselandmarker.fragment.GalleryFragment"
-        android:label="GalleryFragment" />
+        android:label="GalleryFragment" >
+        <action
+            android:id="@+id/action_gallery_fragment_to_fragmentContentMain"
+            app:destination="@id/fragmentContentMain" />
+<!--        <action-->
+<!--            android:id="@+id/action_gallery_fragment_to_camera_fragment"-->
+<!--            app:destination="@id/camera_fragment" />-->
+        <action
+            android:id="@+id/action_gallery_fragment_to_exerciseCameraActivity"
+            app:destination="@id/exerciseCameraActivity" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentContentMain"
         android:name="com.google.mediapipe.examples.poselandmarker.fragment.FragmentContentMain"
@@ -59,7 +75,18 @@
         <action
             android:id="@+id/action_fragmentContentMain_to_permissions_fragment"
             app:destination="@id/permissions_fragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_fragmentContentMain_to_camera_fragment"-->
+<!--            app:destination="@id/camera_fragment" />-->
+        <action
+            android:id="@+id/action_fragmentContentMain_to_exerciseCameraActivity"
+            app:destination="@id/exerciseCameraActivity" />
     </fragment>
+    <activity
+        android:id="@+id/exerciseCameraActivity"
+        android:name="com.google.mediapipe.examples.poselandmarker.activities.CameraActivity"
+        android:label="activity_exercise_camera"
+        tools:layout="@layout/activity_camera" />
 
 
 </navigation>

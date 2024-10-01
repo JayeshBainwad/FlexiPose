@@ -4,16 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
-import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import androidx.transition.Visibility
 import com.google.mediapipe.examples.poselandmarker.PoseLandmarkerHelper
 import com.google.mediapipe.examples.poselandmarker.R
 import com.google.mediapipe.examples.poselandmarker.databinding.FragmentContentMainBinding
-import com.google.mediapipe.examples.poselandmarker.databinding.FragmentHomeBinding
 
 class FragmentContentMain: Fragment(), PoseLandmarkerHelper.LandmarkerListener {
 
@@ -27,6 +22,26 @@ class FragmentContentMain: Fragment(), PoseLandmarkerHelper.LandmarkerListener {
     ): View? {
         _fragmentContentMainBinding = FragmentContentMainBinding.inflate(inflater, container, false)
         return fragmentContentMainBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Set click listeners for each card
+        fragmentContentMainBinding.cardElbowExercise.setOnClickListener {
+            findNavController().navigate(R.id.action_fragmentContentMain_to_exerciseCameraActivity)
+//            fragmentContentMainBinding.cardKneeExercise.setOnClickListener {
+//                startActivity(Intent(this,ExerciseCameraActivity::class.java))
+//            }
+        }
+
+        fragmentContentMainBinding.cardKneeExercise.setOnClickListener {
+            findNavController().navigate(R.id.action_fragmentContentMain_to_exerciseCameraActivity)
+        }
+
+        fragmentContentMainBinding.cardShoulderExercise.setOnClickListener {
+            findNavController().navigate(R.id.action_fragmentContentMain_to_exerciseCameraActivity)
+        }
     }
 
     override fun onStart() {

@@ -1,5 +1,6 @@
 package com.google.mediapipe.examples.poselandmarker.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -24,12 +25,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.mediapipe.examples.poselandmarker.MainViewModel
 import com.google.mediapipe.examples.poselandmarker.R
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityMainBinding
+import com.google.mediapipe.examples.poselandmarker.databinding.FragmentContentMainBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
 import com.google.mediapipe.examples.poselandmarker.model.User
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var binding: ActivityMainBinding? = null
     private val viewModel : MainViewModel by viewModels()
+//    private var _fragmentContentMainBinding: FragmentContentMainBinding? = null
+//    private val fragmentContentMainBinding get() = _fragmentContentMainBinding!!
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +57,28 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         binding?.navigation?.setOnNavigationItemReselectedListener {
             // Ignore reselection
         }
+
+        // Set click listeners for each card
+//        fragmentContentMainBinding.cardElbowExercise.setOnClickListener {
+////            findNavController().navigate(R.id.action_fragmentContentMain_to_exerciseCameraActivity)
+//            fragmentContentMainBinding.cardKneeExercise.setOnClickListener {
+//                startActivity(Intent(this,CameraActivity::class.java))
+//            }
+//        }
+//
+//        fragmentContentMainBinding.cardKneeExercise.setOnClickListener {
+////            findNavController().navigate(R.id.action_fragmentContentMain_to_exerciseCameraActivity)
+//            fragmentContentMainBinding.cardKneeExercise.setOnClickListener {
+//                startActivity(Intent(this,CameraActivity::class.java))
+//            }
+//        }
+//
+//        fragmentContentMainBinding.cardShoulderExercise.setOnClickListener {
+////            findNavController().navigate(R.id.action_fragmentContentMain_to_exerciseCameraActivity)
+//            fragmentContentMainBinding.cardKneeExercise.setOnClickListener {
+//                startActivity(Intent(this,CameraActivity::class.java))
+//            }
+//        }
 
         // Set up the toolbar and navigation drawer
         setupActionBar()
@@ -114,10 +140,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         when (menuItem.itemId) {
             R.id.nav_my_profile -> {
 //                Toast.makeText(this@MainActivity, "My Profile", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this@MainActivity, MyProfileActivity::class.java)
-
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
+                startActivityForResult(Intent(this@MainActivity, MyProfileActivity::class.java), MY_PROFILE_REQUEST_CODE)
 //                finish()
             }
             R.id.nav_sign_out -> {
@@ -133,6 +156,28 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
 //        binding?.drawerLayout?.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    // TODO (Step 4: Add the onActivityResult function and check the result of the activity for which we expect the result.)
+    // START
+    @Deprecated("This method has been deprecated in favor of using the Activity Result API\n      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt\n      contracts for common intents available in\n      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for\n      testing, and allow receiving results in separate, testable classes independent from your\n      activity. Use\n      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}\n      with the appropriate {@link ActivityResultContract} and handling the result in the\n      {@link ActivityResultCallback#onActivityResult(Object) callback}.")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK
+            && requestCode == MY_PROFILE_REQUEST_CODE
+        ) {
+            // Get the user updated details.
+            FirestoreClass().loadUserDetails(this@MainActivity)
+        } else {
+            Log.e("Cancelled", "Cancelled")
+        }
+    }
+    // END
+
+    companion object {
+        //A unique code for starting the activity for result
+        const val MY_PROFILE_REQUEST_CODE: Int = 11
     }
 
     @Deprecated("Deprecated in Java")

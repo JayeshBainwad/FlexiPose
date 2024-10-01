@@ -49,48 +49,47 @@ class FirestoreClass {
 
         // Here we pass the collection name from which we wants the data.
         mFireStore.collection(Constants.USERS)
-                // The document id to get the Fields of user.
-                .document(getCurrentUserID())
-                .get()
-                .addOnSuccessListener { document ->
-                    Log.e(
-                            activity.javaClass.simpleName, document.toString()
-                    )
+            // The document id to get the Fields of user.
+            .document(getCurrentUserID())
+            .get()
+            .addOnSuccessListener { document ->
+                Log.e(activity.javaClass.simpleName, document.toString())
 
-                    // Here we have received the document snapshot which is converted into the User Data model object.
-                    val loggedInUser = document.toObject(User::class.java)!!
-                    Log.d("UserDetails: ","$loggedInUser",)
+                // Here we have received the document snapshot which is converted into the User Data model object.
+                val loggedInUser = document.toObject(User::class.java)!!
 
-                    // Here call a function of base activity for transferring the result to it.
-                    when (activity) {
-                        is SignInActivity -> {
-                            activity.signInSuccess(loggedInUser)
-                        }
-                        is MainActivity -> {
-                            activity.updateNavigationUserDetails(loggedInUser)
-                        }
-                        is MyProfileActivity -> {
-                            activity.setUserDataInUI(loggedInUser)
-                        }
+                // Here call a function of base activity for transferring the result to it.
+                when (activity) {
+                    is SignInActivity -> {
+                        activity.signInSuccess(loggedInUser)
+                    }
+                    is MainActivity -> {
+                        activity.updateNavigationUserDetails(loggedInUser)
+                    }
+                    is MyProfileActivity -> {
+                        activity.setUserDataInUI(loggedInUser)
                     }
                 }
-                .addOnFailureListener { e ->
-
-                    when (activity) {
-                        is SignInActivity -> {
-                            activity.hideProgressDialog()
-                        }
-                        is MainActivity -> {
-                            activity.hideProgressDialog()
-                        }
+            }
+            .addOnFailureListener { e ->
+                // Here call a function of base activity for transferring the result to it.
+                when (activity) {
+                    is SignInActivity -> {
+                        activity.hideProgressDialog()
                     }
-
-                    Log.e(
-                            activity.javaClass.simpleName,
-                            "Error while getting loggedIn user details",
-                            e
-                    )
+                    is MainActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is MyProfileActivity -> {
+                        activity.hideProgressDialog()
+                    }
                 }
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while getting loggedIn user details",
+                    e
+                )
+            }
     }
 
     /**

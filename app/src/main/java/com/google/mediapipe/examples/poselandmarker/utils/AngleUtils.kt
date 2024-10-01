@@ -20,11 +20,21 @@ object AngleUtils {
         val x3 = thirdLandmark.x
         val y3 = thirdLandmark.y
 
+        // Calculate the angle in radians
         val angleRad = atan2(y3 - y2, x3 - x2) - atan2(y1 - y2, x1 - x2)
-        val angleDeg = Math.toDegrees(angleRad.toDouble())
+        var angleDeg =  Math.toDegrees(angleRad.toDouble())
 
-        // Normalize angle to range 0-360
-        return if (angleDeg < 0) angleDeg + 360 else angleDeg
+        // Normalize the angle to the range of 0-360
+        if (angleDeg < 0) {
+            angleDeg += 360
+        }
+
+        // Convert to 0-180 range for elbow flexion
+        return if (angleDeg > 180) {
+            360 - angleDeg
+        } else {
+            angleDeg
+        }
     }
 
     // Example usage

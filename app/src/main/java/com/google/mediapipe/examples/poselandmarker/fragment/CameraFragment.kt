@@ -106,12 +106,13 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
 //        initBottomSheetControls()
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onResume() {
         super.onResume()
-        if (!PermissionsFragment.hasPermissions(requireContext())) {
-            Navigation.findNavController(requireActivity(), R.id.fragment_container)
-                .navigate(R.id.action_camera_to_permissions)
-        }
+//        if (!PermissionsFragment.hasPermissions(requireContext())) {
+//            Navigation.findNavController(requireActivity(), R.id.fragment_container)
+//                .navigate(R.id.action_camera_to_permissions)
+//        }
 
         backgroundExecutor.execute {
             if (this::poseLandmarkerHelper.isInitialized && poseLandmarkerHelper.isClose()) {

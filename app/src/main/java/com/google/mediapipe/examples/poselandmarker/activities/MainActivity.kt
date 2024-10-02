@@ -32,8 +32,6 @@ import com.google.mediapipe.examples.poselandmarker.model.User
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var binding: ActivityMainBinding? = null
     private val viewModel : MainViewModel by viewModels()
-//    private var _fragmentContentMainBinding: FragmentContentMainBinding? = null
-//    private val fragmentContentMainBinding get() = _fragmentContentMainBinding!!
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {

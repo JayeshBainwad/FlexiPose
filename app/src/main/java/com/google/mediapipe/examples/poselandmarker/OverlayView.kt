@@ -7,16 +7,12 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PointF
 import android.util.AttributeSet
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.mediapipe.examples.poselandmarker.activities.CameraActivity
-import com.google.mediapipe.examples.poselandmarker.activities.MainActivity
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityCameraBinding
 import com.google.mediapipe.examples.poselandmarker.utils.AngleUtils
 import com.google.mediapipe.tasks.vision.core.RunningMode
@@ -27,7 +23,11 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
 
     private var results: PoseLandmarkerResult? = null
     private var pointPaint = Paint()
+    private var pointPaint2 = Paint()
+    private var pointPaint3 = Paint()
+
     private var linePaint = Paint()
+    private var linePaint2 = Paint()
     private var textPaint = Paint()
 
     private var scaleFactor: Float = 1f
@@ -108,21 +108,37 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
     fun clear() {
         results = null
         pointPaint.reset()
+        pointPaint2.reset()
         linePaint.reset()
+        linePaint2.reset()
         textPaint.reset()
         invalidate()
         initPaints()
     }
 
     private fun initPaints() {
-        linePaint.color =
-            ContextCompat.getColor(context!!, R.color.mp_color_primary)
+        linePaint.color = Color.WHITE
         linePaint.strokeWidth = LANDMARK_STROKE_WIDTH
         linePaint.style = Paint.Style.STROKE
 
-        pointPaint.color = Color.YELLOW
-        pointPaint.strokeWidth = LANDMARK_STROKE_WIDTH
+        linePaint2.color = ContextCompat.getColor(context!!, R.color.mp_color_primary)
+        linePaint2.strokeWidth = LANDMARK_STROKE_WIDTH
+        linePaint2.style = Paint.Style.STROKE
+
+        pointPaint.color = ContextCompat.getColor(context!!, R.color.yellow_pose_landmarker_points)
+        pointPaint2.color = ContextCompat.getColor(context!!, R.color.red_pose_landmarker_points)
+        pointPaint3.color = Color.WHITE
+        pointPaint.strokeWidth = LANDMARK_POINT_WIDTH
+        pointPaint2.strokeWidth = LANDMARK_POINT_WIDTH
+        pointPaint3.strokeWidth = LANDMARK_POINT_WIDTH
+        // Set stroke cap to ROUND for circular points
+        pointPaint.strokeCap = Paint.Cap.ROUND
+        pointPaint2.strokeCap = Paint.Cap.ROUND
+        pointPaint3.strokeCap = Paint.Cap.ROUND
+
         pointPaint.style = Paint.Style.FILL
+        pointPaint2.style = Paint.Style.FILL
+        pointPaint3.style = Paint.Style.FILL
 
         textPaint.color = Color.RED
         textPaint.textSize = 60f
@@ -136,12 +152,40 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
             if (poseLandmarkerResult.landmarks().isEmpty()) return
 
             for (landmark in poseLandmarkerResult.landmarks()) {
-                for (normalizedLandmark in landmark) {
-                    canvas.drawPoint(
-                        normalizedLandmark.x() * imageWidth * scaleFactor,
-                        normalizedLandmark.y() * imageHeight * scaleFactor,
-                        pointPaint
-                    )
+
+//                for (normalizedLandmark in landmark) {
+//                    canvas.drawPoint(
+//                        normalizedLandmark.x() * imageWidth * scaleFactor,
+//                        normalizedLandmark.y() * imageHeight * scaleFactor,
+//                        pointPaint
+//                    )
+//                }
+
+                for (normalizedLandmark in landmark.withIndex()) {
+                    val index = normalizedLandmark.index
+                    val landmarkPosition = normalizedLandmark.value
+
+                    // Calculate the x and y positions on the canvas
+                    val xPos = landmarkPosition.x() * imageWidth * scaleFactor
+                    val yPos = landmarkPosition.y() * imageHeight * scaleFactor
+
+                    // Assign different colors based on whether the landmark is on the left, right, or center
+                    when (index) {
+                        // Center points
+                        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 -> {
+                            canvas.drawPoint(xPos, yPos, pointPaint3) // Default white color for center points
+                        }
+
+                        // Left side landmarks
+                        11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31 -> {
+                            canvas.drawPoint(xPos, yPos, pointPaint) // Yellow for left side
+                        }
+
+                        // Right side landmarks
+                        12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32 -> {
+                            canvas.drawPoint(xPos, yPos, pointPaint2) // Red for right side
+                        }
+                    }
                 }
 
                 PoseLandmarker.POSE_LANDMARKS.forEach {
@@ -155,7 +199,15 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
                 }
             }
 
-            // Right elbow landmarks: shoulder (12), elbow (14), wrist (16)
+            calculateLeftElbowAngleAndReps(canvas)
+
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun calculateLeftElbowAngleAndReps(canvas: Canvas) {
+        // Make sure results are available
+        results?.let { poseLandmarkerResult ->
             val landmarks = poseLandmarkerResult.landmarks().getOrNull(0) ?: return
 
             val shoulder = landmarks.get(12) ?: return
@@ -175,39 +227,44 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
                 wrist.y() * imageHeight * scaleFactor
             )
 
-            // Draw lines for the right elbow
-            canvas.drawLine(
-                shoulderPoint.x,
-                shoulderPoint.y,
-                elbowPoint.x,
-                elbowPoint.y,
-                pointPaint
-            )
-            canvas.drawLine(
-                elbowPoint.x,
-                elbowPoint.y,
-                wristPoint.x,
-                wristPoint.y,
-                pointPaint
-            )
-
-            // Calculate angle at the elbow using AngleUtils
-            val angle = AngleUtils.calculateAngle(shoulderPoint, elbowPoint, wristPoint)
-            angleCount = angle.toInt()
-            Log.d("Elbow angle: ","$angleCount")
-            // Ensure UI updates happen on the main thread
-            post {
-                binding?.tvAngle?.text = "Angle: $angleCount"
+            // Draw lines for left elbow with color changes based on the rep status
+            if (isFlexing) {
+                canvas.drawLine(
+                    shoulderPoint.x,
+                    shoulderPoint.y,
+                    elbowPoint.x,
+                    elbowPoint.y,
+                    linePaint2
+                )
+                canvas.drawLine(
+                    elbowPoint.x,
+                    elbowPoint.y,
+                    wristPoint.x,
+                    wristPoint.y,
+                    linePaint2
+                )
+//                linePaint
             }
 
-            // Check if it's a valid rep
-            trackRep(angle)
+            // Calculate the elbow angle
+            val angle = AngleUtils.calculateAngle(shoulderPoint, elbowPoint, wristPoint)
+            angleCount = angle.toInt()
+
+            // Update UI with the angle
+            post {
+                binding?.tvAngle?.text = "Left Elbow Angle: $angleCount"
+            }
+
+            // Call the rep tracking function
+            trackRepLeftElbow(angle)
+            binding?.btnRestart?.setOnClickListener { restartExercise() }
         }
     }
 
+
     // Function to track reps based on the elbow angle
     @SuppressLint("SetTextI18n")
-    private fun trackRep(angle: Double) {
+    private fun trackRepLeftElbow(angle: Double) {
         if (repCount >= maxReps) {
             binding?.btnRestart?.visibility = View.VISIBLE // Show restart button after completing 3 reps
             return // Stop after 3 reps
@@ -267,5 +324,6 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
 
     companion object {
         private const val LANDMARK_STROKE_WIDTH = 8f
+        private const val LANDMARK_POINT_WIDTH = 32f
     }
 }

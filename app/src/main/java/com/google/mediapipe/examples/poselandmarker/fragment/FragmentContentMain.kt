@@ -30,9 +30,6 @@ class FragmentContentMain: Fragment(), PoseLandmarkerHelper.LandmarkerListener {
         // Set click listeners for each card
         fragmentContentMainBinding.cardElbowExercise.setOnClickListener {
             findNavController().navigate(R.id.action_fragmentContentMain_to_exerciseCameraActivity)
-//            fragmentContentMainBinding.cardKneeExercise.setOnClickListener {
-//                startActivity(Intent(this,ExerciseCameraActivity::class.java))
-//            }
         }
 
         fragmentContentMainBinding.cardKneeExercise.setOnClickListener {

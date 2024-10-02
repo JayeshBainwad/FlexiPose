@@ -68,6 +68,7 @@
             android:id="@+id/action_gallery_fragment_to_exerciseCameraActivity"
             app:destination="@id/exerciseCameraActivity" />
     </fragment>
+
     <fragment
         android:id="@+id/fragmentContentMain"
         android:name="com.google.mediapipe.examples.poselandmarker.fragment.FragmentContentMain"
@@ -75,13 +76,11 @@
         <action
             android:id="@+id/action_fragmentContentMain_to_permissions_fragment"
             app:destination="@id/permissions_fragment" />
-<!--        <action-->
-<!--            android:id="@+id/action_fragmentContentMain_to_camera_fragment"-->
-<!--            app:destination="@id/camera_fragment" />-->
         <action
             android:id="@+id/action_fragmentContentMain_to_exerciseCameraActivity"
             app:destination="@id/exerciseCameraActivity" />
     </fragment>
+
     <activity
         android:id="@+id/exerciseCameraActivity"
         android:name="com.google.mediapipe.examples.poselandmarker.activities.CameraActivity"

@@ -270,12 +270,12 @@ class ElbowExercise(context: Context?, attrs: AttributeSet?) : View(context, att
         // Detect flexing and extension
         if (angle < 90 && !isFlexing) {
             isFlexing = true // Flexing phase started
-        } else if (angle > 160 && isFlexing) {
+            repMinAngles.add(currentRepMinAngle)
+        } else if (angle > 145 && isFlexing) {
             isFlexing = false // Flexing phase ended, rep is complete
 
             // Store max ROM for this rep
             repMaxAngles.add(currentRepMaxAngle)
-            repMinAngles.add(currentRepMinAngle)
 
             // Increment rep count
             repCount++

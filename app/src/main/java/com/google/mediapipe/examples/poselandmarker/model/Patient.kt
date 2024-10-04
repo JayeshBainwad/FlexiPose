@@ -3,7 +3,7 @@ package com.google.mediapipe.examples.poselandmarker.model
 import android.os.Parcel
 import android.os.Parcelable
 
-data class User(
+data class Patient(
     val id: String = "",
     val name: String = "",
     val email: String = "",
@@ -33,9 +33,9 @@ data class User(
 
     companion object {
         @JvmField
-        val CREATOR: Parcelable.Creator<User> = object : Parcelable.Creator<User> {
-            override fun createFromParcel(source: Parcel): User = User(source)
-            override fun newArray(size: Int): Array<User?> = arrayOfNulls(size)
+        val CREATOR: Parcelable.Creator<Patient> = object : Parcelable.Creator<Patient> {
+            override fun createFromParcel(source: Parcel): Patient = Patient(source)
+            override fun newArray(size: Int): Array<Patient?> = arrayOfNulls(size)
         }
     }
 }

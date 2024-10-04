@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.mediapipe.examples.poselandmarker.R
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivitySignUpBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
-import com.google.mediapipe.examples.poselandmarker.model.User
+import com.google.mediapipe.examples.poselandmarker.model.Patient
 
 class SignUpActivity : BaseActivity() {
 
@@ -55,7 +55,7 @@ class SignUpActivity : BaseActivity() {
             registerUser()
         }
 
-        binding?.tvAlreadySignedIn?.setOnClickListener {
+        binding?.tvAlreadySignedUp?.setOnClickListener {
             intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)
         }
@@ -102,12 +102,12 @@ class SignUpActivity : BaseActivity() {
                             // Registered Email
                             val registeredEmail = firebaseUser.email!!
 
-                            val user = User(
+                            val patient = Patient(
                                 firebaseUser.uid, name, registeredEmail
                             )
 
                             // call the registerUser function of FirestoreClass to make an entry in the database.
-                            FirestoreClass().registerUser(this@SignUpActivity, user)
+                            FirestoreClass().registerUser(this@SignUpActivity, patient)
                         } else {
                             Toast.makeText(
                                 this@SignUpActivity,

@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.mediapipe.examples.poselandmarker.R
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivitySignInBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
-import com.google.mediapipe.examples.poselandmarker.model.User
+import com.google.mediapipe.examples.poselandmarker.model.Patient
 
 // TODO (Step 1: Extend the BaseActivity instead of AppCompatActivity.)
 class SignInActivity : BaseActivity() {
@@ -157,7 +157,7 @@ class SignInActivity : BaseActivity() {
     /**
      * A function to get the user details from the firestore database after authentication.
      */
-    fun signInSuccess(user: User) {
+    fun signInSuccess(patient: Patient) {
 
         hideProgressDialog()
 

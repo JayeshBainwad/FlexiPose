@@ -68,9 +68,9 @@ class PermissionsFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             Navigation.findNavController(
                 requireActivity(),
-                R.id.fragment_container
+                R.id.mainActivity
             ).navigate(
-                R.id.action_permissions_fragment_to_fragmentContentMain
+                R.id.action_permissions_fragment_to_mainActivity
             )
         }
     }

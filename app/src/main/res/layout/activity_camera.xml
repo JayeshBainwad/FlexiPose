@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.CameraActivity"
-    android:layout_marginBottom="@dimen/bottom_sheet_peek_height"
     android:fitsSystemWindows="false">
 
     <!-- Camera preview -->
@@ -18,8 +17,12 @@
     </androidx.camera.view.PreviewView>
 
     <!-- Overlay for pose landmarks -->
-    <com.google.mediapipe.examples.poselandmarker.OverlayView
-        android:id="@+id/overlay"
+    <com.google.mediapipe.examples.poselandmarker.exercises.KneeExercise
+        android:id="@+id/kneeExercise"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <com.google.mediapipe.examples.poselandmarker.exercises.ElbowExercise
+        android:id="@+id/elbowExercise"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
@@ -27,10 +30,10 @@
         android:id="@+id/tv_rep_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="55dp"
         android:layout_marginEnd="15dp"
         android:text="@string/reps_count"
-        android:textColor="@color/secondary_text_color"
+        android:textColor="@android:color/white"
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -43,25 +46,37 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:text="@string/angle_count"
-        android:textColor="@color/secondary_text_color"
+        android:textColor="@android:color/white"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/tv_rep_count"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- Rep count TextView (below Angle) -->
 
+<!--    <Button-->
+<!--        android:id="@+id/btn_restart"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="50dp"-->
+<!--        android:gravity="center_horizontal|center"-->
+<!--        android:text="@string/btn_restart_exercise"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        android:layout_marginEnd="150dp"-->
+<!--        android:layout_marginStart="150dp"-->
+<!--        android:visibility="gone"/>-->
+
     <Button
         android:id="@+id/btn_restart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="110dp"
         android:gravity="center_horizontal|center"
         android:text="@string/btn_restart_exercise"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginEnd="150dp"
-        android:layout_marginStart="150dp"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
     <!-- Restart button (bottom center) --></androidx.constraintlayout.widget.ConstraintLayout>

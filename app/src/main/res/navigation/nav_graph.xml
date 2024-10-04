@@ -31,11 +31,11 @@
 <!--            app:popUpTo="@id/permissions_fragment"-->
 <!--            app:popUpToInclusive="true" />-->
         <action
-            android:id="@+id/action_permissions_fragment_to_fragmentContentMain"
-            app:destination="@id/fragmentContentMain" />
-        <action
             android:id="@+id/action_permissions_fragment_to_exerciseCameraActivity"
-            app:destination="@id/exerciseCameraActivity" />
+            app:destination="@id/CameraActivity" />
+        <action
+            android:id="@+id/action_permissions_fragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
 
     </fragment>
 
@@ -58,34 +58,24 @@
         android:id="@+id/gallery_fragment"
         android:name="com.google.mediapipe.examples.poselandmarker.fragment.GalleryFragment"
         android:label="GalleryFragment" >
-        <action
-            android:id="@+id/action_gallery_fragment_to_fragmentContentMain"
-            app:destination="@id/fragmentContentMain" />
-<!--        <action-->
+        <!--        <action-->
 <!--            android:id="@+id/action_gallery_fragment_to_camera_fragment"-->
 <!--            app:destination="@id/camera_fragment" />-->
         <action
             android:id="@+id/action_gallery_fragment_to_exerciseCameraActivity"
-            app:destination="@id/exerciseCameraActivity" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/fragmentContentMain"
-        android:name="com.google.mediapipe.examples.poselandmarker.fragment.FragmentContentMain"
-        android:label="FragmentContentMain" >
-        <action
-            android:id="@+id/action_fragmentContentMain_to_permissions_fragment"
-            app:destination="@id/permissions_fragment" />
-        <action
-            android:id="@+id/action_fragmentContentMain_to_exerciseCameraActivity"
-            app:destination="@id/exerciseCameraActivity" />
+            app:destination="@id/CameraActivity" />
     </fragment>
 
     <activity
-        android:id="@+id/exerciseCameraActivity"
+        android:id="@+id/CameraActivity"
         android:name="com.google.mediapipe.examples.poselandmarker.activities.CameraActivity"
         android:label="activity_exercise_camera"
         tools:layout="@layout/activity_camera" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.google.mediapipe.examples.poselandmarker.activities.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
 
 
 </navigation>

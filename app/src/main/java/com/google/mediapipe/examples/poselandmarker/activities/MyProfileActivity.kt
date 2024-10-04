@@ -21,7 +21,7 @@ import com.google.firebase.storage.StorageReference
 import com.google.mediapipe.examples.poselandmarker.R
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityMyProfileBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
-import com.google.mediapipe.examples.poselandmarker.model.User
+import com.google.mediapipe.examples.poselandmarker.model.Patient
 import com.google.mediapipe.examples.poselandmarker.utils.Constants
 import java.io.IOException
 
@@ -31,7 +31,7 @@ class MyProfileActivity : BaseActivity() {
     private var mSelectedImageFileUri: Uri? = null
 
     // A global variable for user details.
-    private lateinit var mUserDetails: User
+    private lateinit var mPatientDetails: Patient
 
     // A global variable for a user profile image URL
     private var mProfileImageURL: String = ""
@@ -163,15 +163,15 @@ class MyProfileActivity : BaseActivity() {
 
         val userHashMap = HashMap<String, Any>()
 
-        if (mProfileImageURL.isNotEmpty() && mProfileImageURL != mUserDetails.image) {
+        if (mProfileImageURL.isNotEmpty() && mProfileImageURL != mPatientDetails.image) {
             userHashMap[Constants.IMAGE] = mProfileImageURL
         }
 
-        if (binding?.etName?.text.toString() != mUserDetails.name) {
+        if (binding?.etName?.text.toString() != mPatientDetails.name) {
             userHashMap[Constants.NAME] = binding?.etName?.text.toString()
         }
 
-        if (binding?.etMobile?.text.toString() != mUserDetails.mobile.toString()) {
+        if (binding?.etMobile?.text.toString() != mPatientDetails.mobile.toString()) {
             userHashMap[Constants.MOBILE] = binding?.etMobile?.text.toString().toLong()
         }
 
@@ -205,21 +205,21 @@ class MyProfileActivity : BaseActivity() {
         binding?.toolbarMyProfileActivity?.setNavigationOnClickListener { onBackPressed() }
     }
 
-    fun setUserDataInUI(user: User) {
+    fun setUserDataInUI(patient: Patient) {
 
         // Initialize the user details variable
-        mUserDetails = user
+        mPatientDetails = patient
 
         Glide.with(this@MyProfileActivity)
-            .load(user.image)
+            .load(patient.image)
             .centerCrop()
             .placeholder(R.drawable.ic_user_place_holder)
             .into(binding?.ivProfileUserImage!!)
 
-        binding?.etName?.setText(user.name)
-        binding?.etEmail?.setText(user.email)
-        if (user.mobile != 0L) {
-            binding?.etMobile?.setText(user.mobile.toString())
+        binding?.etName?.setText(patient.name)
+        binding?.etEmail?.setText(patient.email)
+        if (patient.mobile != 0L) {
+            binding?.etMobile?.setText(patient.mobile.toString())
         }
     }
 

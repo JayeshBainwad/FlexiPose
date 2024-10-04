@@ -9,28 +9,25 @@ import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.mediapipe.examples.poselandmarker.MainViewModel
 import com.google.mediapipe.examples.poselandmarker.R
+import com.google.mediapipe.examples.poselandmarker.databinding.ActivityCameraBinding
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityMainBinding
-import com.google.mediapipe.examples.poselandmarker.databinding.FragmentContentMainBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
-import com.google.mediapipe.examples.poselandmarker.model.User
+import com.google.mediapipe.examples.poselandmarker.model.Patient
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var binding: ActivityMainBinding? = null
+    private var binding2: ActivityCameraBinding? = null
     private val viewModel : MainViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.P)
@@ -49,33 +46,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setContentView(binding?.root)
 
         // Set up the navigation host fragment
-        val navHostFragment = supportFragmentManager.findFragmentById(binding!!.fragmentContainer.id) as NavHostFragment
-        val navController = navHostFragment.navController
-        binding?.navigation?.setupWithNavController(navController)
-        binding?.navigation?.setOnNavigationItemReselectedListener {
-            // Ignore reselection
-        }
-
-        // Set click listeners for each card
-//        fragmentContentMainBinding.cardElbowExercise.setOnClickListener {
-////            findNavController().navigate(R.id.action_fragmentContentMain_to_exerciseCameraActivity)
-//            fragmentContentMainBinding.cardKneeExercise.setOnClickListener {
-//                startActivity(Intent(this,CameraActivity::class.java))
-//            }
-//        }
-//
-//        fragmentContentMainBinding.cardKneeExercise.setOnClickListener {
-////            findNavController().navigate(R.id.action_fragmentContentMain_to_exerciseCameraActivity)
-//            fragmentContentMainBinding.cardKneeExercise.setOnClickListener {
-//                startActivity(Intent(this,CameraActivity::class.java))
-//            }
-//        }
-//
-//        fragmentContentMainBinding.cardShoulderExercise.setOnClickListener {
-////            findNavController().navigate(R.id.action_fragmentContentMain_to_exerciseCameraActivity)
-//            fragmentContentMainBinding.cardKneeExercise.setOnClickListener {
-//                startActivity(Intent(this,CameraActivity::class.java))
-//            }
+//        val navHostFragment = supportFragmentManager.findFragmentById(binding!!.fragmentContainer.id) as NavHostFragment
+//        val navController = navHostFragment.navController
+//        binding?.navigation?.setupWithNavController(navController)
+//        binding?.navigation?.setOnNavigationItemReselectedListener {
+//            // Ignore reselection
 //        }
 
         // Set up the toolbar and navigation drawer
@@ -84,6 +59,19 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         // Get the current logged in user details.
         FirestoreClass().loadUserDetails(this@MainActivity)
+
+        binding?.cardElbowExercise?.setOnClickListener {
+            val intent = Intent(this@MainActivity,CameraActivity::class.java)
+            intent.putExtra("exerciseType","Elbow")
+            startActivity(intent)
+        }
+
+        binding?.cardKneeExercise?.setOnClickListener {
+            val intent = Intent(this@MainActivity,CameraActivity::class.java)
+            intent.putExtra("exerciseType","Knee")
+            startActivity(intent)
+        }
+
     }
 
     private fun setupActionBar() {
@@ -110,7 +98,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     /**
      * A function to get the current user details from firebase.
      */
-    fun updateNavigationUserDetails(user: User) {
+    fun updateNavigationUserDetails(patient: Patient) {
         // The instance of the header view of the navigation view.
         val headerView = binding?.navHeaderMain?.getHeaderView(0)
 
@@ -121,7 +109,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if (navUserImage != null) {
             Glide
                 .with(this@MainActivity)
-                .load(user.image) // URL of the image
+                .load(patient.image) // URL of the image
                 .centerCrop() // Scale type of the image.
                 .placeholder(R.drawable.ic_user_place_holder) // A default place holder
                 .into(navUserImage)
@@ -130,7 +118,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         // The instance of the user name TextView of the navigation view.
         val navUsername = headerView?.findViewById<TextView>(R.id.tv_username)
         // Set the user name
-        navUsername?.text = user.name
+        navUsername?.text = patient.name
         Log.d("UserName:","$navUsername")
     }
 

@@ -6,12 +6,14 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.mediapipe.examples.poselandmarker.activities.CameraActivity
 import com.google.mediapipe.examples.poselandmarker.activities.MainActivity
 import com.google.mediapipe.examples.poselandmarker.activities.MyProfileActivity
 import com.google.mediapipe.examples.poselandmarker.activities.SignInActivity
 import com.google.mediapipe.examples.poselandmarker.activities.SignUpActivity
+import com.google.mediapipe.examples.poselandmarker.model.Exercise
 import com.google.mediapipe.examples.poselandmarker.utils.Constants
-import com.google.mediapipe.examples.poselandmarker.model.User
+import com.google.mediapipe.examples.poselandmarker.model.Patient
 
 /**
  * A custom class where we will add the operation performed for the firestore database.
@@ -24,13 +26,13 @@ class FirestoreClass {
     /**
      * A function to make an entry of the registered user in the firestore database.
      */
-    fun registerUser(activity: SignUpActivity, userInfo: User) {
+    fun registerUser(activity: SignUpActivity, patientInfo: Patient) {
 
-        mFireStore.collection(Constants.USERS)
+        mFireStore.collection(Constants.PATIENTUSERS)
                 // Document ID for users fields. Here the document it is the User ID.
                 .document(getCurrentUserID())
                 // Here the userInfo are Field and the SetOption is set to merge. It is for if we wants to merge
-                .set(userInfo, SetOptions.merge())
+                .set(patientInfo, SetOptions.merge())
                 .addOnSuccessListener {
 
                     // Here call a function of base activity for transferring the result to it.
@@ -43,12 +45,46 @@ class FirestoreClass {
     }
 
     /**
+     * A function to make an entry of the registered user in the firestore database.
+     */
+    fun storeExerciseData(activity: CameraActivity, exerciseInfo: Exercise, exerciseName: String) {
+        // Access the "patient" collection
+        val exerciseCollectionRef = mFireStore.collection(Constants.PATIENTUSERS)
+            .document(getCurrentUserID()) // Document ID for the user
+            .collection(Constants.EXERCISE) // Collection for exercises
+
+        // Retrieve the current number of documents and create a new one based on the count
+        exerciseCollectionRef.get()
+            .addOnSuccessListener { querySnapshot ->
+                val documentCount = querySnapshot.size() + 1 // Increment count for new document
+                val newExerciseDocName = "$exerciseName$documentCount" // e.g., ElbowExercise1, ElbowExercise2
+
+                // Create a new document with the generated name
+                exerciseCollectionRef.document(newExerciseDocName)
+                    .set(exerciseInfo, SetOptions.merge()) // Merge exercise info
+                    .addOnSuccessListener {
+                        // Success logic
+                        // activity.userRegisteredSuccess() // Uncomment if needed
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e(activity.javaClass.simpleName, "Error writing document", e)
+                    }
+            }
+            .addOnFailureListener { e ->
+                Log.e(activity.javaClass.simpleName, "Error retrieving documents", e)
+            }
+    }
+
+
+
+
+    /**
      * A function to SignIn using firebase and get the user details from Firestore Database.
      */
     fun loadUserDetails(activity: Activity) {
 
         // Here we pass the collection name from which we wants the data.
-        mFireStore.collection(Constants.USERS)
+        mFireStore.collection(Constants.PATIENTUSERS)
             // The document id to get the Fields of user.
             .document(getCurrentUserID())
             .get()
@@ -56,18 +92,24 @@ class FirestoreClass {
                 Log.e(activity.javaClass.simpleName, document.toString())
 
                 // Here we have received the document snapshot which is converted into the User Data model object.
-                val loggedInUser = document.toObject(User::class.java)!!
+                val loggedInPatient = document.toObject(Patient::class.java)
 
                 // Here call a function of base activity for transferring the result to it.
                 when (activity) {
                     is SignInActivity -> {
-                        activity.signInSuccess(loggedInUser)
+                        if (loggedInPatient != null) {
+                            activity.signInSuccess(loggedInPatient)
+                        }
                     }
                     is MainActivity -> {
-                        activity.updateNavigationUserDetails(loggedInUser)
+                        if (loggedInPatient != null) {
+                            activity.updateNavigationUserDetails(loggedInPatient)
+                        }
                     }
                     is MyProfileActivity -> {
-                        activity.setUserDataInUI(loggedInUser)
+                        if (loggedInPatient != null) {
+                            activity.setUserDataInUI(loggedInPatient)
+                        }
                     }
                 }
             }
@@ -96,7 +138,7 @@ class FirestoreClass {
      * A function to update the user profile data into the database.
      */
     fun updateUserProfileData(activity: MyProfileActivity, userHashMap: HashMap<String, Any>) {
-        mFireStore.collection(Constants.USERS) // Collection Name
+        mFireStore.collection(Constants.PATIENTUSERS) // Collection Name
             .document(getCurrentUserID()) // Document ID
             .update(userHashMap) // A hashmap of fields which are to be updated.
             .addOnSuccessListener {

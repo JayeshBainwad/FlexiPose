@@ -3,7 +3,7 @@ package com.google.mediapipe.examples.poselandmarker.model
 import android.os.Parcel
 import android.os.Parcelable
 
-data class ElbowExercise(
+data class Exercise(
     val minAngle: Double = 0.0,
     val maxAngle: Double = 0.0,
     val successfulReps: String = ""
@@ -24,9 +24,9 @@ data class ElbowExercise(
 
     companion object {
         @JvmField
-        val CREATOR: Parcelable.Creator<ElbowExercise> = object : Parcelable.Creator<ElbowExercise> {
-            override fun createFromParcel(source: Parcel): ElbowExercise = ElbowExercise(source)
-            override fun newArray(size: Int): Array<ElbowExercise?> = arrayOfNulls(size)
+        val CREATOR: Parcelable.Creator<Exercise> = object : Parcelable.Creator<Exercise> {
+            override fun createFromParcel(source: Parcel): Exercise = Exercise(source)
+            override fun newArray(size: Int): Array<Exercise?> = arrayOfNulls(size)
         }
     }
 }

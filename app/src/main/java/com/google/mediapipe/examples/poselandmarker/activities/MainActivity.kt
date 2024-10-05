@@ -1,5 +1,6 @@
 package com.google.mediapipe.examples.poselandmarker.activities
 
+import ExerciseAdapter
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -11,8 +12,6 @@ import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -20,16 +19,16 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.mediapipe.examples.poselandmarker.MainViewModel
 import com.google.mediapipe.examples.poselandmarker.R
-import com.google.mediapipe.examples.poselandmarker.databinding.ActivityCameraBinding
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityMainBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
 import com.google.mediapipe.examples.poselandmarker.model.Patient
+
+data class ExerciseType(val name: String)
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var binding: ActivityMainBinding? = null
@@ -37,6 +36,14 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     // Constants for permission request codes
     private val CAMERA_PERMISSION_CODE = 100
     private val READ_MEDIA_PERMISSION_CODE = 101
+
+    private lateinit var exerciseAdapter: ExerciseAdapter
+    private val exerciseTypeList = listOf(
+        ExerciseType("Elbow exercise"),
+        ExerciseType("Knee exercise"),
+        ExerciseType("Shoulder exercise")
+        // Add future exercises here up to 16 total
+    )
 
     @SuppressLint("NewApi")
     @RequiresApi(Build.VERSION_CODES.P)
@@ -58,6 +65,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         // Set up the toolbar and navigation drawer
         setupActionBar()
 
+        // Setup RecyclerView
+        setupRecyclerView()
+
         // Assign the NavigationView.OnNavigationItemSelectedListener to navigation view.
         binding?.navHeaderMain?.setNavigationItemSelectedListener(this)
 
@@ -65,40 +75,58 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         FirestoreClass().loadUserDetails(this@MainActivity)
 
         // Set permission checks on card click
-        binding?.cardElbowExercise?.setOnClickListener {
+//        binding?.cardElbowExercise?.setOnClickListener {
+//            checkAndRequestPermissions(
+//                permissions = arrayOf(Manifest.permission.CAMERA),
+//                requestCode = CAMERA_PERMISSION_CODE
+//            ) {
+//                // Permission granted - Start CameraActivity for Elbow Exercise
+//                val intent = Intent(this@MainActivity, CameraActivity::class.java)
+//                intent.putExtra("exerciseType", "Elbow")
+//                startActivity(intent)
+//            }
+//        }
+//
+//        binding?.cardKneeExercise?.setOnClickListener {
+//            checkAndRequestPermissions(
+//                permissions = arrayOf(Manifest.permission.CAMERA),
+//                requestCode = CAMERA_PERMISSION_CODE
+//            ) {
+//                // Permission granted - Start CameraActivity for Knee Exercise
+//                val intent = Intent(this@MainActivity, CameraActivity::class.java)
+//                intent.putExtra("exerciseType", "Knee")
+//                startActivity(intent)
+//            }
+//        }
+//
+//        binding?.cardShoulderExercise?.setOnClickListener {
+//            checkAndRequestPermissions(
+//                permissions = arrayOf(Manifest.permission.CAMERA),
+//                requestCode = CAMERA_PERMISSION_CODE
+//            ) {
+//                // Permission granted - Start CameraActivity for Knee Exercise
+//                val intent = Intent(this@MainActivity, CameraActivity::class.java)
+//                intent.putExtra("exerciseType", "Shoulder")
+//                startActivity(intent)
+//            }
+//        }
+    }
+
+    private fun setupRecyclerView() {
+        exerciseAdapter = ExerciseAdapter(this,exerciseTypeList) { exercise ->
             checkAndRequestPermissions(
                 permissions = arrayOf(Manifest.permission.CAMERA),
                 requestCode = CAMERA_PERMISSION_CODE
             ) {
-                // Permission granted - Start CameraActivity for Elbow Exercise
                 val intent = Intent(this@MainActivity, CameraActivity::class.java)
-                intent.putExtra("exerciseType", "Elbow")
+                intent.putExtra("exerciseType", exercise.name)
                 startActivity(intent)
             }
         }
 
-        binding?.cardKneeExercise?.setOnClickListener {
-            checkAndRequestPermissions(
-                permissions = arrayOf(Manifest.permission.CAMERA),
-                requestCode = CAMERA_PERMISSION_CODE
-            ) {
-                // Permission granted - Start CameraActivity for Knee Exercise
-                val intent = Intent(this@MainActivity, CameraActivity::class.java)
-                intent.putExtra("exerciseType", "Knee")
-                startActivity(intent)
-            }
-        }
-
-        binding?.cardShoulderExercise?.setOnClickListener {
-            checkAndRequestPermissions(
-                permissions = arrayOf(Manifest.permission.CAMERA),
-                requestCode = CAMERA_PERMISSION_CODE
-            ) {
-                // Permission granted - Start CameraActivity for Knee Exercise
-                val intent = Intent(this@MainActivity, CameraActivity::class.java)
-                intent.putExtra("exerciseType", "Shoulder")
-                startActivity(intent)
-            }
+        binding?.recyclerViewExercises?.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = exerciseAdapter
         }
     }
 

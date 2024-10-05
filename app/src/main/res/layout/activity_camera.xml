@@ -38,6 +38,7 @@
         android:layout_marginEnd="15dp"
         android:text="@string/reps_count"
         android:textColor="@android:color/white"
+        android:background="@color/secondary_text_color"
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -51,26 +52,36 @@
         android:layout_marginEnd="15dp"
         android:text="@string/angle_count"
         android:textColor="@android:color/white"
+        android:background="@color/secondary_text_color"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/tv_rep_count"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- Rep count TextView (below Angle) -->
 
-<!--    <Button-->
+    <!-- Two buttons aligned horizontally -->
     <Button
         android:id="@+id/btn_restart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="110dp"
-        android:gravity="center_horizontal|center"
         android:text="@string/btn_done_exercise"
+        android:background="@drawable/shape_button_rounded"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_flip_camera"
+        app:layout_constraintWidth_percent="0.4"/>
+
+    <Button
+        android:id="@+id/btn_flip_camera"
+        android:layout_width="87dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/baseline_flip_camera_ios_24"
+        android:elevation="@dimen/card_view_elevation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/shape_button_rounded"
-        android:foreground="?attr/selectableItemBackground"
-        android:visibility="visible"/>
-
+        app:layout_constraintStart_toEndOf="@id/btn_restart" />
     <!-- Restart button (bottom center) -->
 </androidx.constraintlayout.widget.ConstraintLayout>

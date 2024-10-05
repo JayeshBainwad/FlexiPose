@@ -99,15 +99,15 @@ class CameraActivity : AppCompatActivity(), PoseLandmarkerHelper.LandmarkerListe
 
         // Apply visibility based on the exercise type
         when (exerciseType) {
-            "Elbow" -> {
+            "Elbow exercise" -> {
                 binding?.elbowExercise?.visibility = View.VISIBLE
 //                binding?.kneeExercise?.isGone = true
             }
-            "Knee" -> {
+            "Knee exercise" -> {
 //                binding?.elbowExercise?.isGone = true
                 binding?.kneeExercise?.visibility = View.VISIBLE
             }
-            "Shoulder" -> {
+            "Shoulder exercise" -> {
 //                binding?.elbowExercise?.isGone = true
                 binding?.shoulderExercise?.visibility = View.VISIBLE
             }
@@ -132,6 +132,10 @@ class CameraActivity : AppCompatActivity(), PoseLandmarkerHelper.LandmarkerListe
         binding?.viewFinder?.setOnTouchListener { _, event ->
             scaleGestureDetector.onTouchEvent(event)
             true
+        }
+
+        binding?.btnFlipCamera?.setOnClickListener {
+            flipCamera()
         }
 
     }
@@ -227,7 +231,7 @@ class CameraActivity : AppCompatActivity(), PoseLandmarkerHelper.LandmarkerListe
 
             // Only update the visible exercise
             when (exerciseType) {
-                "Elbow" -> {
+                "Elbow exercise" -> {
                     binding?.elbowExercise?.setResults(
                         resultBundle.results.first(),
                         resultBundle.inputImageHeight,
@@ -236,7 +240,7 @@ class CameraActivity : AppCompatActivity(), PoseLandmarkerHelper.LandmarkerListe
                     )
                     binding?.elbowExercise?.invalidate()
                 }
-                "Knee" -> {
+                "Knee exercise" -> {
                     binding?.kneeExercise?.setResults(
                         resultBundle.results.first(),
                         resultBundle.inputImageHeight,
@@ -245,7 +249,7 @@ class CameraActivity : AppCompatActivity(), PoseLandmarkerHelper.LandmarkerListe
                     )
                     binding?.kneeExercise?.invalidate()
                 }
-                "Shoulder" -> {
+                "Shoulder exercise" -> {
                     binding?.shoulderExercise?.setResults(
                         resultBundle.results.first(),
                         resultBundle.inputImageHeight,
@@ -258,7 +262,6 @@ class CameraActivity : AppCompatActivity(), PoseLandmarkerHelper.LandmarkerListe
                     Log.e("exerciseTypeAfterNavigation", "Unknown exercise type: $exerciseType")
                 }
             }
-
         }
     }
 
@@ -268,6 +271,16 @@ class CameraActivity : AppCompatActivity(), PoseLandmarkerHelper.LandmarkerListe
             scaleGestureDetector.onTouchEvent(event)
         }
         return super.onTouchEvent(event)
+    }
+
+    private fun flipCamera() {
+        // Switch between front and back cameras
+        if (cameraFacing == CameraSelector.LENS_FACING_BACK) {
+            cameraFacing = CameraSelector.LENS_FACING_FRONT
+        } else {
+            cameraFacing = CameraSelector.LENS_FACING_BACK
+        }
+        setUpCamera()
     }
 
     override fun onError(error: String, errorCode: Int) {

@@ -25,6 +25,10 @@
         android:id="@+id/elbowExercise"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+    <com.google.mediapipe.examples.poselandmarker.exercises.ShoulderExercise
+        android:id="@+id/shoulderExercise"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <TextView
         android:id="@+id/tv_rep_count"
@@ -54,29 +58,19 @@
     <!-- Rep count TextView (below Angle) -->
 
 <!--    <Button-->
-<!--        android:id="@+id/btn_restart"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginBottom="50dp"-->
-<!--        android:gravity="center_horizontal|center"-->
-<!--        android:text="@string/btn_restart_exercise"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        android:layout_marginEnd="150dp"-->
-<!--        android:layout_marginStart="150dp"-->
-<!--        android:visibility="gone"/>-->
-
     <Button
         android:id="@+id/btn_restart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="110dp"
         android:gravity="center_horizontal|center"
-        android:text="@string/btn_restart_exercise"
+        android:text="@string/btn_done_exercise"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/shape_button_rounded"
+        android:foreground="?attr/selectableItemBackground"
         android:visibility="visible"/>
 
-    <!-- Restart button (bottom center) --></androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Restart button (bottom center) -->
+</androidx.constraintlayout.widget.ConstraintLayout>

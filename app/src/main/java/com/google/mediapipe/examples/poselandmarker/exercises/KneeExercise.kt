@@ -12,8 +12,11 @@ import androidx.core.content.ContextCompat
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.mediapipe.examples.poselandmarker.R
+import com.google.mediapipe.examples.poselandmarker.activities.CameraActivity
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityCameraBinding
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityMainBinding
+import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
+import com.google.mediapipe.examples.poselandmarker.model.Exercise
 import com.google.mediapipe.examples.poselandmarker.utils.AngleUtils
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarker
@@ -39,12 +42,14 @@ class KneeExercise(context: Context?, attrs: AttributeSet?) : View(context, attr
 
     // Variables for tracking reps and ROM
     private var currentRepMaxAngle = 0f
+    private var currentRepMinAngle = 180f
     private var repCount = 0
     private val maxReps = 3
     private var isFlexing = false // True if the elbow is flexing
 
     // List to store max ROM for each rep
     private var repMaxAngles = mutableListOf<Float>()
+    private var repMinAngles = mutableListOf<Float>()
     private var angleCount = 0
 
     private var bindingCameraActivity: ActivityCameraBinding? = null
@@ -72,6 +77,8 @@ class KneeExercise(context: Context?, attrs: AttributeSet?) : View(context, attr
     // Function to reset the exercise for another round of 3 reps
     @SuppressLint("SetTextI18n")
     private fun restartExercise() {
+        // Store exercise data after completing reps
+        storeExerciseData()
         repCount = 0
         repMaxAngles.clear()
         bindingCameraActivity?.btnRestart?.visibility = View.GONE
@@ -144,7 +151,7 @@ class KneeExercise(context: Context?, attrs: AttributeSet?) : View(context, attr
                     // Draw different colors based on whether the landmark is on the left, right, or center
                     when (index) {
                         // Center points
-                        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 -> {
+                        0, 2, 5, 7, 8, 9, 10 -> {
                             canvas.drawPoint(
                                 xPos,
                                 yPos,
@@ -183,106 +190,6 @@ class KneeExercise(context: Context?, attrs: AttributeSet?) : View(context, attr
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    fun calculateLeftElbowAngleAndReps(canvas: Canvas) {
-        // Make sure results are available
-        results?.let { poseLandmarkerResult ->
-            val landmarks = poseLandmarkerResult.landmarks().getOrNull(0) ?: return
-
-            val shoulder = landmarks.get(12) ?: return
-            val elbow = landmarks.get(14) ?: return
-            val wrist = landmarks.get(16) ?: return
-
-            val shoulderPoint = PointF(
-                shoulder.x() * imageWidth * scaleFactor,
-                shoulder.y() * imageHeight * scaleFactor
-            )
-            val elbowPoint = PointF(
-                elbow.x() * imageWidth * scaleFactor,
-                elbow.y() * imageHeight * scaleFactor
-            )
-            val wristPoint = PointF(
-                wrist.x() * imageWidth * scaleFactor,
-                wrist.y() * imageHeight * scaleFactor
-            )
-
-            // Draw lines for left elbow with color changes based on the rep status
-            if (isFlexing) {
-                canvas.drawLine(
-                    shoulderPoint.x,
-                    shoulderPoint.y,
-                    elbowPoint.x,
-                    elbowPoint.y,
-                    linePaint2
-                )
-                canvas.drawLine(
-                    elbowPoint.x,
-                    elbowPoint.y,
-                    wristPoint.x,
-                    wristPoint.y,
-                    linePaint2
-                )
-//                linePaint
-            }
-
-            // Calculate the elbow angle
-            val angle = AngleUtils.calculateAngle(shoulderPoint, elbowPoint, wristPoint)
-            angleCount = angle.toInt()
-
-            // Update UI with the angle
-            post {
-                bindingCameraActivity?.tvAngle?.text = "Left Elbow Angle: $angleCount"
-            }
-
-            // Call the rep tracking function
-            trackRepLeftElbow(angle)
-            bindingCameraActivity?.btnRestart?.setOnClickListener { restartExercise() }
-        }
-    }
-
-
-    // Function to track reps based on the elbow angle
-    @SuppressLint("SetTextI18n")
-    private fun trackRepLeftElbow(angle: Double) {
-        if (repCount >= maxReps) {
-            bindingCameraActivity?.btnRestart?.visibility =
-                View.VISIBLE // Show restart button after completing 3 reps
-            return // Stop after 3 reps
-        }
-
-        // Update the max angle in the current rep
-        if (angle > currentRepMaxAngle) {
-            currentRepMaxAngle = angle.toFloat()
-        }
-
-        // Detect flexing and extension
-        if (angle < 90 && !isFlexing) {
-            isFlexing = true // Flexing phase started
-        } else if (angle > 160 && isFlexing) {
-            isFlexing = false // Flexing phase ended, rep is complete
-
-            // Store max ROM for this rep
-            repMaxAngles.add(currentRepMaxAngle)
-
-            // Increment rep count
-            repCount++
-
-            post {
-                bindingCameraActivity?.tvRepCount?.text = "Reps: $repCount"
-            }
-
-            // Reset the max angle for the next rep
-            currentRepMaxAngle = 0f
-
-            // Store data in Firebase
-            val repData = hashMapOf(
-                "rep" to repCount,
-                "max_angle" to repMaxAngles[repCount - 1]
-            )
-            database.child("elbow_exercise").child("rep_$repCount").setValue(repData)
-        }
-    }
-//
     @SuppressLint("SetTextI18n")
     fun calculateLeftKneeAngleAndReps(canvas: Canvas) {
         // Make sure results are available
@@ -350,6 +257,7 @@ class KneeExercise(context: Context?, attrs: AttributeSet?) : View(context, attr
 
             // Call the rep tracking function for the knee
             trackRepLeftKnee(angle)
+            bindingCameraActivity?.btnRestart?.setOnClickListener { restartExercise() }
         }
     }
 
@@ -368,6 +276,7 @@ class KneeExercise(context: Context?, attrs: AttributeSet?) : View(context, attr
         // Detect flexing and extension
         if (angle < 90 && !isFlexing) {
             isFlexing = true // Knee flexing phase started
+            repMinAngles.add(currentRepMinAngle)
         } else if (angle > 160 && isFlexing) {
             isFlexing = false // Knee flexing phase ended, rep is complete
 
@@ -383,124 +292,129 @@ class KneeExercise(context: Context?, attrs: AttributeSet?) : View(context, attr
 
             // Reset the max angle for the next rep
             currentRepMaxAngle = 0f
-
-            // Store data in Firebase
-            val repData = hashMapOf(
-                "rep" to repCount,
-                "max_angle" to repMaxAngles[repCount - 1]
-            )
-            database.child("knee_exercise").child("rep_$repCount").setValue(repData)
+            currentRepMinAngle = 0f
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    fun calculateLeftShoulderAngleAndReps(canvas: Canvas) {
-        // Make sure results are available
-        results?.let { poseLandmarkerResult ->
-            val landmarks = poseLandmarkerResult.landmarks().getOrNull(0) ?: return
+//    @SuppressLint("SetTextI18n")
+//    fun calculateLeftShoulderAngleAndReps(canvas: Canvas) {
+//        // Make sure results are available
+//        results?.let { poseLandmarkerResult ->
+//            val landmarks = poseLandmarkerResult.landmarks().getOrNull(0) ?: return
+//
+//            val hip = landmarks.get(24) ?: return // Left hip
+//            val shoulder = landmarks.get(12) ?: return // Left shoulder
+//            val elbow = landmarks.get(14) ?: return // Left elbow
+//
+//            val hipPoint = PointF(
+//                hip.x() * imageWidth * scaleFactor,
+//                hip.y() * imageHeight * scaleFactor
+//            )
+//            val shoulderPoint = PointF(
+//                shoulder.x() * imageWidth * scaleFactor,
+//                shoulder.y() * imageHeight * scaleFactor
+//            )
+//            val elbowPoint = PointF(
+//                elbow.x() * imageWidth * scaleFactor,
+//                elbow.y() * imageHeight * scaleFactor
+//            )
+//
+//            // Draw lines for left shoulder with color changes based on the rep status
+//            if (isFlexing) {
+//                canvas.drawLine(
+//                    hipPoint.x,
+//                    hipPoint.y,
+//                    shoulderPoint.x,
+//                    shoulderPoint.y,
+//                    linePaint2
+//                )
+//                canvas.drawLine(
+//                    shoulderPoint.x,
+//                    shoulderPoint.y,
+//                    elbowPoint.x,
+//                    elbowPoint.y,
+//                    linePaint2
+//                )
+//            } else {
+//                canvas.drawLine(
+//                    hipPoint.x,
+//                    hipPoint.y,
+//                    shoulderPoint.x,
+//                    shoulderPoint.y,
+//                    linePaint
+//                )
+//                canvas.drawLine(
+//                    shoulderPoint.x,
+//                    shoulderPoint.y,
+//                    elbowPoint.x,
+//                    elbowPoint.y,
+//                    linePaint
+//                )
+//            }
+//
+//            // Calculate the shoulder angle
+//            val angle = AngleUtils.calculateAngle(hipPoint, shoulderPoint, elbowPoint)
+//            val shoulderAngleCount = angle.toInt()
+//
+//            // Update UI with the angle
+//            post {
+//                bindingCameraActivity?.tvAngle?.text = "Left Shoulder Angle: $shoulderAngleCount"
+//            }
+//
+//            // Call the rep tracking function for the shoulder
+//            trackRepLeftShoulder(angle)
+//        }
+//    }
+//
+//    @SuppressLint("SetTextI18n")
+//    private fun trackRepLeftShoulder(angle: Double) {
+//        if (repCount >= maxReps) {
+//            bindingCameraActivity?.btnRestart?.visibility = View.VISIBLE // Show restart button after completing 3 reps
+//            return // Stop after 3 reps
+//        }
+//
+//        // Update the max angle in the current rep
+//        if (angle > currentRepMaxAngle) {
+//            currentRepMaxAngle = angle.toFloat()
+//        }
+//
+//        // Detect flexing and extension
+//        if (angle < 90 && !isFlexing) {
+//            isFlexing = true // Shoulder flexing phase started
+//        } else if (angle > 160 && isFlexing) {
+//            isFlexing = false // Shoulder flexing phase ended, rep is complete
+//
+//            // Store max ROM for this rep
+//            repMaxAngles.add(currentRepMaxAngle)
+//
+//            // Increment rep count
+//            repCount++
+//
+//            post {
+//                bindingCameraActivity?.tvRepCount?.text = "Reps: $repCount"
+//            }
+//
+//            // Reset the max angle for the next rep
+//            currentRepMaxAngle = 0f
+//
+//            // Store data in Firebase
+//            val repData = hashMapOf(
+//                "rep" to repCount,
+//                "max_angle" to repMaxAngles[repCount - 1]
+//            )
+//            database.child("shoulder_exercise").child("rep_$repCount").setValue(repData)
+//        }
+//    }
 
-            val hip = landmarks.get(24) ?: return // Left hip
-            val shoulder = landmarks.get(12) ?: return // Left shoulder
-            val elbow = landmarks.get(14) ?: return // Left elbow
-
-            val hipPoint = PointF(
-                hip.x() * imageWidth * scaleFactor,
-                hip.y() * imageHeight * scaleFactor
-            )
-            val shoulderPoint = PointF(
-                shoulder.x() * imageWidth * scaleFactor,
-                shoulder.y() * imageHeight * scaleFactor
-            )
-            val elbowPoint = PointF(
-                elbow.x() * imageWidth * scaleFactor,
-                elbow.y() * imageHeight * scaleFactor
-            )
-
-            // Draw lines for left shoulder with color changes based on the rep status
-            if (isFlexing) {
-                canvas.drawLine(
-                    hipPoint.x,
-                    hipPoint.y,
-                    shoulderPoint.x,
-                    shoulderPoint.y,
-                    linePaint2
-                )
-                canvas.drawLine(
-                    shoulderPoint.x,
-                    shoulderPoint.y,
-                    elbowPoint.x,
-                    elbowPoint.y,
-                    linePaint2
-                )
-            } else {
-                canvas.drawLine(
-                    hipPoint.x,
-                    hipPoint.y,
-                    shoulderPoint.x,
-                    shoulderPoint.y,
-                    linePaint
-                )
-                canvas.drawLine(
-                    shoulderPoint.x,
-                    shoulderPoint.y,
-                    elbowPoint.x,
-                    elbowPoint.y,
-                    linePaint
-                )
-            }
-
-            // Calculate the shoulder angle
-            val angle = AngleUtils.calculateAngle(hipPoint, shoulderPoint, elbowPoint)
-            val shoulderAngleCount = angle.toInt()
-
-            // Update UI with the angle
-            post {
-                bindingCameraActivity?.tvAngle?.text = "Left Shoulder Angle: $shoulderAngleCount"
-            }
-
-            // Call the rep tracking function for the shoulder
-            trackRepLeftShoulder(angle)
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun trackRepLeftShoulder(angle: Double) {
-        if (repCount >= maxReps) {
-            bindingCameraActivity?.btnRestart?.visibility = View.VISIBLE // Show restart button after completing 3 reps
-            return // Stop after 3 reps
-        }
-
-        // Update the max angle in the current rep
-        if (angle > currentRepMaxAngle) {
-            currentRepMaxAngle = angle.toFloat()
-        }
-
-        // Detect flexing and extension
-        if (angle < 90 && !isFlexing) {
-            isFlexing = true // Shoulder flexing phase started
-        } else if (angle > 160 && isFlexing) {
-            isFlexing = false // Shoulder flexing phase ended, rep is complete
-
-            // Store max ROM for this rep
-            repMaxAngles.add(currentRepMaxAngle)
-
-            // Increment rep count
-            repCount++
-
-            post {
-                bindingCameraActivity?.tvRepCount?.text = "Reps: $repCount"
-            }
-
-            // Reset the max angle for the next rep
-            currentRepMaxAngle = 0f
-
-            // Store data in Firebase
-            val repData = hashMapOf(
-                "rep" to repCount,
-                "max_angle" to repMaxAngles[repCount - 1]
-            )
-            database.child("shoulder_exercise").child("rep_$repCount").setValue(repData)
-        }
+    // Store exercise data function
+    private fun storeExerciseData() {
+        val exerciseInfo = Exercise(
+            minAngle = repMinAngles.minOrNull()?.toDouble() ?: 0.0,
+            maxAngle = repMaxAngles.maxOrNull()?.toDouble() ?: 0.0,
+            successfulReps = repCount.toString()
+        )
+        // Store the exercise data using the exercise name
+        FirestoreClass().storeExerciseData(context as CameraActivity, exerciseInfo, "KneeExercise")
     }
 
     fun setResults(

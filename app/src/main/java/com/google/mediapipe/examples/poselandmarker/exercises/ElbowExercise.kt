@@ -151,7 +151,7 @@ class ElbowExercise(context: Context?, attrs: AttributeSet?) : View(context, att
                     // Draw different colors based on whether the landmark is on the left, right, or center
                     when (index) {
                         // Center points
-                        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 -> {
+                        0, 2, 5, 7, 8, 9, 10 -> {
                             canvas.drawPoint(
                                 xPos,
                                 yPos,
@@ -247,7 +247,6 @@ class ElbowExercise(context: Context?, attrs: AttributeSet?) : View(context, att
         }
     }
 
-
     // Function to track reps based on the elbow angle
     @SuppressLint("SetTextI18n")
     private fun trackRepLeftElbow(angle: Double) {
@@ -324,6 +323,6 @@ class ElbowExercise(context: Context?, attrs: AttributeSet?) : View(context, att
 
     companion object {
         private const val LANDMARK_STROKE_WIDTH = 8f
-        private const val LANDMARK_POINT_WIDTH = 32f
+        private const val LANDMARK_POINT_WIDTH = 40f
     }
 }

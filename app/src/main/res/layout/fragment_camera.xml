@@ -59,8 +59,7 @@
         app:layout_anchor="@id/overlay"
         app:layout_anchorGravity="center_horizontal|bottom"
         android:gravity="center"
-        android:text="@string/btn_restart_exercise" />
-
+        android:text="@string/btn_done_exercise" />
     <!-- Restart button (bottom center) -->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

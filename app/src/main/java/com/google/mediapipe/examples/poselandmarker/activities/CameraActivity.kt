@@ -85,8 +85,10 @@ class CameraActivity : AppCompatActivity(), PoseLandmarkerHelper.LandmarkerListe
         // Pass the binding object to the ElbowExercise
         binding?.elbowExercise?.setCameraActivityBinding(binding!!)
         binding?.kneeExercise?.setCameraActivityBinding(binding!!)
+        binding?.shoulderExercise?.setCameraActivityBinding(binding!!)
         binding?.kneeExercise?.visibility = View.INVISIBLE
         binding?.elbowExercise?.visibility = View.INVISIBLE
+        binding?.shoulderExercise?.visibility = View.INVISIBLE
 
         val exerciseType = intent.getStringExtra("exerciseType")
         if (exerciseType != null) {
@@ -104,6 +106,10 @@ class CameraActivity : AppCompatActivity(), PoseLandmarkerHelper.LandmarkerListe
             "Knee" -> {
 //                binding?.elbowExercise?.isGone = true
                 binding?.kneeExercise?.visibility = View.VISIBLE
+            }
+            "Shoulder" -> {
+//                binding?.elbowExercise?.isGone = true
+                binding?.shoulderExercise?.visibility = View.VISIBLE
             }
             else -> {
                 Log.e("exerciseTypeAfterNavigation", "Unknown exercise type: $exerciseType")
@@ -238,6 +244,15 @@ class CameraActivity : AppCompatActivity(), PoseLandmarkerHelper.LandmarkerListe
                         RunningMode.LIVE_STREAM
                     )
                     binding?.kneeExercise?.invalidate()
+                }
+                "Shoulder" -> {
+                    binding?.shoulderExercise?.setResults(
+                        resultBundle.results.first(),
+                        resultBundle.inputImageHeight,
+                        resultBundle.inputImageWidth,
+                        RunningMode.LIVE_STREAM
+                    )
+                    binding?.shoulderExercise?.invalidate()
                 }
                 else -> {
                     Log.e("exerciseTypeAfterNavigation", "Unknown exercise type: $exerciseType")

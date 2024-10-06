@@ -7,10 +7,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.mediapipe.examples.poselandmarker.activities.CameraActivity
+import com.google.mediapipe.examples.poselandmarker.activities.DoctorMainActivity
+import com.google.mediapipe.examples.poselandmarker.activities.DoctorSignInActivity
+import com.google.mediapipe.examples.poselandmarker.activities.DoctorSignUpActivity
 import com.google.mediapipe.examples.poselandmarker.activities.MainActivity
 import com.google.mediapipe.examples.poselandmarker.activities.MyProfileActivity
 import com.google.mediapipe.examples.poselandmarker.activities.SignInActivity
 import com.google.mediapipe.examples.poselandmarker.activities.SignUpActivity
+import com.google.mediapipe.examples.poselandmarker.model.Doctor
 import com.google.mediapipe.examples.poselandmarker.model.Exercise
 import com.google.mediapipe.examples.poselandmarker.utils.Constants
 import com.google.mediapipe.examples.poselandmarker.model.Patient
@@ -29,19 +33,38 @@ class FirestoreClass {
     fun registerUser(activity: SignUpActivity, patientInfo: Patient) {
 
         mFireStore.collection(Constants.PATIENTUSERS)
-                // Document ID for users fields. Here the document it is the User ID.
-                .document(getCurrentUserID())
-                // Here the userInfo are Field and the SetOption is set to merge. It is for if we wants to merge
-                .set(patientInfo, SetOptions.merge())
-                .addOnSuccessListener {
+            // Document ID for users fields. Here the document it is the User ID.
+            .document(getCurrentUserID())
+            // Here the userInfo are Field and the SetOption is set to merge. It is for if we wants to merge
+            .set(patientInfo, SetOptions.merge())
+            .addOnSuccessListener {
 
-                    // Here call a function of base activity for transferring the result to it.
-                    activity.userRegisteredSuccess()
-                }
-                .addOnFailureListener { e ->
-                    Log.e(activity.javaClass.simpleName,
-                            "Error writing document", e)
-                }
+                // Here call a function of base activity for transferring the result to it.
+                activity.userRegisteredSuccess()
+            }
+            .addOnFailureListener { e ->
+                Log.e(activity.javaClass.simpleName,
+                    "Error writing document", e)
+            }
+    }
+
+
+    fun registerUserDoctor(activity: DoctorSignUpActivity, doctorInfo: Doctor) {
+
+        mFireStore.collection(Constants.DOCTORUSERS)
+            // Document ID for users fields. Here the document it is the User ID.
+            .document(getCurrentUserID())
+            // Here the userInfo are Field and the SetOption is set to merge. It is for if we wants to merge
+            .set(doctorInfo, SetOptions.merge())
+            .addOnSuccessListener {
+
+                // Here call a function of base activity for transferring the result to it.
+                activity.userRegisteredSuccess()
+            }
+            .addOnFailureListener { e ->
+                Log.e(activity.javaClass.simpleName,
+                    "Error writing document", e)
+            }
     }
 
     /**
@@ -134,6 +157,51 @@ class FirestoreClass {
             }
     }
 
+    fun loadUserDoctorDetails(activity: Activity) {
+
+        // Here we pass the collection name from which we wants the data.
+        mFireStore.collection(Constants.DOCTORUSERS)
+            // The document id to get the Fields of user.
+            .document(getCurrentUserID())
+            .get()
+            .addOnSuccessListener { document ->
+                Log.e(activity.javaClass.simpleName, document.toString())
+
+                // Here we have received the document snapshot which is converted into the User Data model object.
+                val loggedInDoctor = document.toObject(Doctor::class.java)
+
+                // Here call a function of base activity for transferring the result to it.
+                when (activity) {
+                    is DoctorSignInActivity -> {
+                        if (loggedInDoctor != null) {
+                            activity.signInSuccessDoctor(loggedInDoctor)
+                        }
+                    }
+                    is DoctorMainActivity -> {
+                        if (loggedInDoctor != null) {
+                            activity.setDoctorDataInUI(loggedInDoctor)
+                        }
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                // Here call a function of base activity for transferring the result to it.
+                when (activity) {
+                    is DoctorSignInActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is DoctorMainActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                }
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while getting loggedIn user details",
+                    e
+                )
+            }
+    }
+
     /**
      * A function to update the user profile data into the database.
      */
@@ -177,4 +245,39 @@ class FirestoreClass {
 
         return currentUserID
     }
+
+    fun getUserType(userID: String, callback: (String?) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+
+        // First, check in the "patient" collection
+        val patientRef = db.collection("patient").document(userID)
+
+        patientRef.get().addOnSuccessListener { document ->
+            if (document != null && document.exists()) {
+                // If document exists in "patient", it's a patient
+                callback("patient")
+            } else {
+                // If not found in "patient", check in "doctor" collection
+                val doctorRef = db.collection("doctor").document(userID)
+
+                doctorRef.get().addOnSuccessListener { doc ->
+                    if (doc != null && doc.exists()) {
+                        // If document exists in "doctor", it's a doctor
+                        callback("doctor")
+                    } else {
+                        // If not found in both collections, return null
+                        callback(null)
+                    }
+                }.addOnFailureListener { exception ->
+                    Log.e("Firestore Error", "Error fetching doctor document", exception)
+                    callback(null)
+                }
+            }
+        }.addOnFailureListener { exception ->
+            Log.e("Firestore Error", "Error fetching patient document", exception)
+            callback(null)
+        }
+    }
+
+
 }

@@ -6,20 +6,20 @@
     android:layout_height="match_parent"
     android:background="@drawable/ic_background"
     android:orientation="vertical"
-    tools:context=".activities.SignInActivity">
+    tools:context=".activities.DoctorSignInActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_sign_in_activity"
+        android:id="@+id/toolbar_doctor_sign_in_activity"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_marginTop="@dimen/statusBar_max_height">
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/tv_doctor_sign_in_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="@string/sign_in_patient"
+            android:text="@string/sign_in_doctor"
             android:textColor="@color/primary_text_color"
             android:textSize="@dimen/toolbar_title_text_size"
             android:textStyle="bold" />
@@ -63,7 +63,7 @@
                     android:layout_marginEnd="@dimen/authentication_screen_til_marginStartEnd">
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/et_email"
+                        android:id="@+id/et_doctor_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/email"
@@ -79,7 +79,7 @@
                     android:layout_marginEnd="@dimen/authentication_screen_til_marginStartEnd">
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/et_password"
+                        android:id="@+id/et_doctor_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/password"
@@ -88,7 +88,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
-                    android:id="@+id/btn_sign_in"
+                    android:id="@+id/btn_doctor_sign_in"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -105,7 +105,7 @@
                     android:textSize="@dimen/btn_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_create_account"
+                    android:id="@+id/tv_doctor_create_account"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/tv_create_account"

@@ -61,7 +61,10 @@
     <string name="let_s_get_started_text">Let\'s Get started</string>
     <string name="intro_text_description">Collaborate and Plan Together Across Multiple Devices on Projemanag’s Minimalist Interface.</string>
     <string name="sign_in">SIGN IN</string>
+    <string name="sign_up_patient">SIGN UP AS PATIENT</string>
+    <string name="sign_in_patient">SIGN IN AS PATIENT</string>
     <string name="sign_up">SIGN UP</string>
+    <string name="sign_up_doctor">SIGN UP AS DOCTOR</string>
 
     <string name="sign_up_description_text">Enter your name, email id and password, to register with us.</string>
     <string name="name">Name</string>
@@ -97,6 +100,18 @@
     <string name="tv_elbow_exercise">Elbow Exercise</string>
     <string name="tv_knee_exercise">Knee Exercise</string>
     <string name="tv_shoulder_exercise">Shoulder Exercise</string>
+    <string name="btn_sign_up">SIGN UP</string>
+    <string name="btn_i_am_doctor">I AM DOCTOR</string>
+    <string name="rb_tv_patient">Patient</string>
+    <string name="rb_tv_doctor">Doctor</string>
+    <string name="tv_dr_name">Dr. Name</string>
+    <string name="tv_dr_age">Age</string>
+    <string name="search_patient">SearchPatientIcon</string>
+    <string name="tv_search_patient">Patient List</string>
+    <string name="patient_name_list_in_cv">Name</string>
+    <string name="patient">Patient</string>
+    <string name="doctor">Doctor</string>
+    <string name="sign_in_doctor">SIGN IN AS DOCTOR</string>
     <!--END-->
 
 </resources>

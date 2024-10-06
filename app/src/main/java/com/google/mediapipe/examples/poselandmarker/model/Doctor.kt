@@ -4,14 +4,14 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.mediapipe.examples.poselandmarker.utils.Constants
 
-data class Patient(
+data class Doctor(
     val id: String = "",
     val name: String = "",
     val email: String = "",
     val image: String = "",
     val mobile: Long = 0,
     val age: Int = 0,
-    val userType: String = Constants.PATIENTUSERS,
+    val userType: String = Constants.DOCTORUSERS,
     val fcmToken: String = ""
 ) : Parcelable {
     constructor(source: Parcel) : this(
@@ -40,9 +40,9 @@ data class Patient(
 
     companion object {
         @JvmField
-        val CREATOR: Parcelable.Creator<Patient> = object : Parcelable.Creator<Patient> {
-            override fun createFromParcel(source: Parcel): Patient = Patient(source)
-            override fun newArray(size: Int): Array<Patient?> = arrayOfNulls(size)
+        val CREATOR: Parcelable.Creator<Doctor> = object : Parcelable.Creator<Doctor> {
+            override fun createFromParcel(source: Parcel): Doctor = Doctor(source)
+            override fun newArray(size: Int): Array<Doctor?> = arrayOfNulls(size)
         }
     }
 }

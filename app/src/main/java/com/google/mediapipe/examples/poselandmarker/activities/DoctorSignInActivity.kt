@@ -12,14 +12,16 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.mediapipe.examples.poselandmarker.R
+import com.google.mediapipe.examples.poselandmarker.databinding.ActivityDoctorSignInBinding
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivitySignInBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
+import com.google.mediapipe.examples.poselandmarker.model.Doctor
 import com.google.mediapipe.examples.poselandmarker.model.Patient
 
 // TODO (Step 1: Extend the BaseActivity instead of AppCompatActivity.)
-class SignInActivity : BaseActivity() {
+class DoctorSignInActivity : BaseActivity() {
 
-    private var binding: ActivitySignInBinding? = null
+    private var binding: ActivityDoctorSignInBinding? = null
 //    private var autoLoggedIn : Boolean = false
     /**
      * This function is auto created by Android when the Activity Class is created.
@@ -37,7 +39,7 @@ class SignInActivity : BaseActivity() {
         // This line ensures the content extends to the area around the notch
         window.attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
 
-        binding = ActivitySignInBinding.inflate(layoutInflater)
+        binding = ActivityDoctorSignInBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
         // This is used to hide the status bar and make the splash screen as a full screen activity.
@@ -75,12 +77,12 @@ class SignInActivity : BaseActivity() {
 //
         // TODO(Step 4: Add click event for sign-in button and call the function to sign in.)
         // START
-        binding?.btnSignIn?.setOnClickListener {
-            signInRegisteredUser()
+        binding?.btnDoctorSignIn?.setOnClickListener {
+            signInRegisteredUserDoctor()
         }
 
-        binding?.tvCreateAccount?.setOnClickListener {
-            intent = Intent(this@SignInActivity, SignUpActivity::class.java)
+        binding?.tvDoctorCreateAccount?.setOnClickListener {
+            intent = Intent(this@DoctorSignInActivity, DoctorSignUpActivity::class.java)
             startActivity(intent)
         }
         // END
@@ -91,7 +93,7 @@ class SignInActivity : BaseActivity() {
      */
     private fun setupActionBar() {
 
-        setSupportActionBar(binding?.toolbarSignInActivity)
+        setSupportActionBar(binding?.toolbarDoctorSignInActivity)
 
         val actionBar = supportActionBar
         if (actionBar != null) {
@@ -99,8 +101,8 @@ class SignInActivity : BaseActivity() {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
         }
 
-        binding?.toolbarSignInActivity?.setNavigationOnClickListener {
-            startActivity(Intent(this@SignInActivity,IntroActivity::class.java))
+        binding?.toolbarDoctorSignInActivity?.setNavigationOnClickListener {
+            startActivity(Intent(this@DoctorSignInActivity,IntroActivity::class.java))
         }
     }
 
@@ -109,10 +111,10 @@ class SignInActivity : BaseActivity() {
     /**
      * A function for Sign-In using the registered user using the email and password.
      */
-    private fun signInRegisteredUser() {
+    private fun signInRegisteredUserDoctor() {
         // Here we get the text from editText and trim the space
-        val email: String = binding?.etEmail?.text.toString().trim { it <= ' ' }
-        val password: String = binding?.etPassword?.text.toString().trim { it <= ' ' }
+        val email: String = binding?.etDoctorEmail?.text.toString().trim { it <= ' ' }
+        val password: String = binding?.etDoctorPassword?.text.toString().trim { it <= ' ' }
 
         if (validateForm(email, password)) {
             // Show the progress dialog.
@@ -124,11 +126,11 @@ class SignInActivity : BaseActivity() {
                     if (task.isSuccessful) {
                         // TODO (Step 2: Remove the toast message and call the FirestoreClass signInUser function to get the data of user from database. And also move the code of hiding Progress Dialog and Launching MainActivity to Success function.)
                         // Calling the FirestoreClass signInUser function to get the data of user from database.
-                        FirestoreClass().loadUserDetails(this@SignInActivity)
+                        FirestoreClass().loadUserDoctorDetails(this@DoctorSignInActivity)
                         // END
                     } else {
                         Toast.makeText(
-                            this@SignInActivity,
+                            this@DoctorSignInActivity,
                             task.exception!!.message,
                             Toast.LENGTH_LONG
                         ).show()
@@ -159,11 +161,11 @@ class SignInActivity : BaseActivity() {
     /**
      * A function to get the user details from the firestore database after authentication.
      */
-    fun signInSuccess(patient: Patient) {
+    fun signInSuccessDoctor(doctor: Doctor) {
 
         hideProgressDialog()
 
-        startActivity(Intent(this@SignInActivity, MainActivity::class.java))
+        startActivity(Intent(this@DoctorSignInActivity, DoctorMainActivity::class.java))
         this.finish()
     }
 

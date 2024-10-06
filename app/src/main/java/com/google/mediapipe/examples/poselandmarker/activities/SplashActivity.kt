@@ -9,17 +9,19 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.google.common.io.Resources
 import com.google.mediapipe.examples.poselandmarker.R
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivitySplashBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
 
 @SuppressLint("CustomSplashScreen")
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity() {
 
     /**
      * This function is auto created by Android when the Activity Class is created.
@@ -59,19 +61,39 @@ class SplashActivity : AppCompatActivity() {
             // Here if the user is signed in once and not signed out again from the app. So next time while coming into the app
             // we will redirect him to MainScreen or else to the Intro Screen as it was before.
 
-            // Get the current user id
+            // Get the current user ID
             val currentUserID = FirestoreClass().getCurrentUserID()
-            // Start the Intro Activity
 
             if (currentUserID.isNotEmpty()) {
-                // Start the Main Activity
-                startActivity(Intent(this@SplashActivity,MainActivity::class.java))
+                // Query Firestore to get the user type
+                FirestoreClass().getUserType(currentUserID) { userType ->
+                    if (userType == "patient") {
+                        // If user is a patient, navigate to MainActivity
+                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                    } else if (userType == "doctor") {
+                        // If user is a doctor, navigate to DoctorMainActivity
+                        startActivity(Intent(this@SplashActivity, DoctorMainActivity::class.java))
+                    } else {
+                        // Handle case where userType is not found
+                        Toast.makeText(this, "User type not found", Toast.LENGTH_SHORT).show()
+                    }
+                }
             } else {
-                // Start the Intro Activity
-                startActivity(Intent(this@SplashActivity, SignUpActivity::class.java))
+                // If no user ID, navigate to the SignUpActivity
+                startActivity(Intent(this@SplashActivity, IntroActivity::class.java))
+//                finish()
             }
+
+//            if (currentUserID.isNotEmpty()) {
+//                startActivity(Intent(this@SplashActivity, DoctorMainActivity::class.java))
+//            }else{
+//                startActivity(Intent(this@SplashActivity, IntroActivity::class.java))
+//            }
+
+
+//            hideProgressDialog()
             finish() // Call this when your activity is done and should be closed.
-        }, 1000) // Here we pass the delay time in milliSeconds after which the splash activity will disappear.
+        }, 500) // Here we pass the delay time in milliSeconds after which the splash activity will disappear.
     }
 
     override fun onDestroy() {

@@ -15,13 +15,13 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.mediapipe.examples.poselandmarker.R
-import com.google.mediapipe.examples.poselandmarker.databinding.ActivitySignUpBinding
+import com.google.mediapipe.examples.poselandmarker.databinding.ActivityDoctorSignUpBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
-import com.google.mediapipe.examples.poselandmarker.model.Patient
+import com.google.mediapipe.examples.poselandmarker.model.Doctor
 
-class SignUpActivity : BaseActivity() {
+class DoctorSignUpActivity : BaseActivity() {
 
-    private var binding: ActivitySignUpBinding? = null
+    private var binding: ActivityDoctorSignUpBinding? = null
 
     /**
      * This function is auto created by Android when the Activity Class is created.
@@ -39,7 +39,7 @@ class SignUpActivity : BaseActivity() {
         // This line ensures the content extends to the area around the notch
         window.attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
 
-        binding = ActivitySignUpBinding.inflate(layoutInflater)
+        binding = ActivityDoctorSignUpBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
         // This is used to hide the status bar and make the splash screen as a full screen activity.
@@ -51,12 +51,12 @@ class SignUpActivity : BaseActivity() {
         setupActionBar()
 
         // Click event for sign-up button.
-        binding?.btnSignUpPatient?.setOnClickListener {
-            registerUser()
+        binding?.btnSignUpDoctor?.setOnClickListener {
+            registerUserDoctor()
         }
 
-        binding?.tvAlreadySignedUpPatient?.setOnClickListener {
-            intent = Intent(this, SignInActivity::class.java)
+        binding?.tvAlreadySignedUpDoctor?.setOnClickListener {
+            intent = Intent(this, DoctorSignInActivity::class.java)
             startActivity(intent)
         }
     }
@@ -66,7 +66,7 @@ class SignUpActivity : BaseActivity() {
      */
     private fun setupActionBar() {
 
-        setSupportActionBar(binding?.toolbarSignUpActivity)
+        setSupportActionBar(binding?.toolbarDoctorSignUpActivity)
 
         val actionBar = supportActionBar
         if (actionBar != null) {
@@ -74,20 +74,19 @@ class SignUpActivity : BaseActivity() {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
         }
 
-        binding?.toolbarSignUpActivity?.setNavigationOnClickListener {
-            startActivity(Intent(this@SignUpActivity,IntroActivity::class.java))
-        }
+        binding?.toolbarDoctorSignUpActivity?.setNavigationOnClickListener {
+            startActivity(Intent(this@DoctorSignUpActivity,IntroActivity::class.java))}
     }
 
     /**
      * A function to register a user to our app using the Firebase.
      * For more details visit: https://firebase.google.com/docs/auth/android/custom-auth
      */
-    private fun registerUser() {
+    private fun registerUserDoctor() {
         // Here we get the text from editText and trim the space
-        val name: String = binding?.etNamePatient?.text.toString().trim { it <= ' ' }
-        val email: String = binding?.etEmailPatient?.text.toString().trim { it <= ' ' }
-        val password: String = binding?.etPasswordPatient?.text.toString().trim { it <= ' ' }
+        val name: String = binding?.etNameDoctor?.text.toString().trim { it <= ' ' }
+        val email: String = binding?.etEmailDoctor?.text.toString().trim { it <= ' ' }
+        val password: String = binding?.etPasswordDoctor?.text.toString().trim { it <= ' ' }
 
         if (validateForm(name, email, password)) {
             // Show the progress dialog.
@@ -104,15 +103,15 @@ class SignUpActivity : BaseActivity() {
                             // Registered Email
                             val registeredEmail = firebaseUser.email!!
 
-                            val patient = Patient(
+                            val doctor = Doctor(
                                 firebaseUser.uid, name, registeredEmail
                             )
 
                             // call the registerUser function of FirestoreClass to make an entry in the database.
-                            FirestoreClass().registerUser(this@SignUpActivity, patient)
+                            FirestoreClass().registerUserDoctor(this@DoctorSignUpActivity, doctor)
                         } else {
                             Toast.makeText(
-                                this@SignUpActivity,
+                                this@DoctorSignUpActivity,
                                 task.exception!!.message,
                                 Toast.LENGTH_SHORT
                             ).show()
@@ -151,7 +150,7 @@ class SignUpActivity : BaseActivity() {
     fun userRegisteredSuccess() {
 
         Toast.makeText(
-            this@SignUpActivity,
+            this@DoctorSignUpActivity,
             "You have successfully registered.",
             Toast.LENGTH_SHORT
         ).show()

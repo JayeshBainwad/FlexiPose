@@ -113,9 +113,7 @@ class MyProfileActivity : BaseActivity() {
     private fun uploadUserImage() {
 
         showProgressDialog(resources.getString(R.string.please_wait))
-
         if (mSelectedImageFileUri != null) {
-
             //getting the storage reference
             val sRef: StorageReference = FirebaseStorage.getInstance().reference.child(
                 "USER_IMAGE" + System.currentTimeMillis() + "." + getFileExtension(

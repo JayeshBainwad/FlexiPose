@@ -8,8 +8,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fitsSystemWindows="false"
-    android:background="@color/doctor_mainPage_bg"
-    android:theme="@style/AppTheme.NoActionBar2">
+    android:background="@drawable/top_background"
+    android:theme="@style/AppTheme.NoActionBar2"
+    tools:context=".activities.DoctorMainActivity">
+
+    <ImageView
+        android:id="@+id/ic_sign_out"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="@string/nav_sign_out"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/ic_nav_sign_out"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"/>
 
     <!-- Doctor Profile Section -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,12 +76,14 @@
         app:layout_constraintStart_toEndOf="@id/tv_doctor_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="45dp"
         android:layout_marginEnd="35dp"
         app:civ_border_color="@android:color/white"
         app:civ_border_width="@dimen/nav_image_circular_border_width"
         android:contentDescription="@string/image_contentDescription"
         android:src="@drawable/ic_user_place_holder"/>
+
+
     <!--Doctor Profile Header End-->
 
     <!--Patient List Main Start-->

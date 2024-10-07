@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/intro_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/page_1"
     android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:paddingTop="90dp"
     tools:context=".activities.IntroActivity">
 
     <TextView
@@ -14,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/intro_screen_title_text_marginTop"
         android:text="@string/app_name"
-        android:textColor="@color/colorAccent"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/intro_screen_title_text_size"
         android:textStyle="bold" />
 
@@ -30,52 +32,72 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/lets_get_started_text_marginTop"
         android:text="@string/let_s_get_started_text"
-        android:textColor="@color/primary_text_color"
-        android:textSize="@dimen/lets_get_started_text_size" />
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/lets_get_started_text_size"
+        android:textStyle="bold" />
 
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="@dimen/intro_text_marginStartEnd"-->
-<!--        android:layout_marginTop="@dimen/intro_text_marginTop"-->
-<!--        android:layout_marginEnd="@dimen/intro_text_marginStartEnd"-->
-<!--        android:gravity="center"-->
-<!--        android:lineSpacingExtra="@dimen/intro_text_line_spacing_extra"-->
-<!--        android:text="@string/intro_text_description"-->
-<!--        android:textColor="@color/secondary_text_color"-->
-<!--        android:textSize="@dimen/intro_text_size" />-->
+    <!--    <TextView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="@dimen/intro_text_marginStartEnd"-->
+    <!--        android:layout_marginTop="@dimen/intro_text_marginTop"-->
+    <!--        android:layout_marginEnd="@dimen/intro_text_marginStartEnd"-->
+    <!--        android:gravity="center"-->
+    <!--        android:lineSpacingExtra="@dimen/intro_text_line_spacing_extra"-->
+    <!--        android:text="@string/intro_text_description"-->
+    <!--        android:textColor="@color/secondary_text_color"-->
+    <!--        android:textSize="@dimen/intro_text_size" />-->
 
-    <Button
-        android:id="@+id/btn_doctor"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_doctor_intro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="@dimen/btn_marginStartEnd"
         android:layout_marginTop="@dimen/intro_screen_sign_in_btn_marginTop"
         android:layout_marginEnd="@dimen/btn_marginStartEnd"
-        android:background="@drawable/shape_button_rounded"
+        android:background="@android:color/white"
+        app:cardCornerRadius="10dp"
         android:foreground="?attr/selectableItemBackground"
-        android:gravity="center"
-        android:paddingTop="@dimen/btn_paddingTopBottom"
-        android:paddingBottom="@dimen/btn_paddingTopBottom"
-        android:text="@string/doctor"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/btn_text_size" />
+        android:elevation="4dp">
 
-    <Button
-        android:id="@+id/btn_patient"
+        <TextView
+            android:id="@+id/tv_doctor_intro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/doctor"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/btn_text_size"
+            android:paddingTop="@dimen/btn_paddingTopBottom"
+            android:paddingBottom="@dimen/btn_paddingTopBottom" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_patient_intro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="@dimen/btn_marginStartEnd"
-        android:layout_marginTop="@dimen/intro_screen_sign_in_btn_marginTop"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="@dimen/btn_marginStartEnd"
-        android:background="@drawable/white_border_shape_button_rounded"
+        android:background="@android:color/white"
+        app:cardCornerRadius="10dp"
         android:foreground="?attr/selectableItemBackground"
-        android:gravity="center"
-        android:paddingTop="@dimen/btn_paddingTopBottom"
-        android:paddingBottom="@dimen/btn_paddingTopBottom"
-        android:text="@string/patient"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/btn_text_size" />
+        android:elevation="4dp">
+
+        <TextView
+            android:id="@+id/tv_patient_intro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/patient"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/btn_text_size"
+            android:paddingTop="@dimen/btn_paddingTopBottom"
+            android:paddingBottom="@dimen/btn_paddingTopBottom" />
+
+    </androidx.cardview.widget.CardView>
+
 </LinearLayout>

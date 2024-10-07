@@ -48,13 +48,13 @@ class IntroActivity : AppCompatActivity() {
             Typeface.createFromAsset(assets, "carbon bl.ttf")
         binding?.tvAppNameIntro?.typeface = typeface
 
-        binding?.btnDoctor?.setOnClickListener {
+        binding?.cardDoctorIntro?.setOnClickListener {
 
             // Launch the sign in screen.
             startActivity(Intent(this@IntroActivity, DoctorSignUpActivity::class.java))
         }
 
-        binding?.btnPatient?.setOnClickListener {
+        binding?.cardPatientIntro?.setOnClickListener {
 
             // Launch the sign up screen.
             startActivity(Intent(this@IntroActivity, SignUpActivity::class.java))

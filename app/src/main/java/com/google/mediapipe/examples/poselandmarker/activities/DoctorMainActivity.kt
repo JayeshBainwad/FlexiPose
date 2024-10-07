@@ -12,6 +12,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.google.mediapipe.examples.poselandmarker.R
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityDoctorMainBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
@@ -46,6 +47,11 @@ class DoctorMainActivity : BaseActivity() {
         showProgressDialog(resources.getString(R.string.please_wait))
         FirestoreClass().loadUserDoctorDetails(this@DoctorMainActivity)
         hideProgressDialog()
+
+        binding?.icSignOut?.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            finish()
+        }
     }
 
     fun setDoctorDataInUI(doctor: Doctor) {

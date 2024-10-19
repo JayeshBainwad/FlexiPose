@@ -1,14 +1,18 @@
 package com.google.mediapipe.examples.poselandmarker
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.mediapipe.examples.poselandmarker.model.Patient
 
-class PatientListAdapter(private val patientList: List<Patient>) : RecyclerView.Adapter<PatientListAdapter.PatientViewHolder>() {
+class PatientListAdapter(
+    private var patientList: List<Patient>
+) : RecyclerView.Adapter<PatientListAdapter.PatientViewHolder>() {
 
     inner class PatientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val patientName: TextView = itemView.findViewById(R.id.tv_patient_name)
@@ -23,9 +27,15 @@ class PatientListAdapter(private val patientList: List<Patient>) : RecyclerView.
     override fun onBindViewHolder(holder: PatientViewHolder, position: Int) {
         val patient = patientList[position]
         holder.patientName.text = patient.name
-        // You can load the image using Glide or Picasso if needed
-        // Glide.with(holder.itemView.context).load(patient.imageUrl).into(holder.patientImage)
+        Glide.with(holder.itemView.context).load(patient.image).placeholder(R.drawable.ic_user_place_holder).into(holder.patientImage)
     }
 
     override fun getItemCount(): Int = patientList.size
+
+    // Add this method to update the patient list based on the search results
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateList(newList: ArrayList<Patient>) {
+        patientList = newList
+        notifyDataSetChanged()
+    }
 }

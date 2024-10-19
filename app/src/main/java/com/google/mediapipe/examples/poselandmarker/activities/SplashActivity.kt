@@ -39,7 +39,7 @@ class SplashActivity : BaseActivity() {
         setContentView(binding?.root)
 
         val typeface: Typeface = Typeface.createFromAsset(assets, "carbon bl.ttf")
-        binding?.tvAppName?.typeface = typeface
+//        binding?.tvAppName?.typeface = typeface
 
         Handler().postDelayed({
             val currentUserID = FirestoreClass().getCurrentUserID()

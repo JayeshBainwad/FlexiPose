@@ -39,8 +39,8 @@
 
     <color name="snackbar_error_color">#F72400</color>
 
-    <color name="cv_patientList_bg_color">#b3f8e6</color>
-    <color name="doctor_mainPage_bg">#14deaa</color>
+    <color name="cv_patientList_bg_color">#15DEAE</color>
+    <color name="app_bar_color">#09AEAE</color>
     <color name="default_imageHolder_bg">#d9d9d9</color>
 
     <color name="colorButtonPressed">#FF5722</color>

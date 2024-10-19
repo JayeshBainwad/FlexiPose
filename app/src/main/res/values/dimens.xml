@@ -103,6 +103,6 @@
     <dimen name="height_of_doctor_main">220dp</dimen>
     <dimen name="doctor_content_margin_top">20dp</dimen>
     <dimen name="doctor_content_margin_bottom">10dp</dimen>
-    <dimen name="search_patient_textSize">24sp</dimen>
+    <dimen name="search_patient_textSize">16sp</dimen>
 
 </resources>

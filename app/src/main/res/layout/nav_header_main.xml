@@ -9,7 +9,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/height_of_nav_main"
-    android:background="@drawable/nav_header_main_background"
+    android:background="@drawable/green_background"
     android:gravity="bottom"
     android:orientation="vertical"
     android:theme="@style/AppTheme.NoActionBar2">

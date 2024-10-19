@@ -1,76 +1,211 @@
 package com.google.mediapipe.examples.poselandmarker.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.GravityCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.mediapipe.examples.poselandmarker.PatientListAdapter
 import com.google.mediapipe.examples.poselandmarker.R
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityDoctorMainBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
 import com.google.mediapipe.examples.poselandmarker.model.Doctor
+import com.google.mediapipe.examples.poselandmarker.model.Patient
+import com.google.mediapipe.examples.poselandmarker.utils.Constants
 
-class DoctorMainActivity : BaseActivity() {
+class DoctorMainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private lateinit var mDoctorDetails: Doctor
     private var binding: ActivityDoctorMainBinding? = null
+    private lateinit var patientListAdapter: PatientListAdapter
+    private var patientList: ArrayList<Patient> = ArrayList()
 
     @RequiresApi(Build.VERSION_CODES.P)
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // This is used to align the xml view to this class
-
+        // Set up the layout and hide the status bar
         WindowCompat.setDecorFitsSystemWindows(window, false)
         val controller = WindowInsetsControllerCompat(window, window.decorView)
         controller.hide(WindowInsetsCompat.Type.statusBars())
-
-        // This line ensures the content extends to the area around the notch
         window.attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
 
         // Initialize View Binding
         binding = ActivityDoctorMainBinding.inflate(layoutInflater)
-        setContentView(binding?.root)  // Set the content view with the binding root
+        setContentView(binding?.root)
 
-        val userId = FirestoreClass().getCurrentUserID()
+        // Set up the toolbar and navigation drawer
+        setupActionBar()
+
+        // Assign the NavigationView.OnNavigationItemSelectedListener to navigation view.
+        binding?.navHeaderMain?.setNavigationItemSelectedListener(this)
+
+        // Call modular functions
+        setupRecyclerView()
+        setupSearchView()
 
         // Load doctor details into the UI
         showProgressDialog(resources.getString(R.string.please_wait))
         FirestoreClass().loadUserDoctorDetails(this@DoctorMainActivity)
         hideProgressDialog()
+    }
 
-        binding?.icSignOut?.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            finish()
+    private fun setupRecyclerView() {
+        binding?.rvPatientList?.layoutManager = LinearLayoutManager(this)
+        patientListAdapter = PatientListAdapter(patientList)
+        binding?.rvPatientList?.adapter = patientListAdapter
+    }
+
+    private fun setupSearchView() {
+        val searchView = binding?.searchView
+        searchView?.setIconifiedByDefault(false)
+        binding?.searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (!query.isNullOrEmpty()) {
+                    searchPatients(query)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()) {
+                    // If search text is empty, clear the patient list
+                    clearPatientList()
+                } else {
+                    // If there is text, search for patients
+                    searchPatients(newText)
+                }
+                return false
+            }
+
+        })
+    }
+
+    private fun clearPatientList() {
+        // Clear the patient list in the adapter by passing an empty list
+        patientListAdapter.updateList(ArrayList())
+    }
+
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        val searchView = binding?.searchView
+
+        // If search view is focused and user touches outside, clear focus
+        if (searchView?.hasFocus() == true) {
+            val outRect = Rect()
+            searchView.getGlobalVisibleRect(outRect)
+            if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                searchView.clearFocus()
+            }
+        }
+        return super.dispatchTouchEvent(event)
+    }
+
+    /**
+     * Function to search patients from Firestore based on the query.
+     */
+    private fun searchPatients(query: String) {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection(Constants.PATIENTUSERS)
+            .orderBy("name")
+            .startAt(query)
+            .endAt(query + '\uf8ff')
+            .get()
+            .addOnSuccessListener { documents ->
+                val newPatientList = ArrayList<Patient>()
+                if (!documents.isEmpty) {
+                    for (document in documents) {
+                        val patient = document.toObject(Patient::class.java)
+                        newPatientList.add(patient)
+                    }
+                }
+                // Use the updateList method to refresh the RecyclerView data
+                patientListAdapter.updateList(newPatientList)
+            }
+            .addOnFailureListener { exception ->
+                // Handle failure
+            }
+    }
+
+
+    private fun setupActionBar() {
+        setSupportActionBar(binding?.appBarMainDoctor?.toolbarMainActivity)
+        binding?.appBarMainDoctor?.toolbarMainActivity?.setNavigationIcon(R.drawable.ic_drawer_navigation_menu)
+        binding?.appBarMainDoctor?.toolbarMainActivity?.setNavigationOnClickListener {
+            toggleDrawer()
         }
     }
 
-    fun setDoctorDataInUI(doctor: Doctor) {
-        mDoctorDetails = doctor
+    private fun toggleDrawer() {
+        if (binding?.drawerLayout?.isDrawerOpen(GravityCompat.START) == true) {
+            binding?.drawerLayout?.closeDrawer(GravityCompat.START)
+        } else {
+            binding?.drawerLayout?.openDrawer(GravityCompat.START)
+        }
+    }
 
-        // Load the doctor's profile image using Glide
-        binding?.let {
-            Glide.with(this@DoctorMainActivity)
+    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            R.id.nav_my_profile -> {
+                startActivityForResult(
+                    Intent(this@DoctorMainActivity, DoctorProfileActivity::class.java),
+                    MY_PROFILE_REQUEST_CODE
+                )
+            }
+            R.id.nav_sign_out -> {
+                FirebaseAuth.getInstance().signOut()
+                val intent = Intent(this@DoctorMainActivity, DoctorSignInActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
+                this.finish()
+            }
+        }
+        return true
+    }
+
+    /**
+     * A function to get the current user details from firebase.
+     */
+    fun updateNavigationUserDetails(doctor: Doctor) {
+        val headerView = binding?.navHeaderMain?.getHeaderView(0)
+        val navUserImage = headerView?.findViewById<ImageView>(R.id.iv_user_image)
+        val username = headerView?.findViewById<TextView>(R.id.tv_username)
+
+        username?.text = doctor.name
+        if (navUserImage != null) {
+            Glide
+                .with(this)
                 .load(doctor.image)
                 .centerCrop()
                 .placeholder(R.drawable.ic_user_place_holder)
-                .into(it.ivDoctorProfileImage)
-
-            it.tvDoctorName.text = doctor.name
+                .into(navUserImage)
         }
+    }
+
+    companion object {
+        const val MY_PROFILE_REQUEST_CODE: Int = 11
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        binding = null  // Clear binding when activity is destroyed
+        binding = null
     }
 }

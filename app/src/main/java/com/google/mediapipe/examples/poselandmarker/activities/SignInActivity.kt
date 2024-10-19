@@ -46,7 +46,9 @@ class SignInActivity : BaseActivity() {
 //            WindowManager.LayoutParams.FLAG_FULLSCREEN
 //        )
 
-        setupActionBar()
+        binding?.icNavToIntroPage?.setOnClickListener() {
+            startActivity(Intent(this@SignInActivity,IntroActivity::class.java))
+        }
 
 
 //        if (!autoLoggedIn) {
@@ -89,20 +91,20 @@ class SignInActivity : BaseActivity() {
     /**
      * A function for actionBar Setup.
      */
-    private fun setupActionBar() {
-
-        setSupportActionBar(binding?.toolbarSignInActivity)
-
-        val actionBar = supportActionBar
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
-        }
-
-        binding?.toolbarSignInActivity?.setNavigationOnClickListener {
-            startActivity(Intent(this@SignInActivity,IntroActivity::class.java))
-        }
-    }
+//    private fun setupActionBar() {
+//
+//        setSupportActionBar(binding?.toolbarSignInActivity)
+//
+//        val actionBar = supportActionBar
+//        if (actionBar != null) {
+//            actionBar.setDisplayHomeAsUpEnabled(true)
+//            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
+//        }
+//
+//        binding?.toolbarSignInActivity?.setNavigationOnClickListener {
+//            startActivity(Intent(this@SignInActivity,IntroActivity::class.java))
+//        }
+//    }
 
     // TODO (Step 2: A function for Sign-In using the registered user using the email and password.)
     // START

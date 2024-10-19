@@ -12,7 +12,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.MyProfileActivity">
+    tools:context=".activities.DoctorProfileActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
         android:background="@color/app_bar_color">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_my_profile_activity"
+            android:id="@+id/toolbar_doctor_profile_activity"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
@@ -52,7 +52,7 @@
                 android:padding="@dimen/my_profile_screen_content_padding">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/iv_profile_user_image"
+                    android:id="@+id/iv_profile_doctor_image"
                     android:layout_width="@dimen/my_profile_user_image_size"
                     android:layout_height="@dimen/my_profile_user_image_size"
                     android:contentDescription="@string/image_contentDescription"
@@ -64,7 +64,7 @@
                     android:layout_marginTop="@dimen/my_profile_name_til_marginTop">
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/et_name"
+                        android:id="@+id/et_name_doctor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/name"
@@ -79,7 +79,7 @@
 
                     <!--TODO (Step 4: Here we make the email EditText as focusable false. As it should not be editable.)-->
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/et_email"
+                        android:id="@+id/et_email_doctor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
@@ -96,7 +96,7 @@
                     android:layout_marginTop="@dimen/my_profile_et_mobile_marginTop">
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/et_mobile"
+                        android:id="@+id/et_mobile_doctor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/mobile"
@@ -105,24 +105,24 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-<!--                <Button-->
-<!--                    android:id="@+id/btn_update"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:layout_marginTop="@dimen/my_profile_btn_update_marginTop"-->
-<!--                    android:background="@drawable/shape_button_rounded"-->
-<!--                    android:foreground="?attr/selectableItemBackground"-->
-<!--                    android:gravity="center"-->
-<!--                    android:paddingTop="@dimen/btn_paddingTopBottom"-->
-<!--                    android:paddingBottom="@dimen/btn_paddingTopBottom"-->
-<!--                    android:text="@string/update"-->
-<!--                    android:textColor="@android:color/white"-->
-<!--                    android:textSize="@dimen/btn_text_size" />-->
+                <!--                <Button-->
+                <!--                    android:id="@+id/btn_update"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_gravity="center"-->
+                <!--                    android:layout_marginTop="@dimen/my_profile_btn_update_marginTop"-->
+                <!--                    android:background="@drawable/shape_button_rounded"-->
+                <!--                    android:foreground="?attr/selectableItemBackground"-->
+                <!--                    android:gravity="center"-->
+                <!--                    android:paddingTop="@dimen/btn_paddingTopBottom"-->
+                <!--                    android:paddingBottom="@dimen/btn_paddingTopBottom"-->
+                <!--                    android:text="@string/update"-->
+                <!--                    android:textColor="@android:color/white"-->
+                <!--                    android:textSize="@dimen/btn_text_size" />-->
 
                 <androidx.appcompat.widget.AppCompatButton
 
-                    android:id="@+id/btn_update"
+                    android:id="@+id/btn_update_doctor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

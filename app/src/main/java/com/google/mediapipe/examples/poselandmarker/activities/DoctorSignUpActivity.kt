@@ -48,14 +48,17 @@ class DoctorSignUpActivity : BaseActivity() {
 //            WindowManager.LayoutParams.FLAG_FULLSCREEN
 //        )
 
-        setupActionBar()
+        binding?.icNavToIntroPage?.setOnClickListener {
+            startActivity(Intent(this@DoctorSignUpActivity,IntroActivity::class.java))
+        }
+
 
         // Click event for sign-up button.
-        binding?.btnSignUpDoctor?.setOnClickListener {
+        binding?.btnDoctorSignIn?.setOnClickListener {
             registerUserDoctor()
         }
 
-        binding?.tvAlreadySignedUpDoctor?.setOnClickListener {
+        binding?.tvDoctorAlreadyHasAccount?.setOnClickListener {
             intent = Intent(this, DoctorSignInActivity::class.java)
             startActivity(intent)
         }
@@ -64,19 +67,19 @@ class DoctorSignUpActivity : BaseActivity() {
     /**
      * A function for actionBar Setup.
      */
-    private fun setupActionBar() {
-
-        setSupportActionBar(binding?.toolbarDoctorSignUpActivity)
-
-        val actionBar = supportActionBar
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
-        }
-
-        binding?.toolbarDoctorSignUpActivity?.setNavigationOnClickListener {
-            startActivity(Intent(this@DoctorSignUpActivity,IntroActivity::class.java))}
-    }
+//    private fun setupActionBar() {
+//
+//        setSupportActionBar(binding?.toolbarDoctorSignUpActivity)
+//
+//        val actionBar = supportActionBar
+//        if (actionBar != null) {
+//            actionBar.setDisplayHomeAsUpEnabled(true)
+//            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
+//        }
+//
+//        binding?.toolbarDoctorSignUpActivity?.setNavigationOnClickListener {
+//            startActivity(Intent(this@DoctorSignUpActivity,IntroActivity::class.java))}
+//    }
 
     /**
      * A function to register a user to our app using the Firebase.
@@ -84,9 +87,9 @@ class DoctorSignUpActivity : BaseActivity() {
      */
     private fun registerUserDoctor() {
         // Here we get the text from editText and trim the space
-        val name: String = binding?.etNameDoctor?.text.toString().trim { it <= ' ' }
-        val email: String = binding?.etEmailDoctor?.text.toString().trim { it <= ' ' }
-        val password: String = binding?.etPasswordDoctor?.text.toString().trim { it <= ' ' }
+        val name: String = binding?.etDoctorName?.text.toString().trim { it <= ' ' }
+        val email: String = binding?.etDoctorEmail?.text.toString().trim { it <= ' ' }
+        val password: String = binding?.etDoctorPassword?.text.toString().trim { it <= ' ' }
 
         if (validateForm(name, email, password)) {
             // Show the progress dialog.

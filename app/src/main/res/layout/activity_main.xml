@@ -3,7 +3,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,11 +12,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize">
+            android:layout_marginTop="?attr/actionBarSize"
+            android:paddingTop="30dp">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_exercises"
@@ -25,11 +23,10 @@
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Navigation Drawer (Sliding Drawer Menu) -->
         <include
-            android:id="@+id/app_bar_main"
+            android:id="@+id/app_bar_main_patient"
             layout="@layout/app_bar_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

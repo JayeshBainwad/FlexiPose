@@ -48,7 +48,9 @@ class DoctorSignInActivity : BaseActivity() {
 //            WindowManager.LayoutParams.FLAG_FULLSCREEN
 //        )
 
-        setupActionBar()
+        binding?.icNavToIntroPage?.setOnClickListener {
+            startActivity(Intent(this@DoctorSignInActivity,IntroActivity::class.java))
+        }
 
 
 //        if (!autoLoggedIn) {
@@ -91,20 +93,20 @@ class DoctorSignInActivity : BaseActivity() {
     /**
      * A function for actionBar Setup.
      */
-    private fun setupActionBar() {
-
-        setSupportActionBar(binding?.toolbarDoctorSignInActivity)
-
-        val actionBar = supportActionBar
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
-        }
-
-        binding?.toolbarDoctorSignInActivity?.setNavigationOnClickListener {
-            startActivity(Intent(this@DoctorSignInActivity,IntroActivity::class.java))
-        }
-    }
+//    private fun setupActionBar() {
+//
+//        setSupportActionBar(binding?.toolbarDoctorSignInActivity)
+//
+//        val actionBar = supportActionBar
+//        if (actionBar != null) {
+//            actionBar.setDisplayHomeAsUpEnabled(true)
+//            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
+//        }
+//
+//        binding?.toolbarDoctorSignInActivity?.setNavigationOnClickListener {
+//            startActivity(Intent(this@DoctorSignInActivity,IntroActivity::class.java))
+//        }
+//    }
 
     // TODO (Step 2: A function for Sign-In using the registered user using the email and password.)
     // START

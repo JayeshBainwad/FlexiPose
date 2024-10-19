@@ -1,5 +1,5 @@
 <!-- circle_background.xml -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/doctor_mainPage_bg" />  <!-- Use background color -->
+    <solid android:color="@color/app_bar_color" />  <!-- Use background color -->
     <corners android:radius="50dp" />  <!-- Ensure it's fully circular -->
 </shape>

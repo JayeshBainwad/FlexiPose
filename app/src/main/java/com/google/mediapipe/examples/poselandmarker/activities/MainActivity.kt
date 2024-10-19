@@ -131,9 +131,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     private fun setupActionBar() {
-        setSupportActionBar(binding?.appBarMain?.toolbarMainActivity)
-        binding?.appBarMain?.toolbarMainActivity?.setNavigationIcon(R.drawable.ic_drawer_navigation_menu)
-        binding?.appBarMain?.toolbarMainActivity?.setNavigationOnClickListener {
+        setSupportActionBar(binding?.appBarMainPatient?.toolbarMainActivity)
+        binding?.appBarMainPatient?.toolbarMainActivity?.setNavigationIcon(R.drawable.ic_drawer_navigation_menu)
+        binding?.appBarMainPatient?.toolbarMainActivity?.setNavigationOnClickListener {
             toggleDrawer()
         }
     }
@@ -207,7 +207,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.id.nav_sign_out -> {
                 FirebaseAuth.getInstance().signOut()
                 val intent = Intent(this@MainActivity, SignInActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(intent)
                 this.finish()
             }

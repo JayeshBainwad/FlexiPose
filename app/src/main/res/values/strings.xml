@@ -71,7 +71,7 @@
     <string name="password">Password</string>
     <string name="email">Email</string>
 
-    <string name="sign_in_description_text">Enter your name, email id and password, to register with us.</string>
+    <string name="sign_in_description_text">Enter your email id and password, to login with us.</string>
 
     <string name="please_click_back_again_to_exit">Please click back again to exit.</string>
     <string name="please_wait">Please Wait&#8230;</string>
@@ -112,6 +112,9 @@
     <string name="patient">Patient</string>
     <string name="doctor">Doctor</string>
     <string name="sign_in_doctor">SIGN IN AS DOCTOR</string>
+    <string name="navigate_to_intro">navigate to intro</string>
+    <string name="app_logo">app_logo</string>
+    <string name="search_patients">Search patients...</string>
     <!--END-->
 
 </resources>

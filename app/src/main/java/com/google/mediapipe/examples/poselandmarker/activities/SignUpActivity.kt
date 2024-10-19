@@ -28,6 +28,7 @@ class SignUpActivity : BaseActivity() {
      */
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
+
         //This call the parent constructor
         super.onCreate(savedInstanceState)
         // This is used to align the xml view to this class
@@ -48,7 +49,9 @@ class SignUpActivity : BaseActivity() {
 //            WindowManager.LayoutParams.FLAG_FULLSCREEN
 //        )
 
-        setupActionBar()
+        binding?.icNavToIntroPage?.setOnClickListener() {
+            startActivity(Intent(this@SignUpActivity,IntroActivity::class.java))
+        }
 
         // Click event for sign-up button.
         binding?.btnSignUpPatient?.setOnClickListener {
@@ -64,20 +67,20 @@ class SignUpActivity : BaseActivity() {
     /**
      * A function for actionBar Setup.
      */
-    private fun setupActionBar() {
-
-        setSupportActionBar(binding?.toolbarSignUpActivity)
-
-        val actionBar = supportActionBar
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
-        }
-
-        binding?.toolbarSignUpActivity?.setNavigationOnClickListener {
-            startActivity(Intent(this@SignUpActivity,IntroActivity::class.java))
-        }
-    }
+//    private fun setupActionBar() {
+//
+//        setSupportActionBar(binding?.toolbarSignUpActivity)
+//
+//        val actionBar = supportActionBar
+//        if (actionBar != null) {
+//            actionBar.setDisplayHomeAsUpEnabled(true)
+//            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
+//        }
+//
+//        binding?.toolbarSignUpActivity?.setNavigationOnClickListener {
+//            startActivity(Intent(this@SignUpActivity,IntroActivity::class.java))
+//        }
+//    }
 
     /**
      * A function to register a user to our app using the Firebase.

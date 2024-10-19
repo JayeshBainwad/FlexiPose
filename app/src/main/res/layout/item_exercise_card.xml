@@ -11,7 +11,8 @@
     app:cardElevation="@dimen/card_view_elevation"
     app:cardCornerRadius="@dimen/card_view_corner_radius"
     android:layout_marginHorizontal="10dp"
-    android:layout_marginTop="10dp">
+    android:layout_marginTop="10dp"
+    android:backgroundTint="@color/cv_patientList_bg_color">
 
     <TextView
         android:id="@+id/tv_exercise_name"
@@ -19,6 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="14dp"
         android:textSize="18sp"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:layout_gravity="center"/>
 </androidx.cardview.widget.CardView>

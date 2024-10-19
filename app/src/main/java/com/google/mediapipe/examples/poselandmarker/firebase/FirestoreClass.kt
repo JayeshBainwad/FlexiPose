@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.mediapipe.examples.poselandmarker.activities.CameraActivity
 import com.google.mediapipe.examples.poselandmarker.activities.DoctorMainActivity
+import com.google.mediapipe.examples.poselandmarker.activities.DoctorProfileActivity
 import com.google.mediapipe.examples.poselandmarker.activities.DoctorSignInActivity
 import com.google.mediapipe.examples.poselandmarker.activities.DoctorSignUpActivity
 import com.google.mediapipe.examples.poselandmarker.activities.MainActivity
@@ -179,7 +180,12 @@ class FirestoreClass {
                     }
                     is DoctorMainActivity -> {
                         if (loggedInDoctor != null) {
-                            activity.setDoctorDataInUI(loggedInDoctor)
+                            activity.updateNavigationUserDetails(loggedInDoctor)
+                        }
+                    }
+                    is DoctorProfileActivity -> {
+                        if (loggedInDoctor != null) {
+                            activity.setUserDataInUI(loggedInDoctor)
                         }
                     }
                 }
@@ -191,6 +197,9 @@ class FirestoreClass {
                         activity.hideProgressDialog()
                     }
                     is DoctorMainActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is DoctorProfileActivity -> {
                         activity.hideProgressDialog()
                     }
                 }
@@ -214,6 +223,34 @@ class FirestoreClass {
                 Log.e(activity.javaClass.simpleName, "Profile Data updated successfully!")
 
                 Toast.makeText(activity, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
+
+                // Notify the success result.
+                activity.profileUpdateSuccess()
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while creating a board.",
+                    e
+                )
+                Toast.makeText(activity, "Error while updating Profile", Toast.LENGTH_SHORT).show()
+
+            }
+    }
+
+    /**
+     * A function to update the user profile data into the database.
+     */
+    fun updateDoctorProfileData(activity: DoctorProfileActivity, userHashMap: HashMap<String, Any>) {
+        mFireStore.collection(Constants.DOCTORUSERS) // Collection Name
+            .document(getCurrentUserID()) // Document ID
+            .update(userHashMap) // A hashmap of fields which are to be updated.
+            .addOnSuccessListener {
+                // Profile data is updated successfully.
+                Log.e(activity.javaClass.simpleName, "Doctor Profile Data updated successfully!")
+
+                Toast.makeText(activity, "Doctor Profile updated successfully!", Toast.LENGTH_SHORT).show()
 
                 // Notify the success result.
                 activity.profileUpdateSuccess()

@@ -69,9 +69,20 @@ class DoctorMainActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
 
     private fun setupRecyclerView() {
         binding?.rvPatientList?.layoutManager = LinearLayoutManager(this)
-        patientListAdapter = PatientListAdapter(patientList)
+
+        // Pass a lambda function for handling patient item clicks
+        patientListAdapter = PatientListAdapter(patientList) { selectedPatient ->
+            // Navigate to the PatientExerciseDetailsActivity and pass patient details
+            val intent = Intent(this@DoctorMainActivity, PatientExerciseDetailsActivity::class.java)
+            intent.putExtra("PATIENT_ID", selectedPatient.id) // Assuming there's a 'id' field in Patient
+            intent.putExtra("PATIENT_NAME", selectedPatient.name)
+            intent.putExtra("PATIENT_IMAGE", selectedPatient.image)
+            startActivity(intent)
+        }
+
         binding?.rvPatientList?.adapter = patientListAdapter
     }
+
 
     private fun setupSearchView() {
         val searchView = binding?.searchView

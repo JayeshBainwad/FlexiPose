@@ -11,7 +11,9 @@ import com.bumptech.glide.Glide
 import com.google.mediapipe.examples.poselandmarker.model.Patient
 
 class PatientListAdapter(
-    private var patientList: List<Patient>
+    private var patientList: List<Patient>,
+    private val onPatientClick: (Patient) -> Unit // Lambda function for handling click events
+
 ) : RecyclerView.Adapter<PatientListAdapter.PatientViewHolder>() {
 
     inner class PatientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -27,7 +29,15 @@ class PatientListAdapter(
     override fun onBindViewHolder(holder: PatientViewHolder, position: Int) {
         val patient = patientList[position]
         holder.patientName.text = patient.name
-        Glide.with(holder.itemView.context).load(patient.image).placeholder(R.drawable.ic_user_place_holder).into(holder.patientImage)
+        Glide.with(holder.itemView.context)
+            .load(patient.image)
+            .placeholder(R.drawable.ic_user_place_holder)
+            .into(holder.patientImage)
+
+        // Set the click listener to navigate to the exercise details activity
+        holder.itemView.setOnClickListener {
+            onPatientClick(patient)
+        }
     }
 
     override fun getItemCount(): Int = patientList.size

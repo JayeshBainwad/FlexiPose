@@ -68,6 +68,25 @@ class FirestoreClass {
             }
     }
 
+    fun getAllExercisesForPatient(patientId: String, onComplete: (List<Exercise>) -> Unit) {
+        val exerciseCollectionRef = mFireStore.collection(Constants.PATIENTUSERS)
+            .document(patientId)
+            .collection(Constants.EXERCISE)
+
+        exerciseCollectionRef.get()
+            .addOnSuccessListener { querySnapshot ->
+                val exerciseList = querySnapshot.documents.mapNotNull { documentSnapshot ->
+                    documentSnapshot.toObject(Exercise::class.java)
+                }
+                onComplete(exerciseList)
+            }
+            .addOnFailureListener { e ->
+                Log.e("FirestoreClass", "Error retrieving exercises", e)
+                onComplete(emptyList()) // Return an empty list in case of failure
+            }
+    }
+
+
     /**
      * A function to make an entry of the registered user in the firestore database.
      */
@@ -98,9 +117,6 @@ class FirestoreClass {
                 Log.e(activity.javaClass.simpleName, "Error retrieving documents", e)
             }
     }
-
-
-
 
     /**
      * A function to SignIn using firebase and get the user details from Firestore Database.

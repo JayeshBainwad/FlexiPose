@@ -24,6 +24,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
         <activity
+            android:name=".activities.PatientExerciseDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.DoctorProfileActivity"
             android:exported="false" />
         <activity

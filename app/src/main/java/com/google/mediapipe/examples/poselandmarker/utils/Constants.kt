@@ -6,6 +6,8 @@ object Constants {
     // This  is used for the collection name for USERS.
     const val PATIENTUSERS: String = "patient"
     const val DOCTORUSERS: String = "doctor"
+    const val PATIENT_ID: String = "PATIENT_ID"
+    const val EXERCISES: String = "exercises"
 
     // Firebase database field names
     const val IMAGE: String = "image"

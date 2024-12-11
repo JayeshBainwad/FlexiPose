@@ -1,4 +1,4 @@
-package com.google.mediapipe.examples.poselandmarker.activities
+package com.google.mediapipe.examples.poselandmarker.activities.patient
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
@@ -19,13 +19,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
-import com.google.mediapipe.examples.poselandmarker.OverlayView
 import com.google.mediapipe.examples.poselandmarker.PoseLandmarkerHelper
-import com.google.mediapipe.examples.poselandmarker.R
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityCameraBinding
-import com.google.mediapipe.examples.poselandmarker.exercises.ElbowExercise
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors

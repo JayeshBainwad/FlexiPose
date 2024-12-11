@@ -1,4 +1,4 @@
-package com.google.mediapipe.examples.poselandmarker.activities
+package com.google.mediapipe.examples.poselandmarker.activities.patient
 
 import android.content.Intent
 import android.os.Build
@@ -15,6 +15,8 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.mediapipe.examples.poselandmarker.R
+import com.google.mediapipe.examples.poselandmarker.activities.BaseActivity
+import com.google.mediapipe.examples.poselandmarker.activities.IntroActivity
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivitySignUpBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
 import com.google.mediapipe.examples.poselandmarker.model.Patient
@@ -50,7 +52,7 @@ class SignUpActivity : BaseActivity() {
 //        )
 
         binding?.icNavToIntroPage?.setOnClickListener() {
-            startActivity(Intent(this@SignUpActivity,IntroActivity::class.java))
+            startActivity(Intent(this@SignUpActivity, IntroActivity::class.java))
         }
 
         // Click event for sign-up button.

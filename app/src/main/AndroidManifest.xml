@@ -16,18 +16,21 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/app_logo_home_page"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/app_logo_home_page"
         android:supportsRtl="true"
         android:taskAffinity=""
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
         <activity
-            android:name=".activities.PatientExerciseDetailsActivity"
+            android:name=".activities.doctor.SavedPatientListActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.DoctorProfileActivity"
+            android:name=".activities.doctor.PatientExerciseDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.doctor.DoctorProfileActivity"
             android:exported="false" />
         <activity
             android:name=".activities.IntroActivity"
@@ -38,7 +41,7 @@
                 android:value="true" />
         </activity>
         <activity
-            android:name=".activities.DoctorSignUpActivity"
+            android:name=".activities.doctor.DoctorSignUpActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar2">
             <meta-data
@@ -46,7 +49,7 @@
                 android:value="true" />
         </activity>
         <activity
-            android:name=".activities.DoctorSignInActivity"
+            android:name=".activities.doctor.DoctorSignInActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar2">
             <meta-data
@@ -54,7 +57,7 @@
                 android:value="true" />
         </activity>
         <activity
-            android:name=".activities.DoctorMainActivity"
+            android:name=".activities.doctor.DoctorMainActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar2">
             <meta-data
@@ -65,7 +68,7 @@
             android:name=".activities.GalleryActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.patient.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar2">
@@ -74,10 +77,10 @@
                 android:value="true" />
         </activity>
         <activity
-            android:name=".activities.CameraActivity"
+            android:name=".activities.patient.CameraActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.MyProfileActivity"
+            android:name=".activities.patient.MyProfileActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar2" />
         <activity
@@ -93,7 +96,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.SignInActivity"
+            android:name=".activities.patient.SignInActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar2">
 
@@ -103,7 +106,7 @@
                 android:value="true" />
         </activity>
         <activity
-            android:name=".activities.SignUpActivity"
+            android:name=".activities.patient.SignUpActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar2" />
     </application>

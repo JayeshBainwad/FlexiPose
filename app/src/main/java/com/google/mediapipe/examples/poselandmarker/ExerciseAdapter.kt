@@ -1,8 +1,8 @@
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.mediapipe.examples.poselandmarker.activities.ExerciseType
-import com.google.mediapipe.examples.poselandmarker.activities.MainActivity
+import com.google.mediapipe.examples.poselandmarker.activities.patient.ExerciseType
+import com.google.mediapipe.examples.poselandmarker.activities.patient.MainActivity
 import com.google.mediapipe.examples.poselandmarker.databinding.ItemExerciseCardBinding
 
 class ExerciseAdapter(

@@ -10,9 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.google.mediapipe.examples.poselandmarker.R
+import com.google.mediapipe.examples.poselandmarker.activities.doctor.DoctorSignUpActivity
+import com.google.mediapipe.examples.poselandmarker.activities.patient.SignUpActivity
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityIntroBinding
-import com.google.mediapipe.examples.poselandmarker.databinding.ActivitySplashBinding
 
 class IntroActivity : AppCompatActivity() {
     

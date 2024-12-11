@@ -1,4 +1,4 @@
-package com.google.mediapipe.examples.poselandmarker.activities
+package com.google.mediapipe.examples.poselandmarker.activities.patient
 
 import android.content.Intent
 import android.os.Build
@@ -12,6 +12,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.mediapipe.examples.poselandmarker.R
+import com.google.mediapipe.examples.poselandmarker.activities.BaseActivity
+import com.google.mediapipe.examples.poselandmarker.activities.IntroActivity
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivitySignInBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
 import com.google.mediapipe.examples.poselandmarker.model.Patient
@@ -47,7 +49,7 @@ class SignInActivity : BaseActivity() {
 //        )
 
         binding?.icNavToIntroPage?.setOnClickListener() {
-            startActivity(Intent(this@SignInActivity,IntroActivity::class.java))
+            startActivity(Intent(this@SignInActivity, IntroActivity::class.java))
         }
 
 

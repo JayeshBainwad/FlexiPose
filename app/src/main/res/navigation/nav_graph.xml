@@ -19,7 +19,7 @@
 
     <activity
         android:id="@+id/CameraActivity"
-        android:name="com.google.mediapipe.examples.poselandmarker.activities.CameraActivity"
+        android:name="com.google.mediapipe.examples.poselandmarker.activities.patient.CameraActivity"
         android:label="activity_exercise_camera"
         tools:layout="@layout/activity_camera" />
 

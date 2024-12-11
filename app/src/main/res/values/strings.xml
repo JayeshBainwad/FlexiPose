@@ -115,6 +115,7 @@
     <string name="navigate_to_intro">navigate to intro</string>
     <string name="app_logo">app_logo</string>
     <string name="search_patients">Search patients...</string>
+    <string name="patient_list">Patient List</string>
     <!--END-->
 
 </resources>

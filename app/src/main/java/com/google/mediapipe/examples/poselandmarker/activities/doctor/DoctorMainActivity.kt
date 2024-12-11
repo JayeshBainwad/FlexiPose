@@ -1,18 +1,18 @@
-package com.google.mediapipe.examples.poselandmarker.activities
+package com.google.mediapipe.examples.poselandmarker.activities.doctor
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.core.view.WindowCompat
@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.mediapipe.examples.poselandmarker.PatientListAdapter
 import com.google.mediapipe.examples.poselandmarker.R
+import com.google.mediapipe.examples.poselandmarker.activities.BaseActivity
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityDoctorMainBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
 import com.google.mediapipe.examples.poselandmarker.model.Doctor
@@ -51,6 +52,13 @@ class DoctorMainActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
         binding = ActivityDoctorMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
+        // Set nav_patient_list visibility to VISIBLE
+        // Note: You might need to adjust this part depending on how you handle the navigation menu
+        val navView: NavigationView = findViewById(R.id.nav_header_main) // Replace with your NavigationView ID
+        val menu: Menu = navView.menu
+        val patientListItem = menu.findItem(R.id.nav_patient_list)
+        patientListItem.isVisible = true // or set to false to hide
+
         // Set up the toolbar and navigation drawer
         setupActionBar()
 
@@ -70,17 +78,43 @@ class DoctorMainActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
     private fun setupRecyclerView() {
         binding?.rvPatientList?.layoutManager = LinearLayoutManager(this)
 
-        // Pass a lambda function for handling patient item clicks
-        patientListAdapter = PatientListAdapter(patientList) { selectedPatient ->
+        // Pass a lambda function for handling patient item clicks and add button clicks
+        patientListAdapter = PatientListAdapter(patientList, { selectedPatient ->
             // Navigate to the PatientExerciseDetailsActivity and pass patient details
             val intent = Intent(this@DoctorMainActivity, PatientExerciseDetailsActivity::class.java)
             intent.putExtra("PATIENT_ID", selectedPatient.id) // Assuming there's a 'id' field in Patient
             intent.putExtra("PATIENT_NAME", selectedPatient.name)
             intent.putExtra("PATIENT_IMAGE", selectedPatient.image)
             startActivity(intent)
-        }
+        }, { patientToAdd ->
+            // Handle the add button click here (e.g., add the patient to saved patients)
+            addPatient(patientToAdd) // Call your add patient function here
+        })
 
         binding?.rvPatientList?.adapter = patientListAdapter
+    }
+
+
+    /**
+     * Function to add a patient name to Firestore.
+     */
+    private fun addPatient(patient: Patient) {
+        val db = FirebaseFirestore.getInstance()
+        val currentDoctorId = FirestoreClass().getCurrentUserID() // Assuming this function exists
+
+        // Add the patient to the "Saved Patients" collection for the current doctor
+        db.collection(Constants.DOCTORUSERS)
+            .document(currentDoctorId)
+            .collection("Saved Patients")
+            .document(patient.id) // Assuming 'id' is unique
+            .set(patient) // Save the patient object
+            .addOnSuccessListener {
+                Toast.makeText(this, "Patient added successfully", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Log.e("DoctorMainActivity", "Error adding patient", e)
+                Toast.makeText(this, "Error adding patient", Toast.LENGTH_SHORT).show()
+            }
     }
 
 
@@ -174,6 +208,7 @@ class DoctorMainActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+
         when (menuItem.itemId) {
             R.id.nav_my_profile -> {
                 startActivityForResult(
@@ -187,6 +222,11 @@ class DoctorMainActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(intent)
                 this.finish()
+            }
+            R.id.nav_patient_list -> {
+                // Navigate to SavedPatientListActivity to display saved patients
+                val intent = Intent(this@DoctorMainActivity, SavedPatientListActivity::class.java)
+                startActivity(intent)
             }
         }
         return true

@@ -13,6 +13,12 @@
             android:id="@+id/nav_sign_out"
             android:icon="@drawable/ic_nav_sign_out"
             android:title="@string/nav_sign_out" />
+
+        <item
+            android:id="@+id/nav_patient_list"
+            android:icon="@drawable/ic_add_circle_24"
+            android:title="@string/patient_list"
+            android:visible="false"/>
     </group>
 </menu>
 <!--END-->

@@ -6,15 +6,15 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.mediapipe.examples.poselandmarker.activities.CameraActivity
-import com.google.mediapipe.examples.poselandmarker.activities.DoctorMainActivity
-import com.google.mediapipe.examples.poselandmarker.activities.DoctorProfileActivity
-import com.google.mediapipe.examples.poselandmarker.activities.DoctorSignInActivity
-import com.google.mediapipe.examples.poselandmarker.activities.DoctorSignUpActivity
-import com.google.mediapipe.examples.poselandmarker.activities.MainActivity
-import com.google.mediapipe.examples.poselandmarker.activities.MyProfileActivity
-import com.google.mediapipe.examples.poselandmarker.activities.SignInActivity
-import com.google.mediapipe.examples.poselandmarker.activities.SignUpActivity
+import com.google.mediapipe.examples.poselandmarker.activities.patient.CameraActivity
+import com.google.mediapipe.examples.poselandmarker.activities.doctor.DoctorMainActivity
+import com.google.mediapipe.examples.poselandmarker.activities.doctor.DoctorProfileActivity
+import com.google.mediapipe.examples.poselandmarker.activities.doctor.DoctorSignInActivity
+import com.google.mediapipe.examples.poselandmarker.activities.doctor.DoctorSignUpActivity
+import com.google.mediapipe.examples.poselandmarker.activities.patient.MainActivity
+import com.google.mediapipe.examples.poselandmarker.activities.patient.MyProfileActivity
+import com.google.mediapipe.examples.poselandmarker.activities.patient.SignInActivity
+import com.google.mediapipe.examples.poselandmarker.activities.patient.SignUpActivity
 import com.google.mediapipe.examples.poselandmarker.model.Doctor
 import com.google.mediapipe.examples.poselandmarker.model.Exercise
 import com.google.mediapipe.examples.poselandmarker.utils.Constants
@@ -88,25 +88,25 @@ class FirestoreClass {
 
 
     /**
-     * A function to make an entry of the registered user in the firestore database.
+     * A function to make an entry of the registered user in the Firestore database.
      */
     fun storeExerciseData(activity: CameraActivity, exerciseInfo: Exercise, exerciseName: String) {
-        // Access the "patient" collection
-        val exerciseCollectionRef = mFireStore.collection(Constants.PATIENTUSERS)
-            .document(getCurrentUserID()) // Document ID for the user
-            .collection(Constants.EXERCISE) // Collection for exercises
+        // Access the "Exercises" collection under the specific patient document
+        val exerciseTypeCollectionRef = mFireStore.collection(Constants.PATIENTUSERS)
+            .document(getCurrentUserID()) // Patient document
+            .collection(exerciseName)
 
-        // Retrieve the current number of documents and create a new one based on the count
-        exerciseCollectionRef.get()
+        // Retrieve the current document count to generate an incremented document name
+        exerciseTypeCollectionRef.get()
             .addOnSuccessListener { querySnapshot ->
                 val documentCount = querySnapshot.size() + 1 // Increment count for new document
-                val newExerciseDocName = "$exerciseName$documentCount" // e.g., ElbowExercise1, ElbowExercise2
+                val newExerciseDocName = "$exerciseName$documentCount" // e.g., "ElbowExercise1"
 
-                // Create a new document with the generated name
-                exerciseCollectionRef.document(newExerciseDocName)
-                    .set(exerciseInfo, SetOptions.merge()) // Merge exercise info
+                // Add the exercise details as a new document in the specific exercise collection
+                exerciseTypeCollectionRef.document(newExerciseDocName)
+                    .set(exerciseInfo, SetOptions.merge()) // Store exercise info
                     .addOnSuccessListener {
-                        // Success logic
+                        // Success logic, if needed
                         // activity.userRegisteredSuccess() // Uncomment if needed
                     }
                     .addOnFailureListener { e ->
@@ -117,6 +117,11 @@ class FirestoreClass {
                 Log.e(activity.javaClass.simpleName, "Error retrieving documents", e)
             }
     }
+
+
+
+
+
 
     /**
      * A function to SignIn using firebase and get the user details from Firestore Database.

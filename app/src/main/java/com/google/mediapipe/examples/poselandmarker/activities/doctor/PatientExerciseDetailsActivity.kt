@@ -1,4 +1,4 @@
-package com.google.mediapipe.examples.poselandmarker.activities
+package com.google.mediapipe.examples.poselandmarker.activities.doctor
 
 import android.graphics.Typeface
 import android.os.Build

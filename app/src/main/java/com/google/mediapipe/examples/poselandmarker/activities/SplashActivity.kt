@@ -6,17 +6,13 @@ import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.view.LayoutInflater
-import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.google.common.io.Resources
-import com.google.mediapipe.examples.poselandmarker.R
+import com.google.mediapipe.examples.poselandmarker.activities.doctor.DoctorMainActivity
+import com.google.mediapipe.examples.poselandmarker.activities.patient.MainActivity
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivitySplashBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
 

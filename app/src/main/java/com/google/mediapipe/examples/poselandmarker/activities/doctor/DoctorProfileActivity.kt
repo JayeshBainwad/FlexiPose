@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package com.google.mediapipe.examples.poselandmarker.activities
+package com.google.mediapipe.examples.poselandmarker.activities.doctor
 
 import android.app.Activity
 import android.content.Intent
@@ -19,19 +19,20 @@ import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.mediapipe.examples.poselandmarker.R
-import com.google.mediapipe.examples.poselandmarker.databinding.ActivityMyProfileBinding
+import com.google.mediapipe.examples.poselandmarker.activities.BaseActivity
+import com.google.mediapipe.examples.poselandmarker.databinding.ActivityDoctorProfileBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
-import com.google.mediapipe.examples.poselandmarker.model.Patient
+import com.google.mediapipe.examples.poselandmarker.model.Doctor
 import com.google.mediapipe.examples.poselandmarker.utils.Constants
 import java.io.IOException
 
-class MyProfileActivity : BaseActivity() {
+class DoctorProfileActivity : BaseActivity() {
 
-    private var binding: ActivityMyProfileBinding? = null
+    private var binding: ActivityDoctorProfileBinding? = null
     private var mSelectedImageFileUri: Uri? = null
 
     // A global variable for user details.
-    private lateinit var mPatientDetails: Patient
+    private lateinit var mDoctorDetails: Doctor
 
     // A global variable for a user profile image URL
     private var mProfileImageURL: String = ""
@@ -46,19 +47,19 @@ class MyProfileActivity : BaseActivity() {
 
         window.attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
 
-        binding = ActivityMyProfileBinding.inflate(layoutInflater)
+        binding = ActivityDoctorProfileBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        FirestoreClass().loadUserDetails(this@MyProfileActivity)
+        FirestoreClass().loadUserDoctorDetails(this@DoctorProfileActivity)
 
         setupActionBar()
 
-        binding?.ivProfileUserImage?.setOnClickListener {
+        binding?.ivProfileDoctorImage?.setOnClickListener {
             // Call the file chooser function without permission check
             showFileChooser()
         }
 
-        binding?.btnUpdate?.setOnClickListener {
+        binding?.btnUpdateDoctor?.setOnClickListener {
             // Here if the image is not selected then update the other details of user.
             if (mSelectedImageFileUri != null) {
 
@@ -85,8 +86,8 @@ class MyProfileActivity : BaseActivity() {
         if (resultCode == Activity.RESULT_OK && requestCode == PICK_FILE_REQUEST_CODE && data?.data != null) {
             mSelectedImageFileUri = data.data
             try {
-                binding?.ivProfileUserImage?.let {
-                    Glide.with(this@MyProfileActivity)
+                binding?.ivProfileDoctorImage?.let {
+                    Glide.with(this@DoctorProfileActivity)
                         .load(Uri.parse(mSelectedImageFileUri.toString()))
                         .centerCrop()
                         .placeholder(R.drawable.ic_user_place_holder)
@@ -144,7 +145,7 @@ class MyProfileActivity : BaseActivity() {
                         }
                 }.addOnFailureListener { exception ->
                     Toast.makeText(
-                        this@MyProfileActivity,
+                        this@DoctorProfileActivity,
                         exception.message,
                         Toast.LENGTH_LONG
                     ).show()
@@ -161,20 +162,20 @@ class MyProfileActivity : BaseActivity() {
 
         val userHashMap = HashMap<String, Any>()
 
-        if (mProfileImageURL.isNotEmpty() && mProfileImageURL != mPatientDetails.image) {
+        if (mProfileImageURL.isNotEmpty() && mProfileImageURL != mDoctorDetails.image) {
             userHashMap[Constants.IMAGE] = mProfileImageURL
         }
 
-        if (binding?.etName?.text.toString() != mPatientDetails.name) {
-            userHashMap[Constants.NAME] = binding?.etName?.text.toString()
+        if (binding?.etNameDoctor?.text.toString() != mDoctorDetails.name) {
+            userHashMap[Constants.NAME] = binding?.etNameDoctor?.text.toString()
         }
 
-        if (binding?.etMobile?.text.toString() != mPatientDetails.mobile.toString()) {
-            userHashMap[Constants.MOBILE] = binding?.etMobile?.text.toString().toLong()
+        if (binding?.etMobileDoctor?.text.toString() != mDoctorDetails.mobile.toString()) {
+            userHashMap[Constants.MOBILE] = binding?.etMobileDoctor?.text.toString().toLong()
         }
 
         // Update the data in the database.
-        FirestoreClass().updateUserProfileData(this@MyProfileActivity, userHashMap)
+        FirestoreClass().updateDoctorProfileData(this@DoctorProfileActivity, userHashMap)
     }
 
     /**
@@ -188,42 +189,41 @@ class MyProfileActivity : BaseActivity() {
         // START
         setResult(Activity.RESULT_OK)
         // END
-        startActivity(Intent(this@MyProfileActivity, MainActivity::class.java))
+        startActivity(Intent(this@DoctorProfileActivity, DoctorMainActivity::class.java))
         finish()
     }
 
     private fun setupActionBar() {
-        setSupportActionBar(binding?.toolbarMyProfileActivity)
+        setSupportActionBar(binding?.toolbarDoctorProfileActivity)
         val actionBar = supportActionBar
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
             actionBar.title = resources.getString(R.string.my_profile)
         }
-        binding?.toolbarMyProfileActivity?.setNavigationOnClickListener { onBackPressed() }
+        binding?.toolbarDoctorProfileActivity?.setNavigationOnClickListener { onBackPressed() }
     }
 
-    fun setUserDataInUI(patient: Patient) {
-
+    fun setUserDataInUI(doctor: Doctor) {
         // Initialize the user details variable
-        mPatientDetails = patient
+        mDoctorDetails = doctor
 
-        Glide.with(this@MyProfileActivity)
-            .load(patient.image)
+        Glide.with(this@DoctorProfileActivity)
+            .load(doctor.image)
             .centerCrop()
             .placeholder(R.drawable.ic_user_place_holder)
-            .into(binding?.ivProfileUserImage!!)
+            .into(binding?.ivProfileDoctorImage!!)
 
-        binding?.etName?.setText(patient.name)
-        binding?.etEmail?.setText(patient.email)
-        if (patient.mobile != 0L) {
-            binding?.etMobile?.setText(patient.mobile.toString())
+        binding?.etNameDoctor?.setText(doctor.name)
+        binding?.etEmailDoctor?.setText(doctor.email)
+        if (doctor.mobile != 0L) {
+            binding?.etMobileDoctor?.setText(doctor.mobile.toString())
         }
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-        startActivity(Intent(this, MainActivity::class.java))
+        startActivity(Intent(this, DoctorMainActivity::class.java))
     }
 
     override fun onDestroy() {

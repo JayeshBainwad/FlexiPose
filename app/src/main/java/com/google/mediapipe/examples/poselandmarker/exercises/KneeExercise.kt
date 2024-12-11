@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.mediapipe.examples.poselandmarker.R
-import com.google.mediapipe.examples.poselandmarker.activities.CameraActivity
+import com.google.mediapipe.examples.poselandmarker.activities.patient.CameraActivity
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityCameraBinding
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityMainBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
@@ -41,15 +41,15 @@ class KneeExercise(context: Context?, attrs: AttributeSet?) : View(context, attr
     private lateinit var database: DatabaseReference
 
     // Variables for tracking reps and ROM
-    private var currentRepMaxAngle = 0f
-    private var currentRepMinAngle = 180f
+    private var currentRepMaxAngle = 0
+    private var currentRepMinAngle = 180
     private var repCount = 0
     private val maxReps = 3
     private var isFlexing = false // True if the elbow is flexing
 
     // List to store max ROM for each rep
-    private var repMaxAngles = mutableListOf<Float>()
-    private var repMinAngles = mutableListOf<Float>()
+    private var repMaxAngles = mutableListOf<Int>()
+    private var repMinAngles = mutableListOf<Int>()
     private var angleCount = 0
 
     private var bindingCameraActivity: ActivityCameraBinding? = null
@@ -81,9 +81,9 @@ class KneeExercise(context: Context?, attrs: AttributeSet?) : View(context, attr
         storeExerciseData()
         repCount = 0
         repMaxAngles.clear()
-        bindingCameraActivity?.btnRestart?.visibility = View.GONE
+//        bindingCameraActivity?.btnRestart?.visibility = View.GONE
         isFlexing = false
-        currentRepMaxAngle = 0f
+        currentRepMaxAngle = 0
         bindingCameraActivity?.tvRepCount?.text = "Reps: 0"
     }
 
@@ -261,40 +261,43 @@ class KneeExercise(context: Context?, attrs: AttributeSet?) : View(context, attr
         }
     }
 
+    // Function to track reps based on the elbow angle
     @SuppressLint("SetTextI18n")
     private fun trackRepLeftKnee(angle: Double) {
-        if (repCount >= maxReps) {
-            bindingCameraActivity?.btnRestart?.visibility = View.VISIBLE // Show restart button after completing 3 reps
-            return // Stop after 3 reps
+        // Update the current minimum angle
+        if (angle < currentRepMinAngle) {
+            currentRepMinAngle = angle.toInt()
         }
 
-        // Update the max angle in the current rep
+        // Update the current maximum angle
         if (angle > currentRepMaxAngle) {
-            currentRepMaxAngle = angle.toFloat()
+            currentRepMaxAngle = angle.toInt()
         }
 
         // Detect flexing and extension
         if (angle < 90 && !isFlexing) {
-            isFlexing = true // Knee flexing phase started
-            repMinAngles.add(currentRepMinAngle)
-        } else if (angle > 160 && isFlexing) {
-            isFlexing = false // Knee flexing phase ended, rep is complete
+            isFlexing = true // Flexing phase started
+        } else if (angle > 145 && isFlexing) {
+            isFlexing = false // Flexing phase ended, rep is complete
 
-            // Store max ROM for this rep
+            // Store the current rep's max and min angles
             repMaxAngles.add(currentRepMaxAngle)
+            repMinAngles.add(currentRepMinAngle)
 
-            // Increment rep count
+            // Reset for the next rep
+            currentRepMaxAngle = 0
+            currentRepMinAngle = 180
+
+            // Increment the rep count
             repCount++
 
+            // Update the UI
             post {
                 bindingCameraActivity?.tvRepCount?.text = "Reps: $repCount"
             }
-
-            // Reset the max angle for the next rep
-            currentRepMaxAngle = 0f
-            currentRepMinAngle = 0f
         }
     }
+
 
 //    @SuppressLint("SetTextI18n")
 //    fun calculateLeftShoulderAngleAndReps(canvas: Canvas) {
@@ -409,8 +412,8 @@ class KneeExercise(context: Context?, attrs: AttributeSet?) : View(context, attr
     // Store exercise data function
     private fun storeExerciseData() {
         val exerciseInfo = Exercise(
-            minAngle = repMinAngles.minOrNull()?.toDouble() ?: 0.0,
-            maxAngle = repMaxAngles.maxOrNull()?.toDouble() ?: 0.0,
+            minAngle = repMinAngles.minOrNull()?.toInt() ?: 0,
+            maxAngle = repMaxAngles.maxOrNull()?.toInt() ?: 0,
             successfulReps = repCount.toString()
         )
         // Store the exercise data using the exercise name

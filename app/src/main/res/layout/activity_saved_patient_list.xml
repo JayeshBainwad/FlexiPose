@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="false"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:openDrawer="start"
-    tools:context=".activities.doctor.DoctorMainActivity">
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.doctor.SavedPatientListActivity">
+
+    <!-- Navigation Drawer (Sliding Drawer Menu) -->
+    <include
+        android:id="@+id/app_bar_main_doctor_saved_patient"
+        layout="@layout/app_bar_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/patient_card_list"
@@ -36,7 +40,7 @@
 
         <!-- RecyclerView to display the list of CardViews -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_patient_list"
+            android:id="@+id/rvSavedPatientList"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clipToPadding="true"
@@ -49,20 +53,5 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Navigation Drawer (Sliding Drawer Menu) -->
-    <include
-        android:id="@+id/app_bar_main_doctor"
-        layout="@layout/app_bar_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_header_main"
-        app:headerLayout="@layout/nav_header_main"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:menu="@menu/activity_main_drawer"/>
-
-</androidx.drawerlayout.widget.DrawerLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

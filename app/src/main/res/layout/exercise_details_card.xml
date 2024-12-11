@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="4dp"
-    android:background="?android:attr/selectableItemBackground">
+    android:background="?android:attr/selectableItemBackground"
+    android:layout_marginBottom="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +23,7 @@
             android:textStyle="bold"
             android:textSize="18sp"
             android:textColor="@android:color/black"
-            android:paddingBottom="8dp"/>
+            android:paddingBottom="8dp" />
 
         <!-- Min and Max Angle -->
         <TextView
@@ -32,7 +33,7 @@
             android:text="Min Angle: 0°"
             android:textSize="16sp"
             android:textColor="@android:color/black"
-            android:paddingBottom="4dp"/>
+            android:paddingBottom="4dp" />
 
         <TextView
             android:id="@+id/tvMaxAngles"
@@ -41,7 +42,7 @@
             android:text="Max Angle: 180°"
             android:textSize="16sp"
             android:textColor="@android:color/black"
-            android:paddingBottom="4dp"/>
+            android:paddingBottom="4dp" />
 
         <!-- Successful Reps -->
         <TextView
@@ -50,7 +51,17 @@
             android:layout_height="wrap_content"
             android:text="Successful Reps: 3"
             android:textSize="16sp"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black"
+            android:paddingBottom="4dp" />
+
+        <!-- Time -->
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time: 14:30:00"
+            android:textSize="16sp"
+            android:textColor="@android:color/black" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

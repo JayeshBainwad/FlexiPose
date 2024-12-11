@@ -147,37 +147,52 @@ class PatientExerciseDetailsActivity : AppCompatActivity() {
         val patientId = intent.getStringExtra("PATIENT_ID")
 
         if (patientId != null) {
-            // Fetch exercises from the specific patient's document
-            firestore.collection(Constants.PATIENTUSERS)
-                .document(patientId)  // Use patientId here instead of userID
-                .collection(Constants.EXERCISE)
-                .get()
-                .addOnSuccessListener { querySnapshot ->
-                    for (document in querySnapshot.documents) {
-                        val documentName = document.id
-                        val exercise = document.toObject(Exercise::class.java)
+            // List to store exercises with collection names
+            val exerciseListWithNames = mutableListOf<Pair<String, Exercise>>()
 
-                        if (exercise != null) {
-                            Log.d("ExerciseData", "Document: $documentName, Exercise: $exercise")
-                            exerciseListWithNames.add(Pair(documentName, exercise))
+            // Assume that exercise collections have predefined names. You can manually specify them here.
+            val exerciseNames = listOf("ElbowExercise", "KneeExercise", "ShoulderExercise") // Example exercise collection names
+
+            // Loop through each exercise collection
+            for (exerciseName in exerciseNames) {
+                // Fetch exercises from the specific patient's document and collection
+                firestore.collection(Constants.PATIENTUSERS)
+                    .document(patientId)
+                    .collection(exerciseName)
+                    .get()
+                    .addOnSuccessListener { querySnapshot ->
+                        for (document in querySnapshot.documents) {
+                            val documentName = document.id
+                            val exercise = document.toObject(Exercise::class.java)
+
+                            if (exercise != null) {
+                                // Log document name and exercise details
+                                Log.d("ExerciseData", "Document: $documentName, Exercise: $exercise")
+                                // Add exercise with its collection name to the list
+                                exerciseListWithNames.add(Pair(exerciseName, exercise))
+                            }
                         }
-                    }
 
-                    if (exerciseListWithNames.isEmpty()) {
-                        Log.d("ExerciseData", "No exercises found.")
-                    }
+                        // After fetching all exercises, check if any exercises were found
+                        if (exerciseListWithNames.isEmpty()) {
+                            Log.d("ExerciseData", "No exercises found.")
+                        }
 
-                    // Initialize the adapter and pass the exercise list with names
-                    exerciseDetailsAdapter = ExerciseDetailsAdapter(exerciseListWithNames)
-                    binding.recyclerViewExercises.adapter = exerciseDetailsAdapter
-                }
-                .addOnFailureListener { e ->
-                    Log.e("PatientExerciseDetails", "Error loading exercises", e)
-                }
+                        // Initialize the adapter with the list of exercises
+                        exerciseDetailsAdapter = ExerciseDetailsAdapter(exerciseListWithNames)
+                        binding.recyclerViewExercises.adapter = exerciseDetailsAdapter
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("ExerciseData", "Error fetching exercises from collection: $exerciseName", e)
+                    }
+            }
         } else {
-            Log.e("PatientExerciseDetails", "No patient ID found in intent")
+            Log.e("ExerciseData", "No patient ID found.")
         }
     }
+
+
+
 
 
 }

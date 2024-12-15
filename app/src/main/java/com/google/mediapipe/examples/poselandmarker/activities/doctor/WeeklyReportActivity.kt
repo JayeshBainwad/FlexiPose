@@ -10,6 +10,7 @@ import com.google.mediapipe.examples.poselandmarker.WeeklyReportAdapter
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityWeeklyReportBinding
 import com.google.mediapipe.examples.poselandmarker.model.Exercise
 import com.google.mediapipe.examples.poselandmarker.utils.Constants
+import java.time.LocalDate
 
 class WeeklyReportActivity : AppCompatActivity() {
 
@@ -34,40 +35,41 @@ class WeeklyReportActivity : AppCompatActivity() {
 
     private fun loadWeeklyData() {
         val patientId = intent.getStringExtra("PATIENT_ID")
-
-        if (patientId != null) {
-            val exerciseDataList = mutableListOf<Triple<String, String, Exercise>>() // Triple<Exercise Name, Date, Exercise Details>
-            val exerciseNames = listOf("ElbowExercise", "KneeExercise", "ShoulderExercise")
-
-            var fetchCount = 0
-            for (exerciseName in exerciseNames) {
-                firestore.collection(Constants.PATIENTUSERS)
-                    .document(patientId)
-                    .collection(exerciseName)
-                    .get()
-                    .addOnSuccessListener { querySnapshot ->
-                        for (document in querySnapshot.documents) {
-                            val exercise = document.toObject(Exercise::class.java)
-                            if (exercise != null) {
-                                exerciseDataList.add(Triple(exerciseName, exercise.date, exercise))
-                            }
-                        }
-
-                        fetchCount++
-                        if (fetchCount == exerciseNames.size) {
-                            processAndSetData(exerciseDataList)
-                        }
-                    }
-                    .addOnFailureListener { e ->
-                        Log.e("loadWeeklyData", "Error fetching exercises from $exerciseName", e)
-                        fetchCount++
-                        if (fetchCount == exerciseNames.size) {
-                            processAndSetData(exerciseDataList)
-                        }
-                    }
-            }
-        } else {
+        if (patientId == null) {
             Log.e("loadWeeklyData", "Patient ID is null.")
+            return
+        }
+
+        val exerciseDataList = mutableListOf<Triple<String, String, Exercise>>() // Triple<Exercise Name, Date, Exercise Details>
+        val exerciseNames = listOf("ElbowExercise", "KneeExercise", "ShoulderExercise")
+
+        // Calculate the date 7 days ago
+        val sevenDaysAgo = LocalDate.now().minusDays(7).toString()
+
+        for (exerciseName in exerciseNames) {
+            firestore.collection(Constants.PATIENTUSERS)
+                .document(patientId)
+                .collection(exerciseName)
+                .whereGreaterThanOrEqualTo("date", sevenDaysAgo) // Only fetch past 7 days' data
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    for (document in querySnapshot.documents) {
+                        val exercise = document.toObject(Exercise::class.java)
+                        if (exercise != null) {
+                            exerciseDataList.add(Triple(exerciseName, exercise.date, exercise))
+                        }
+                    }
+
+                    // If all exercises are fetched, populate the RecyclerView
+                    if (exerciseDataList.isNotEmpty()) {
+                        processAndSetData(exerciseDataList)
+                    } else {
+                        Log.d("loadWeeklyData", "No exercises found in the past 7 days.")
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.e("loadWeeklyData", "Error fetching exercises from $exerciseName", e)
+                }
         }
     }
 

@@ -42,41 +42,10 @@ class DoctorSignInActivity : BaseActivity() {
         binding = ActivityDoctorSignInBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        // This is used to hide the status bar and make the splash screen as a full screen activity.
-//        window.setFlags(
-//            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//            WindowManager.LayoutParams.FLAG_FULLSCREEN
-//        )
-
         binding?.icNavToIntroPage?.setOnClickListener {
             startActivity(Intent(this@DoctorSignInActivity, IntroActivity::class.java))
         }
 
-
-//        if (!autoLoggedIn) {
-//            // Adding the handler to after the a task after some delay.
-//            Handler().postDelayed({
-//
-//                // Here if the user is signed in once and not signed out again from the app. So next time while coming into the app
-//                // we will redirect him to MainScreen or else to the Intro Screen as it was before.
-//
-//
-//                // Get the current user id
-//                val currentUserID = FirestoreClass().getCurrentUserID()
-//                // Start the Intro Activity
-//
-//                if (currentUserID.isNotEmpty()) {
-//                    autoLoggedIn = true
-//                    // Start the Main Activity
-//                    startActivity(Intent(this@SignInActivity, MainActivity::class.java))
-//                } else {
-//                    // Start the Intro Activity
-//                    startActivity(Intent(this@SignInActivity, SignUpActivity::class.java))
-//                }
-//                hideProgressDialog()
-//                finish() // Call this when your activity is done and should be closed.
-//            }, 2000)
-//
         // TODO(Step 4: Add click event for sign-in button and call the function to sign in.)
         // START
         binding?.btnDoctorSignIn?.setOnClickListener {
@@ -89,24 +58,6 @@ class DoctorSignInActivity : BaseActivity() {
         }
         // END
     }
-
-    /**
-     * A function for actionBar Setup.
-     */
-//    private fun setupActionBar() {
-//
-//        setSupportActionBar(binding?.toolbarDoctorSignInActivity)
-//
-//        val actionBar = supportActionBar
-//        if (actionBar != null) {
-//            actionBar.setDisplayHomeAsUpEnabled(true)
-//            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
-//        }
-//
-//        binding?.toolbarDoctorSignInActivity?.setNavigationOnClickListener {
-//            startActivity(Intent(this@DoctorSignInActivity,IntroActivity::class.java))
-//        }
-//    }
 
     // TODO (Step 2: A function for Sign-In using the registered user using the email and password.)
     // START
@@ -170,11 +121,6 @@ class DoctorSignInActivity : BaseActivity() {
         startActivity(Intent(this@DoctorSignInActivity, DoctorMainActivity::class.java))
         this.finish()
     }
-
-//    override fun onBackPressed() {
-//        super.onBackPressed()
-//        doubleBackToExit()
-//    }
 
     override fun onDestroy() {
         super.onDestroy()

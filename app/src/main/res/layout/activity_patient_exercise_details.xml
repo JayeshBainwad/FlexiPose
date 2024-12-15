@@ -13,6 +13,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <ImageButton
+        android:id="@+id/ib_weekly_report"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/ic_weekly_report_24"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp" />
+
     <!-- In your activity or fragment layout -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewExercises"

@@ -118,11 +118,6 @@ class FirestoreClass {
             }
     }
 
-
-
-
-
-
     /**
      * A function to SignIn using firebase and get the user details from Firestore Database.
      */

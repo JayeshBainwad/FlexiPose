@@ -24,6 +24,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
         <activity
+            android:name=".activities.doctor.WeeklyReportActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.doctor.SavedPatientListActivity"
             android:exported="false" />
         <activity

@@ -1,5 +1,6 @@
 package com.google.mediapipe.examples.poselandmarker.activities.doctor
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.mediapipe.examples.poselandmarker.ExerciseDetailsAdapter
+import com.google.mediapipe.examples.poselandmarker.ExerciseWrapper
 import com.google.mediapipe.examples.poselandmarker.R
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityPatientExerciseDetailsBinding
 import com.google.mediapipe.examples.poselandmarker.model.Exercise
@@ -30,7 +32,6 @@ class PatientExerciseDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPatientExerciseDetailsBinding
     private lateinit var exerciseDetailsAdapter: ExerciseDetailsAdapter
     private lateinit var firestore: FirebaseFirestore
-    private val exerciseListWithNames = mutableListOf<Pair<String, Exercise>>() // Pair of document name and exercise data
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,8 +45,6 @@ class PatientExerciseDetailsActivity : AppCompatActivity() {
 
         binding = ActivityPatientExerciseDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
 
         // Initialize Firestore
         firestore = FirebaseFirestore.getInstance()
@@ -62,6 +61,16 @@ class PatientExerciseDetailsActivity : AppCompatActivity() {
         // Call setupActionBar with patient details
         setupActionBar(patientName, patientImage)
 
+        // Set OnClickListener for the ImageButton
+        binding.ibWeeklyReport.setOnClickListener {
+            val patientId = intent.getStringExtra("PATIENT_ID")
+
+            if (patientId != null) {
+                val intent = Intent(this, WeeklyReportActivity::class.java)
+                intent.putExtra("PATIENT_ID", patientId)
+                startActivity(intent)
+            }
+        }
     }
 
     private fun setupActionBar(patientName: String?, patientImage: String?) {
@@ -138,10 +147,6 @@ class PatientExerciseDetailsActivity : AppCompatActivity() {
         binding.appBarMainExerciseDetails.toolbarMainActivity.addView(linearLayout)
     }
 
-
-
-
-
     private fun loadExerciseData() {
         // Retrieve the passed patient ID from the intent
         val patientId = intent.getStringExtra("PATIENT_ID")
@@ -167,7 +172,7 @@ class PatientExerciseDetailsActivity : AppCompatActivity() {
 
                             if (exercise != null) {
                                 // Log document name and exercise details
-                                Log.d("ExerciseData", "Document: $documentName, Exercise: $exercise")
+                                Log.d("com.google.mediapipe.examples.poselandmarker.ExerciseData", "Document: $documentName, Exercise: $exercise")
                                 // Add exercise with its collection name to the list
                                 exerciseListWithNames.add(Pair(exerciseName, exercise))
                             }
@@ -175,7 +180,7 @@ class PatientExerciseDetailsActivity : AppCompatActivity() {
 
                         // After fetching all exercises, check if any exercises were found
                         if (exerciseListWithNames.isEmpty()) {
-                            Log.d("ExerciseData", "No exercises found.")
+                            Log.d("com.google.mediapipe.examples.poselandmarker.ExerciseData", "No exercises found.")
                         }
 
                         // Initialize the adapter with the list of exercises
@@ -183,16 +188,11 @@ class PatientExerciseDetailsActivity : AppCompatActivity() {
                         binding.recyclerViewExercises.adapter = exerciseDetailsAdapter
                     }
                     .addOnFailureListener { e ->
-                        Log.e("ExerciseData", "Error fetching exercises from collection: $exerciseName", e)
+                        Log.e("com.google.mediapipe.examples.poselandmarker.ExerciseData", "Error fetching exercises from collection: $exerciseName", e)
                     }
             }
         } else {
-            Log.e("ExerciseData", "No patient ID found.")
+            Log.e("com.google.mediapipe.examples.poselandmarker.ExerciseData", "No patient ID found.")
         }
     }
-
-
-
-
-
 }

@@ -11,7 +11,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class ExerciseDetailsAdapter(
-    private var exerciseListWithNames: List<Pair<String, Exercise>> // Pair of document name and exercise data
+    private var exerciseListWithNames: MutableList<Pair<String, Exercise>> // Pair of document name and exercise data
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val DATE_VIEW_TYPE = 0
@@ -41,7 +41,7 @@ class ExerciseDetailsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == DATE_VIEW_TYPE) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.date_header_item, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_date_header, parent, false)
             DateViewHolder(view)
         } else {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.exercise_details_card, parent, false)

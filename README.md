@@ -52,6 +52,24 @@ This app is designed to run on a physical Android device to utilize its camera f
    - Doctors log in to view their patient list.
    - They can search for patients, view exercise history, and analyze weekly reports.
 
+![ss1](https://github.com/user-attachments/assets/c99b5f12-9ed6-4146-a378-5c6103e19896)
+![ss2](https://github.com/user-attachments/assets/ccf3f48e-741c-4ff1-a418-b6a153617922)
+![ss3](https://github.com/user-attachments/assets/317b227d-781f-4c78-a394-4abe4de57c1b)
+![ss4](https://github.com/user-attachments/assets/69abbeee-ae86-47df-9d0b-3d0abdcae5c8)
+![ss5](https://github.com/user-attachments/assets/d4002287-b178-45a8-a353-4d4305fe6a16)
+![ss6](https://github.com/user-attachments/assets/fa64acdc-5879-4ba6-97a2-52ab8364dca0)
+![ss7](https://github.com/user-attachments/assets/ed05d1cc-7238-450b-9994-3ef421d83450)
+![ss8](https://github.com/user-attachments/assets/854febdd-887f-4dab-a2cc-fbe08a005cd8)
+![ss9](https://github.com/user-attachments/assets/33b1bef9-a349-4ae5-9f49-402953bac071)
+![ss10](https://github.com/user-attachments/assets/f2b713fb-d5c8-40f3-a4a8-3c329394c2a6)
+![ss11](https://github.com/user-attachments/assets/8416d0cf-f0c4-4211-9b30-46269ccd05a1)
+![ss12](https://github.com/user-attachments/assets/c6d9be9d-fe90-4ea2-aee5-57cdcd9c7d48)
+![ss13](https://github.com/user-attachments/assets/bc9f5fd3-4c19-47bb-bd91-9db40898bca0)
+![ss14](https://github.com/user-attachments/assets/459d0ba5-04c7-4cea-ae3a-d684b2df57a7)
+![ss15](https://github.com/user-attachments/assets/64d34a7a-9311-479a-83dc-40479cc49df7)
+![ss16](https://github.com/user-attachments/assets/8b5d3c39-4278-4e9f-95a3-94e229dd138a)
+
+
 ## Getting Started
 1. Clone the repository:
    ```bash
@@ -70,18 +88,4 @@ This app is designed to run on a physical Android device to utilize its camera f
 ## Conclusion
 This app demonstrates the effective integration of advanced technologies like Mediapipe, Firebase, and CameraX to create a real-world solution for physiotherapy. Its dual focus on patient and doctor functionalities provides a streamlined experience, supporting enhanced treatment and monitoring.
 
-![cae957f6-fa96-46cd-aefd-7fa2ba3cb86c](https://github.com/user-attachments/assets/fa8176ec-bd09-4a29-a75f-5566cd6a68b7)
-![e2edbacd-10fa-4551-95b1-c5b43a0a8b9d](https://github.com/user-attachments/assets/af2fabc3-68a5-4111-9b46-2940d6c9f7a0)
-![c4379e33-1dd1-4dd7-a381-9e99e80adbce](https://github.com/user-attachments/assets/aa19c23b-66b2-4eb1-86f9-b2e69e11a83a)
-![a3324b1e-9101-4510-935e-bbe9e696057d](https://github.com/user-attachments/assets/2b3d34ac-0902-48da-8bfd-344522db87f5)
-![01725c32-9ab4-41ee-8eaa-0d3d968094c8](https://github.com/user-attachments/assets/cc119998-40e1-44cc-a9c8-4c19eee01c52)
-![15c185af-2a79-4fa7-891c-c0a777103176](https://github.com/user-attachments/assets/c80b8f45-fd8c-4f8d-92c8-efaf7b7ae893)
-![8eb6a86e-a4c4-4d46-81ba-4c11a0eb8fce](https://github.com/user-attachments/assets/b9137ac7-f370-4560-8f97-5e43aa5db295)
-![e2edbacd-10fa-4551-95b1-c5b43a0a8b9d](https://github.com/user-attachments/assets/8a454f5b-8fe8-43fc-9e88-06a2006ffe25)
-![0483f78d-b976-4a7f-b750-42b64536d3a9](https://github.com/user-attachments/assets/b866e422-00ea-4faa-b976-e2219622381b)
-![a0e09dfd-2db8-469e-a6a0-a77678894556](https://github.com/user-attachments/assets/a0c3e9f6-faac-4304-b92b-12cc0c572b50)
-![b9883b74-4b58-457c-a2a5-305b959b4a75](https://github.com/user-attachments/assets/ccc05f5f-e282-4a85-8479-ddf02d0c23c1)
-![0a606664-0024-4c62-a8a6-fb715efa81be](https://github.com/user-attachments/assets/9f767465-f6df-4f1b-a28a-9af5389ab8f9)
-![d2f18014-8972-4810-b6f9-66a7430e5685](https://github.com/user-attachments/assets/3757d387-d696-4157-ab16-533859ac6bf3)
-![f6704fd1-8553-4f0b-98bc-7ff9f62923b7](https://github.com/user-attachments/assets/2ac0abbb-a730-4bc5-84a7-f0e73dd14ff6)
 

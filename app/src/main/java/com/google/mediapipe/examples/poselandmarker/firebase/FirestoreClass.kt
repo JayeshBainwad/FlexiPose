@@ -144,6 +144,7 @@ class FirestoreClass {
                     is MainActivity -> {
                         if (loggedInPatient != null) {
                             activity.updateNavigationUserDetails(loggedInPatient)
+                            activity.updateAppbarTile(loggedInPatient)
                         }
                     }
                     is MyProfileActivity -> {
@@ -197,6 +198,7 @@ class FirestoreClass {
                     is DoctorMainActivity -> {
                         if (loggedInDoctor != null) {
                             activity.updateNavigationUserDetails(loggedInDoctor)
+                            activity.updateAppbarTile(loggedInDoctor)
                         }
                     }
                     is DoctorProfileActivity -> {

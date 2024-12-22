@@ -22,17 +22,18 @@
             android:id="@+id/search_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:focusable="true"
             android:queryHint="Search patients..."
             android:iconifiedByDefault="false"
             android:background="@drawable/search_view_border"
-            android:layoutDirection="rtl"
             android:layout_marginTop="90dp"
+            android:textDirection="ltr"
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"/>
+            app:theme="@style/SearchViewTheme" />
+
 
         <!-- RecyclerView to display the list of CardViews -->
         <androidx.recyclerview.widget.RecyclerView

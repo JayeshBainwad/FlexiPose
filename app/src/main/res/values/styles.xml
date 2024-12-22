@@ -70,4 +70,14 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="SearchViewTheme" parent="Theme.AppCompat.Light">
+        <item name="queryHint">@string/search_for_patients</item>
+        <item name="android:textColorHint">#808080</item> <!-- Adjust color as needed -->
+    </style>
+    <style name="SearchViewTheme2" parent="Theme.AppCompat.Light">
+        <item name="queryHint">@string/search_for_saved_patients</item>
+        <item name="android:textColorHint">#808080</item> <!-- Adjust color as needed -->
+    </style>
+
+    <string name="search_for_saved_patients">Search for saved patients...</string>
 </resources>

@@ -27,6 +27,7 @@ import com.google.mediapipe.examples.poselandmarker.R
 import com.google.mediapipe.examples.poselandmarker.activities.BaseActivity
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityMainBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
+import com.google.mediapipe.examples.poselandmarker.model.Doctor
 import com.google.mediapipe.examples.poselandmarker.model.Patient
 
 data class ExerciseType(val name: String)
@@ -102,6 +103,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         binding?.appBarMainPatient?.toolbarMainActivity?.setNavigationOnClickListener {
             toggleDrawer()
         }
+    }
+
+    fun updateAppbarTile(patient: Patient) {
+        supportActionBar?.title = patient.name
     }
 
     private fun toggleDrawer() {

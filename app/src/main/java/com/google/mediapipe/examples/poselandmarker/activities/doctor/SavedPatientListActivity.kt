@@ -72,6 +72,7 @@ class SavedPatientListActivity : BaseActivity() {
         binding?.appBarMainDoctorSavedPatient?.toolbarMainActivity?.setNavigationOnClickListener {
             onBackPressed()
         }
+        supportActionBar?.title = "Saved Patient List"
     }
 
     private fun setupRecyclerView() {

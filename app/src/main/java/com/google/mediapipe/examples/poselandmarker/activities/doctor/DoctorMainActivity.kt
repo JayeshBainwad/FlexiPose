@@ -31,12 +31,14 @@ import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
 import com.google.mediapipe.examples.poselandmarker.model.Doctor
 import com.google.mediapipe.examples.poselandmarker.model.Patient
 import com.google.mediapipe.examples.poselandmarker.utils.Constants
+import org.w3c.dom.Text
 
 class DoctorMainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var binding: ActivityDoctorMainBinding? = null
     private lateinit var patientListAdapter: PatientListAdapter
     private var patientList: ArrayList<Patient> = ArrayList()
+    private var doctorName = ""
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -192,11 +194,16 @@ class DoctorMainActivity : BaseActivity(), NavigationView.OnNavigationItemSelect
 
 
     private fun setupActionBar() {
+
         setSupportActionBar(binding?.appBarMainDoctor?.toolbarMainActivity)
         binding?.appBarMainDoctor?.toolbarMainActivity?.setNavigationIcon(R.drawable.ic_drawer_navigation_menu)
         binding?.appBarMainDoctor?.toolbarMainActivity?.setNavigationOnClickListener {
             toggleDrawer()
         }
+    }
+
+    fun updateAppbarTile(doctor: Doctor) {
+        supportActionBar?.title = doctor.name
     }
 
     private fun toggleDrawer() {

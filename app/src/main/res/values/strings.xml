@@ -116,6 +116,7 @@
     <string name="app_logo">app_logo</string>
     <string name="search_patients">Search patients...</string>
     <string name="patient_list">Patient List</string>
+    <string name="search_for_patients">Search for patients...</string>
     <!--END-->
 
 </resources>

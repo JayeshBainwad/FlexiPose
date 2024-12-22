@@ -67,24 +67,6 @@ class SignUpActivity : BaseActivity() {
     }
 
     /**
-     * A function for actionBar Setup.
-     */
-//    private fun setupActionBar() {
-//
-//        setSupportActionBar(binding?.toolbarSignUpActivity)
-//
-//        val actionBar = supportActionBar
-//        if (actionBar != null) {
-//            actionBar.setDisplayHomeAsUpEnabled(true)
-//            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
-//        }
-//
-//        binding?.toolbarSignUpActivity?.setNavigationOnClickListener {
-//            startActivity(Intent(this@SignUpActivity,IntroActivity::class.java))
-//        }
-//    }
-
-    /**
      * A function to register a user to our app using the Firebase.
      * For more details visit: https://firebase.google.com/docs/auth/android/custom-auth
      */
@@ -116,6 +98,10 @@ class SignUpActivity : BaseActivity() {
                             // call the registerUser function of FirestoreClass to make an entry in the database.
                             FirestoreClass().registerUser(this@SignUpActivity, patient)
                         } else {
+
+                            // Hide the progress dialog
+                            hideProgressDialog()
+
                             Toast.makeText(
                                 this@SignUpActivity,
                                 task.exception!!.message,
@@ -151,7 +137,7 @@ class SignUpActivity : BaseActivity() {
     }
 
     /**
-     * A function to be called the user is registered successfully and entry is made in the firestore database.
+     * A function to be called when the user is registered successfully and an entry is made in the Firestore database.
      */
     fun userRegisteredSuccess() {
 
@@ -164,14 +150,18 @@ class SignUpActivity : BaseActivity() {
         // Hide the progress dialog
         hideProgressDialog()
 
-        /**
-         * Here the new user registered is automatically signed-in so we just sign-out the user from firebase
-         * and send him to Intro Screen for Sign-In
-         */
-        FirebaseAuth.getInstance().signOut()
+        // Sign out the user
+//        FirebaseAuth.getInstance().signOut()
+
+        // Navigate to MainActivity
+        val intent = Intent(this@SignUpActivity, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+
         // Finish the Sign-Up Screen
         finish()
     }
+
 
 //    override fun onBackPressed() {
 //        super.onBackPressed()

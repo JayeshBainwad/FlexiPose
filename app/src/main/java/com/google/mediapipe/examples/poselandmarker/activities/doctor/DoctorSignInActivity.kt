@@ -82,6 +82,10 @@ class DoctorSignInActivity : BaseActivity() {
                         FirestoreClass().loadUserDoctorDetails(this@DoctorSignInActivity)
                         // END
                     } else {
+
+                        // Hide the progress dialog
+                        hideProgressDialog()
+
                         Toast.makeText(
                             this@DoctorSignInActivity,
                             task.exception!!.message,
@@ -119,6 +123,7 @@ class DoctorSignInActivity : BaseActivity() {
         hideProgressDialog()
 
         startActivity(Intent(this@DoctorSignInActivity, DoctorMainActivity::class.java))
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         this.finish()
     }
 

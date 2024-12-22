@@ -131,6 +131,10 @@ class SignInActivity : BaseActivity() {
                         FirestoreClass().loadUserDetails(this@SignInActivity)
                         // END
                     } else {
+
+                        // Hide the progress dialog
+                        hideProgressDialog()
+
                         Toast.makeText(
                             this@SignInActivity,
                             task.exception!!.message,
@@ -168,6 +172,7 @@ class SignInActivity : BaseActivity() {
         hideProgressDialog()
 
         startActivity(Intent(this@SignInActivity, MainActivity::class.java))
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         this.finish()
     }
 

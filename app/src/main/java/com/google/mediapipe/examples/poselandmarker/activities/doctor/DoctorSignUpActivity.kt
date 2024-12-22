@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.mediapipe.examples.poselandmarker.R
 import com.google.mediapipe.examples.poselandmarker.activities.BaseActivity
 import com.google.mediapipe.examples.poselandmarker.activities.IntroActivity
+import com.google.mediapipe.examples.poselandmarker.activities.patient.MainActivity
 import com.google.mediapipe.examples.poselandmarker.databinding.ActivityDoctorSignUpBinding
 import com.google.mediapipe.examples.poselandmarker.firebase.FirestoreClass
 import com.google.mediapipe.examples.poselandmarker.model.Doctor
@@ -115,6 +116,10 @@ class DoctorSignUpActivity : BaseActivity() {
                             // call the registerUser function of FirestoreClass to make an entry in the database.
                             FirestoreClass().registerUserDoctor(this@DoctorSignUpActivity, doctor)
                         } else {
+
+                            // Hide the progress dialog
+                            hideProgressDialog()
+
                             Toast.makeText(
                                 this@DoctorSignUpActivity,
                                 task.exception!!.message,
@@ -167,7 +172,11 @@ class DoctorSignUpActivity : BaseActivity() {
          * Here the new user registered is automatically signed-in so we just sign-out the user from firebase
          * and send him to Intro Screen for Sign-In
          */
-        FirebaseAuth.getInstance().signOut()
+        // Navigate to MainActivity
+        val intent = Intent(this@DoctorSignUpActivity, DoctorMainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+
         // Finish the Sign-Up Screen
         finish()
     }

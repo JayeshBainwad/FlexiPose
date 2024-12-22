@@ -76,41 +76,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         FirestoreClass().loadUserDetails(this@MainActivity)
 
         // Set permission checks on card click
-//        binding?.cardElbowExercise?.setOnClickListener {
-//            checkAndRequestPermissions(
-//                permissions = arrayOf(Manifest.permission.CAMERA),
-//                requestCode = CAMERA_PERMISSION_CODE
-//            ) {
-//                // Permission granted - Start CameraActivity for Elbow Exercise
-//                val intent = Intent(this@MainActivity, CameraActivity::class.java)
-//                intent.putExtra("exerciseType", "Elbow")
-//                startActivity(intent)
-//            }
-//        }
-//
-//        binding?.cardKneeExercise?.setOnClickListener {
-//            checkAndRequestPermissions(
-//                permissions = arrayOf(Manifest.permission.CAMERA),
-//                requestCode = CAMERA_PERMISSION_CODE
-//            ) {
-//                // Permission granted - Start CameraActivity for Knee Exercise
-//                val intent = Intent(this@MainActivity, CameraActivity::class.java)
-//                intent.putExtra("exerciseType", "Knee")
-//                startActivity(intent)
-//            }
-//        }
-//
-//        binding?.cardShoulderExercise?.setOnClickListener {
-//            checkAndRequestPermissions(
-//                permissions = arrayOf(Manifest.permission.CAMERA),
-//                requestCode = CAMERA_PERMISSION_CODE
-//            ) {
-//                // Permission granted - Start CameraActivity for Knee Exercise
-//                val intent = Intent(this@MainActivity, CameraActivity::class.java)
-//                intent.putExtra("exerciseType", "Shoulder")
-//                startActivity(intent)
-//            }
-//        }
     }
 
     private fun setupRecyclerView() {

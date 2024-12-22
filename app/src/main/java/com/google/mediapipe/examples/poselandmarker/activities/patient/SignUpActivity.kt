@@ -155,7 +155,7 @@ class SignUpActivity : BaseActivity() {
 
         // Navigate to MainActivity
         val intent = Intent(this@SignUpActivity, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
 
         // Finish the Sign-Up Screen

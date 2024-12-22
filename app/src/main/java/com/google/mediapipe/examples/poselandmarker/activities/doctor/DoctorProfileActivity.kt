@@ -161,21 +161,30 @@ class DoctorProfileActivity : BaseActivity() {
     private fun updateUserProfileData() {
 
         val userHashMap = HashMap<String, Any>()
+        // Here we get the text from editText and trim the space
+        val name: String = binding?.etNameDoctor?.text.toString().trim { it <= ' ' }
+        val mobileNo: String = binding?.etMobileDoctor?.text.toString().trim { it <= ' ' }
 
         if (mProfileImageURL.isNotEmpty() && mProfileImageURL != mDoctorDetails.image) {
             userHashMap[Constants.IMAGE] = mProfileImageURL
         }
 
-        if (binding?.etNameDoctor?.text.toString() != mDoctorDetails.name) {
+        if (binding?.etNameDoctor?.text.toString() != mDoctorDetails.name && name.isNotEmpty()) {
             userHashMap[Constants.NAME] = binding?.etNameDoctor?.text.toString()
         }
 
-        if (binding?.etMobileDoctor?.text.toString() != mDoctorDetails.mobile.toString()) {
+        if (binding?.etMobileDoctor?.text.toString() != mDoctorDetails.mobile.toString() && mobileNo.isNotEmpty()) {
             userHashMap[Constants.MOBILE] = binding?.etMobileDoctor?.text.toString().toLong()
         }
 
         // Update the data in the database.
-        FirestoreClass().updateDoctorProfileData(this@DoctorProfileActivity, userHashMap)
+        if (userHashMap.isNotEmpty()) {
+            // Update the data in the database.
+            FirestoreClass().updateDoctorProfileData(this@DoctorProfileActivity, userHashMap)
+        } else {
+            hideProgressDialog()
+            Toast.makeText(this, "No changes to update.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     /**

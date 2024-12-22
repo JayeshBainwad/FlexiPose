@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.WindowManager
 import android.webkit.MimeTypeMap
@@ -60,16 +61,13 @@ class MyProfileActivity : BaseActivity() {
         }
 
         binding?.btnUpdate?.setOnClickListener {
-            // Here if the image is not selected then update the other details of user.
-            if (mSelectedImageFileUri != null) {
-
-                uploadUserImage()
-            } else {
-
-                showProgressDialog(resources.getString(R.string.please_wait))
-
-                // Call a function to update user details in the database.
-                updateUserProfileData()
+                // Here if the image is not selected then update the other details of user.
+                if (mSelectedImageFileUri != null) {
+                    uploadUserImage()
+                } else {
+                    showProgressDialog(resources.getString(R.string.please_wait))
+                    // Call a function to update user details in the database.
+                    updateUserProfileData()
             }
         }
     }
@@ -161,21 +159,30 @@ class MyProfileActivity : BaseActivity() {
     private fun updateUserProfileData() {
 
         val userHashMap = HashMap<String, Any>()
+        // Here we get the text from editText and trim the space
+        val name: String = binding?.etName?.text.toString().trim { it <= ' ' }
+        val mobileNo: String = binding?.etMobile?.text.toString().trim { it <= ' ' }
 
         if (mProfileImageURL.isNotEmpty() && mProfileImageURL != mPatientDetails.image) {
             userHashMap[Constants.IMAGE] = mProfileImageURL
         }
 
-        if (binding?.etName?.text.toString() != mPatientDetails.name) {
+        if (binding?.etName?.text.toString() != mPatientDetails.name && name.isNotEmpty()) {
             userHashMap[Constants.NAME] = binding?.etName?.text.toString()
         }
 
-        if (binding?.etMobile?.text.toString() != mPatientDetails.mobile.toString()) {
+        if (binding?.etMobile?.text.toString() != mPatientDetails.mobile.toString() && mobileNo.isNotEmpty()) {
             userHashMap[Constants.MOBILE] = binding?.etMobile?.text.toString().toLong()
         }
 
         // Update the data in the database.
-        FirestoreClass().updateUserProfileData(this@MyProfileActivity, userHashMap)
+        if (userHashMap.isNotEmpty()) {
+            // Update the data in the database.
+            FirestoreClass().updateUserProfileData(this@MyProfileActivity, userHashMap)
+        } else {
+            hideProgressDialog()
+            Toast.makeText(this, "No changes to update.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     /**
@@ -221,6 +228,24 @@ class MyProfileActivity : BaseActivity() {
             binding?.etMobile?.setText(patient.mobile.toString())
         }
     }
+
+    // TODO (Step 3: A function to validate the entries of a user.)
+    // START
+    /**
+     * A function to validate the entries of a user.
+     */
+    private fun validateForm(name: String, mobileNo: String): Boolean {
+        return if (TextUtils.isEmpty(name)) {
+            showErrorSnackBar("Please enter email.")
+            false
+        } else if (TextUtils.isEmpty(mobileNo)) {
+            showErrorSnackBar("Please enter password.")
+            false
+        } else {
+            true
+        }
+    }
+    // END
 
     override fun onBackPressed() {
         super.onBackPressed()

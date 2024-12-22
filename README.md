@@ -52,6 +52,24 @@ This app is designed to run on a physical Android device to utilize its camera f
    - Doctors log in to view their patient list.
    - They can search for patients, view exercise history, and analyze weekly reports.
 
+![ss1](https://github.com/user-attachments/assets/c99b5f12-9ed6-4146-a378-5c6103e19896)
+![ss2](https://github.com/user-attachments/assets/ccf3f48e-741c-4ff1-a418-b6a153617922)
+![ss3](https://github.com/user-attachments/assets/317b227d-781f-4c78-a394-4abe4de57c1b)
+![ss4](https://github.com/user-attachments/assets/69abbeee-ae86-47df-9d0b-3d0abdcae5c8)
+![ss5](https://github.com/user-attachments/assets/d4002287-b178-45a8-a353-4d4305fe6a16)
+![ss6](https://github.com/user-attachments/assets/fa64acdc-5879-4ba6-97a2-52ab8364dca0)
+![ss7](https://github.com/user-attachments/assets/ed05d1cc-7238-450b-9994-3ef421d83450)
+![ss8](https://github.com/user-attachments/assets/854febdd-887f-4dab-a2cc-fbe08a005cd8)
+![ss9](https://github.com/user-attachments/assets/33b1bef9-a349-4ae5-9f49-402953bac071)
+![ss10](https://github.com/user-attachments/assets/f2b713fb-d5c8-40f3-a4a8-3c329394c2a6)
+![ss11](https://github.com/user-attachments/assets/8416d0cf-f0c4-4211-9b30-46269ccd05a1)
+![ss12](https://github.com/user-attachments/assets/c6d9be9d-fe90-4ea2-aee5-57cdcd9c7d48)
+![ss13](https://github.com/user-attachments/assets/bc9f5fd3-4c19-47bb-bd91-9db40898bca0)
+![ss14](https://github.com/user-attachments/assets/459d0ba5-04c7-4cea-ae3a-d684b2df57a7)
+![ss15](https://github.com/user-attachments/assets/64d34a7a-9311-479a-83dc-40479cc49df7)
+![ss16](https://github.com/user-attachments/assets/8b5d3c39-4278-4e9f-95a3-94e229dd138a)
+
+
 ## Getting Started
 1. Clone the repository:
    ```bash
@@ -69,4 +87,5 @@ This app is designed to run on a physical Android device to utilize its camera f
 
 ## Conclusion
 This app demonstrates the effective integration of advanced technologies like Mediapipe, Firebase, and CameraX to create a real-world solution for physiotherapy. Its dual focus on patient and doctor functionalities provides a streamlined experience, supporting enhanced treatment and monitoring.
+
 

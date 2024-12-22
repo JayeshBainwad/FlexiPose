@@ -172,7 +172,7 @@ class SignInActivity : BaseActivity() {
         hideProgressDialog()
 
         startActivity(Intent(this@SignInActivity, MainActivity::class.java))
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         this.finish()
     }
 

@@ -11,6 +11,5 @@ This project includes third-party software with the following licenses:
 - **Firebase SDK** (used for authentication and Firestore) is governed by Google's Terms of Service, with some components under the Apache License, Version 2.0. See Firebase's terms here: [Firebase Terms of Service](https://firebase.google.com/terms).
 - **CameraX** (used for camera functionality) is licensed under the Apache License, Version 2.0.
 
-This project includes code adapted from the original **MediaPipe repository** for **PoseLandmarkerHelper.kt**,  
-with **minor modifications** to adjust the default **running mode** and fit this project's requirements.  
+This project includes code adapted from the original **MediaPipe repository** for **PoseLandmarkerHelper.kt**, **build.gradle (Module :app)**, **download_tasks.gradle (Module :app)** with **minor modifications** to adjust the default **running mode** and fit this project's requirements.  
 The original code is licensed under the Apache License, Version 2.0.

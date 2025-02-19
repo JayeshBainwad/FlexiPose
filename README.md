@@ -88,9 +88,11 @@ This app is designed to run on a physical Android device to utilize its camera f
 ## Conclusion
 This app demonstrates the effective integration of advanced technologies like Mediapipe, Firebase, and CameraX to create a real-world solution for physiotherapy. Its dual focus on patient and doctor functionalities provides a streamlined experience, supporting enhanced treatment and monitoring.
 
-## License
+## License  
+This project is licensed under the Apache License, Version 2.0. See the [LICENSE](LICENSE) file for more information.  
 
-This project is licensed under the Apache License, Version 2.0. See the [LICENSE](LICENSE.txt) file for more information.
+This project includes code adapted from the original MediaPipe repository for **PoseLandmarkerHelper.kt**  
+with minor modifications. The original code is licensed under the Apache License, Version 2.0.
 
 ## Acknowledgments
 

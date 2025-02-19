@@ -11,3 +11,7 @@ Third-party libraries:
 - Mediapipe (used for Pose Landmarker model) is licensed under the Apache License, Version 2.0.
 - Firebase SDK (used for authentication and Firestore) is licensed under the Apache License, Version 2.0.
 - CameraX (used for camera functionality) is licensed under the Apache License, Version 2.0.
+
+This project also includes code adapted from the original MediaPipe repository for **PoseLandmarkerHelper.kt**,  
+which has been modified to fit this project’s requirements.  
+The original code is licensed under the Apache License, Version 2.0.

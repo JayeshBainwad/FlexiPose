@@ -91,8 +91,7 @@ This app demonstrates the effective integration of advanced technologies like Me
 ## License  
 This project is licensed under the Apache License, Version 2.0. See the [LICENSE](LICENSE) file for more information.  
 
-This project includes code adapted from the original MediaPipe repository for **PoseLandmarkerHelper.kt**  
-with minor modifications. The original code is licensed under the Apache License, Version 2.0.
+This project includes code adapted from the original MediaPipe repository for **PoseLandmarkerHelper.kt**, **build.gradle (Module :app)**, **download_tasks.gradle (Module :app)** with minor modifications. The original code is licensed under the Apache License, Version 2.0.
 
 ## Acknowledgments
 

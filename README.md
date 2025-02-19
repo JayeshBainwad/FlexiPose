@@ -120,6 +120,25 @@ This app is designed to run on a physical Android device to utilize its camera f
 
 ---
 
+### **Ongoing Improvements**  
+This project is continuously improving, and I am working on refining various aspects. Below are the current areas of focus:  
+
+- **Exercise Data Table Display Issue**:  
+  - The patient's exercise data is not displaying properly in tabular form.  
+  - Possible reasons: improper data formatting, UI constraints, or missing Firestore data.  
+  - Working on a fix to improve the data presentation.  
+
+- **Performance Optimization**:  
+  - Enhancing Firestore queries to reduce read operations and stay within the free-tier limits.  
+  - Optimizing CameraX usage for smoother real-time pose tracking.  
+
+- **UI/UX Enhancements**:  
+  - Refining the design to ensure a better experience for both patients and doctors.  
+
+I will continue updating this section as I improve the app.  
+
+---
+
 ## Future Enhancements  
 - Add more exercise types and custom exercise plans.  
 - Implement AI-based progress prediction for patients.  

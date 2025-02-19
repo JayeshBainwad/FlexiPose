@@ -1,11 +1,3 @@
-Here’s your updated README file with the requested additions:
-
-- **Added a note about adding Firebase configuration in the README.**
-- **Mentioned that the project is built using Kotlin and XML.**
-- **Included version information for important dependencies based on your `build.gradle` file.**
-
----
-
 # Human Pose Estimation for Physiotherapy Applications  
 
 ## Overview  

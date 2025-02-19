@@ -139,3 +139,9 @@ This project is licensed under the Apache License, Version 2.0. See the [LICENSE
 This project includes code adapted from the original MediaPipe repository for **PoseLandmarkerHelper.kt**, **build.gradle (Module :app)**, and **download_tasks.gradle (Module :app)** with minor modifications. The original code is licensed under the Apache License, Version 2.0.  
 
 ---
+
+## References  
+For more details on using the **MediaPipe Pose Landmarker**, refer to the official Google documentation:  
+🔗 [MediaPipe Pose Landmarker - Official Documentation](https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker/android)  
+
+---
